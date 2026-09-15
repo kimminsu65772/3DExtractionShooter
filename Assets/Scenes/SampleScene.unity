@@ -271,16 +271,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuaterViewCameraController
   currentState: 0
   target: {fileID: 544462932}
-  mainCamera: {fileID: 330585545}
   _inputHandler: {fileID: 544462928}
+  aimController: {fileID: 544462935}
   yaw: 45
   pitch: 45
   normalDistance: 15
   targetOffset: {x: 0, y: 1.2, z: 0}
-  aimDistance: 7
+  aimDistance: 15
   aimOffsetDistance: 2
-  aimMaxWorldDistance: 5
-  aimDeadZone: 0.3
+  aimMaxWorldDistance: 13
   smoothTime: 0.15
   aimOffsetSmoothTime: 0.08
 --- !u!1 &400731121
@@ -536,6 +535,7 @@ GameObject:
   - component: {fileID: 544462928}
   - component: {fileID: 544462933}
   - component: {fileID: 544462934}
+  - component: {fileID: 544462935}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -675,6 +675,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _inputHandler: {fileID: 544462928}
+  aimController: {fileID: 544462935}
   characterController: {fileID: 544462933}
   cameraTransform: {fileID: 330585546}
   groundChecker: {fileID: 559390819}
@@ -689,9 +690,26 @@ MonoBehaviour:
   sprintSpeed: 8
   gravity: -9.81
   fallMultiplier: 2.5
+  rotationSpeed: 12
   currentMoveSpeed: 0
   _verticalVelocity: 0
   playerLocomotionState: 0
+--- !u!114 &544462935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544462927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f8aa14d9bd74b22bde3d8ca828929ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAimController
+  inputHandler: {fileID: 544462928}
+  mainCamera: {fileID: 330585545}
+  aimPlanePoint: {fileID: 0}
+  aimDeadZone: 0.3
 --- !u!1 &559390818
 GameObject:
   m_ObjectHideFlags: 0

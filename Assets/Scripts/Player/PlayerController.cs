@@ -1,6 +1,4 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -8,6 +6,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("참조 설정")]
     [SerializeField] private PlayerInputHandler _inputHandler;
+    [SerializeField] private PlayerAimController aimController;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private Transform cameraTransform;
 
@@ -24,6 +23,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float sprintSpeed = 8f;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float fallMultiplier = 2f;
+
+    [Header("플레이어 회전 설정")]
+    [SerializeField] private float rotationSpeed = 12f;
 
     [Header("플레이어 상태 변화 확인")]
     [SerializeField] private float currentMoveSpeed;
@@ -64,6 +66,8 @@ public class PlayerController : MonoBehaviour
         {
             cameraTransform = Camera.main.transform;
         }
+
+        ResolveAimController();
 
         forwardProbeDistance = characterController.radius + 0.05f;
     }
@@ -148,6 +152,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 velocity = moveDirection * currentMoveSpeed + Vector3.up * _verticalVelocity;
         characterController.Move(velocity * Time.deltaTime);
+        RotateCharacter(moveDirection);
     }
 
     private void UpdateVerticalVelocity()
@@ -245,8 +250,64 @@ public class PlayerController : MonoBehaviour
             forwardProbe = forwardProbeResult;
         }
         else
+        {
             forwardProbe = default;
-            
+        }
+
+        return;
+    }
+
+    private void RotateCharacter(Vector3 moveDirection)
+    {
+        if (_inputHandler.IsAimHeld)
+        {
+            if (aimController == null)
+            {
+                ResolveAimController();
+            }
+
+            if (aimController == null)
+            {
+                return;
+            }
+
+            aimController.RefreshAim();
+
+            if (!aimController.HasValidAimDirection)
+            {
+                return;
+            }
+
+            RotateTowards(aimController.AimDirection);
+            return;
+        }
+
+        RotateTowards(moveDirection);
+    }
+
+    private void RotateTowards(Vector3 direction)
+    {
+        // y축 회전을 방지하기 위해 y축 성분을 0으로 설정
+        direction.y = 0f;
+
+        // 이동 입력이 없을 때 회전을 방지하기 위해 이동 입력의 크기를 확인한다.
+        if (direction.sqrMagnitude < MoveInputThreshold * MoveInputThreshold)
+        {
+            return;
+        }
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    }
+
+    private void ResolveAimController()
+    {
+        if (aimController != null)
+        {
+            return;
+        }
+
+        aimController = GetComponent<PlayerAimController>();
     }
     private void OnDrawGizmosSelected()
     {

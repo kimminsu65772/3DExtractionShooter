@@ -14,8 +14,8 @@ public class QuaterViewCameraController : MonoBehaviour
 
     [Header("참조 설정")]
     [SerializeField] private Transform target;
-    [SerializeField] private Camera mainCamera;
     [SerializeField] private PlayerInputHandler _inputHandler;
+    [SerializeField] private PlayerAimController aimController;
 
     [Header("Quarter View")]
     [SerializeField] private float yaw = 45f;
@@ -27,7 +27,6 @@ public class QuaterViewCameraController : MonoBehaviour
     [SerializeField] private float aimDistance = 9f;
     [SerializeField] private float aimOffsetDistance = 3f;
     [SerializeField] private float aimMaxWorldDistance = 7f;
-    [SerializeField] private float aimDeadZone = 0.3f;
 
     [Header("Follow")]
     [SerializeField] private float smoothTime = 0.15f;
@@ -37,7 +36,6 @@ public class QuaterViewCameraController : MonoBehaviour
     private Vector3 followVelocity;
     private Quaternion cameraRotation;
     private Vector3 viewDirection;
-    private Vector3 lastAimDirection = Vector3.forward;
 
     private Vector3 currentAimOffset = Vector3.zero;
     private Vector3 aimOffsetVelocity = Vector3.zero;
@@ -47,12 +45,8 @@ public class QuaterViewCameraController : MonoBehaviour
         // 카메라 위치 설정 메서드
         CalculateCameraDirection();
 
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-        }
-
         ResolveInputManager();
+        ResolveAimController();
     }
 
     // 인스펙터에서 값이 변경될 때마다 카메라 위치를 재설정
@@ -106,36 +100,28 @@ public class QuaterViewCameraController : MonoBehaviour
 
     private Vector3 GetAimOffset()
     {
-        // 마우스 커서의 월드 좌표를 가져오자.
-        Vector3 mouseWorldPos = GetMouseWorldPos();
-
-        // 마우스와 캐릭터 사이의 방향 벡터를 계산
-        Vector3 mouseDirection = (mouseWorldPos - target.position);
-        mouseDirection.y = 0f; // 수평 방향만 고려
-
-        // 마우스와 캐릭터 사이의 거리를 계산
-        float distanceToMouse = mouseDirection.magnitude;
-
-        // 마우스가 캐릭터와 너무 가까이 있을 때 똑같이 1로 정규화하는 경우 카메라가 튕겨저 나가는 현상이 발생할 수 있다. 따라서 일정 거리 이하에서는 0을 반환하도록 한다.
-        if (distanceToMouse <= aimDeadZone)
+        if (aimController == null)
         {
-            return lastAimDirection * 0f;
+            ResolveAimController();
         }
 
-        // 마우스 방향 벡터를 거리에 따라 정규화한다.
-        lastAimDirection = mouseDirection / distanceToMouse;
+        if (aimController == null)
+        {
+            return Vector3.zero;
+        }
+
+        aimController.RefreshAim();
+
+        if (!aimController.HasValidAimDirection)
+        {
+            return Vector3.zero;
+        }
 
         // 마우스와 캐릭터 사이의 거리를 aimMaxWorldDistance로 나눈 값을 0~1 사이로 제한하여 offsetRatio를 계산한다.
-        float offsetRatio = Mathf.Clamp01(distanceToMouse / aimMaxWorldDistance);
+        float offsetRatio = Mathf.Clamp01(aimController.AimDistance / aimMaxWorldDistance);
 
         // aimOffsetDistance에 offsetRatio를 곱하여 카메라가 이동할 거리를 계산한다.
-        return lastAimDirection * aimOffsetDistance * offsetRatio;
-    }
-
-    private Vector3 GetMouseWorldPos()
-    {
-        Vector3 screenPosition = _inputHandler != null ? _inputHandler.AimScreenPosition : Vector3.zero;
-        return AimTargetHelper.GetMouseWorldPositionOnPlane(mainCamera, screenPosition, target.position);
+        return aimController.AimDirection * aimOffsetDistance * offsetRatio;
     }
 
     private void ResolveInputManager()
@@ -146,5 +132,15 @@ public class QuaterViewCameraController : MonoBehaviour
         }
 
         _inputHandler = target.GetComponent<PlayerInputHandler>();
+    }
+
+    private void ResolveAimController()
+    {
+        if (aimController != null || target == null)
+        {
+            return;
+        }
+
+        aimController = target.GetComponent<PlayerAimController>();
     }
 }
