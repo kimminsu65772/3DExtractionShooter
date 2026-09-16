@@ -7,3 +7,10 @@ public enum PlayerLocomotionState
     AimIdle,
     AimMove,
 }
+
+public enum  HitPart
+{
+    None,
+    Head,
+    Body
+}
