@@ -10,6 +10,9 @@ public class PlayerAimController : MonoBehaviour
 
     [Header("조준 설정")]
     [SerializeField] private float aimDeadZone = 0.3f;
+    [SerializeField] private LayerMask aimLayer;
+
+    private readonly RaycastHit[] hitBuffer = new RaycastHit[8];
 
     public Vector3 AimWorldPosition { get; private set; }
     public Vector3 AimDirection { get; private set; } = Vector3.forward;
@@ -42,13 +45,22 @@ public class PlayerAimController : MonoBehaviour
             return;
         }
 
-        Vector3 planePoint = GetAimPlanePoint();
+        
 
-        AimWorldPosition = AimTargetHelper.GetMouseWorldPositionOnPlane(
-            mainCamera,
-            inputHandler.AimScreenPosition,
-            planePoint
-        );
+        if (AimTargetHelper.TryGetMouseWorldHit(mainCamera, inputHandler.AimScreenPosition, hitBuffer, aimLayer, out RaycastHit closestHit))
+        {
+            AimWorldPosition = closestHit.point;
+        }
+        else
+        {
+            Vector3 planePoint = GetAimPlanePoint();
+
+            AimWorldPosition = AimTargetHelper.GetMouseWorldPositionOnPlane(
+                mainCamera,
+                inputHandler.AimScreenPosition,
+                planePoint
+            );
+        }
 
         Vector3 horizontalVector = AimTargetHelper.GetHorizontalDistance(transform.position, AimWorldPosition);
         AimDistance = horizontalVector.magnitude;

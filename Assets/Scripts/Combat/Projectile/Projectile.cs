@@ -1,0 +1,178 @@
+using UnityEngine;
+
+public class Projectile : MonoBehaviour
+{
+    private WeaponDefinition weapon;
+    private Vector3 direction;
+    // 발사 위치와 발사 시점의 마우스 커서 위치 사이의 거리
+    private float aimDistance;
+    private float traveledDistance;
+    private float maxTravelDistance;
+    private GameObject attacker;
+    private LayerMask hitLayerMask;
+
+    private Vector3 currentPosition;
+    private Vector3 nextPosition;
+
+    private readonly RaycastHit[] hitBuffer = new RaycastHit[8];
+
+
+    public void Initialize(WeaponDefinition weapon, Vector3 startPos, Vector3 fireDirection, float aimDistance, GameObject attacker, LayerMask hitMask)
+    {
+        this.weapon = weapon;
+        this.direction = fireDirection.normalized;
+        this.aimDistance = aimDistance;
+        this.traveledDistance = 0f;
+        this.maxTravelDistance = Mathf.Min(aimDistance, weapon.minDamageRange);
+        this.attacker = attacker;
+        this.hitLayerMask = hitMask;
+        transform.position = startPos;
+        gameObject.SetActive(true);
+    }
+
+    private void Update()
+    {
+        if (weapon == null)
+        {
+            RequestReturn();
+            return;
+        }
+
+        currentPosition = transform.position;
+        float moveDistance = weapon.projectileSpeed * Time.deltaTime;
+
+        // 다음 프레임에서 이동할 거리가 최대 이동 거리보다 크면, 최대 이동 거리까지만 이동하도록 한다.
+        float remainingDistance = maxTravelDistance - traveledDistance;
+
+        // 이미 최대 이동 거리를 초과한 경우, 반환 요청을 한다.
+        if (remainingDistance <= 0f)
+        {
+            RequestReturn();
+            return;
+        }
+
+        moveDistance = Mathf.Min(moveDistance, remainingDistance);
+
+        nextPosition = currentPosition + direction * moveDistance;
+
+        // 현재 위치와 다음 프레임 위치 사이에 충돌이 있는지 확인한다.
+        int hitCount = Physics.SphereCastNonAlloc(
+            currentPosition,
+            weapon.projectileRadius,
+            direction,
+            hitBuffer,
+            moveDistance,
+            hitLayerMask,
+            QueryTriggerInteraction.Collide
+        );
+
+        if (TryGetClosestHit(hitCount, out RaycastHit closestHit))
+        {
+            HandleHit(closestHit);
+            return;
+        }
+
+        // 충돌이 없으면 이동
+        transform.position = nextPosition;
+        traveledDistance += moveDistance;
+    }
+
+    private bool TryGetClosestHit(int hitCount, out RaycastHit closestHit)
+    {
+        if (hitCount <= 0)
+        {
+            closestHit = default;
+            return false;
+        }
+
+        closestHit = default;
+        float closestDistance = float.MaxValue;
+        bool hasHit = false;
+        for (int i = 0; i < hitCount; i++)
+        {
+            RaycastHit hit = hitBuffer[i];
+
+            if (hit.collider == null)
+                continue;
+
+            if (attacker != null && hit.collider.transform.IsChildOf(attacker.transform))
+                continue;
+            float distance = hit.distance;
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestHit = hit;
+                hasHit = true;
+            }
+        }
+        return hasHit;
+    }
+
+    private void HandleHit(RaycastHit hit)
+    {
+        // 1. 충돌 지점으로 투사체의 위치를 이동시킨다.
+        transform.position = hit.point;
+
+        // 2. 충돌한 오브젝트가 IDamageable을 갖고 있는지 확인한다.
+        IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
+
+        if (damageable == null)
+        {
+            RequestReturn();
+            return;
+        }
+
+        HitPart hitPart = ResolveHitPart(hit.collider);
+
+        DamageInfo damageInfo = BuildDamageInfo(hit, hitPart);
+
+        if (damageInfo.incomingDamage > 0f)
+        {
+            damageable.TakeDamage(damageInfo);
+        }
+
+        RequestReturn();
+    }
+
+    // 오브젝트 풀링으로 반환하는 메서드
+    private void RequestReturn()
+    {
+        gameObject.SetActive(false);
+    }
+
+    // 충돌체로부터 히트 파트를 얻어오는 메서드
+    private HitPart ResolveHitPart(Collider hitCollider)
+    {
+        IHitPartProvider hitPartProvider = hitCollider.GetComponentInParent<IHitPartProvider>();
+
+        // IHitPartProvider가 존재하면 HitPart를 반환하고, 존재하지 않으면 HitPart.Body를 반환한다.
+        // 부서질 수 있는 오브젝트의 경우, 일괄적으로 HitPart.Body를 반환하여 데미지를 적용하도록 할 수 있도록 한다.
+        if (hitPartProvider == null)
+            return HitPart.Body;
+
+        HitPart hitPart = hitPartProvider.GetHitPart(hitCollider);
+
+        return hitPart == HitPart.None ? HitPart.Body : hitPart;
+    }
+
+    private DamageInfo BuildDamageInfo(RaycastHit hit, HitPart hitPart)
+    {
+        float rangeMultiplier = weapon.GetRangeMultiplier(aimDistance);
+        float hitPartMultiplier = weapon.GetHitPartMultiplier(hitPart);
+        float incomingDamage = weapon.baseDamage * rangeMultiplier * hitPartMultiplier;
+
+        return new DamageInfo
+        {
+            weaponId = weapon.weaponId,
+            incomingDamage = incomingDamage,
+            aimDistance = aimDistance,
+            hitPoint = hit.point,
+            hitDirection = direction,
+            hitPart = hitPart,
+            attacker = attacker,
+            baseDamage = weapon.baseDamage,
+            rangeMultiplier = rangeMultiplier,
+            hitPartMultiplier = hitPartMultiplier
+        };
+    }
+}

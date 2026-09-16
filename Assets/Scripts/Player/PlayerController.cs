@@ -278,7 +278,7 @@ public class PlayerController : MonoBehaviour
 
     private void RotateCharacter(Vector3 moveDirection)
     {
-        if (_inputHandler.IsAimHeld)
+        if (_inputHandler.IsAimHeld || _inputHandler.IsAttackHeld)
         {
             if (aimController == null)
             {

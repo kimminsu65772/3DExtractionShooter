@@ -15,7 +15,7 @@ public enum HitPart
     Body
 }
 
-public enum  Weapontype
+public enum  WeaponType
 {
     None,
     Melee,
