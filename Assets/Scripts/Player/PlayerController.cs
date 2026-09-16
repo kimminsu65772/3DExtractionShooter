@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundSnapDistance = 0.2f;
 
     [Header("플레이어 이동 속도 설정")]
+    [SerializeField] private float aimMoveSpeed = 3f;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float sprintSpeed = 8f;
     [SerializeField] private float gravity = -9.81f;
@@ -84,11 +85,22 @@ public class PlayerController : MonoBehaviour
 
         if (!hasMoveInput)
         {
+            if (_inputHandler.IsAimHeld)
+            {
+                playerLocomotionState = PlayerLocomotionState.AimIdle;
+                return;
+            }
             playerLocomotionState = PlayerLocomotionState.Idle;
             return;
         }
         else
         {
+            if (_inputHandler.IsAimHeld)
+            {
+                playerLocomotionState = PlayerLocomotionState.AimMove;
+                return;
+            }
+
             if (_inputHandler.IsSprintHeld)
             {
                 playerLocomotionState = PlayerLocomotionState.Sprint;
@@ -124,11 +136,18 @@ public class PlayerController : MonoBehaviour
         switch (playerLocomotionState)
         {
             case PlayerLocomotionState.Idle:
+            case PlayerLocomotionState.AimIdle:
                 return 0f;
+
             case PlayerLocomotionState.Move:
                 return moveSpeed;
+
             case PlayerLocomotionState.Sprint:
                 return sprintSpeed;
+
+            case PlayerLocomotionState.AimMove:
+                return aimMoveSpeed;
+
             default:
                 return 0f;
         }

@@ -4,4 +4,6 @@ public enum PlayerLocomotionState
     Idle,
     Move,
     Sprint,
+    AimIdle,
+    AimMove,
 }

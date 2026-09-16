@@ -274,14 +274,14 @@ MonoBehaviour:
   _inputHandler: {fileID: 544462928}
   aimController: {fileID: 544462935}
   yaw: 45
-  pitch: 45
-  normalDistance: 15
-  targetOffset: {x: 0, y: 1.2, z: 0}
-  aimDistance: 15
-  aimOffsetDistance: 2
+  pitch: 60
+  normalDistance: 20
+  targetOffset: {x: 0, y: 1, z: 0}
+  aimDistance: 20
+  aimOffsetDistance: 5
   aimMaxWorldDistance: 13
-  smoothTime: 0.15
-  aimOffsetSmoothTime: 0.08
+  smoothTime: 0.2
+  aimOffsetSmoothTime: 0.2
 --- !u!1 &400731121
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,6 +686,7 @@ MonoBehaviour:
   groundCheckRadius: 0.25
   groundCheckDistance: 0.4
   groundSnapDistance: 0.2
+  aimMoveSpeed: 3
   moveSpeed: 5
   sprintSpeed: 8
   gravity: -9.81
