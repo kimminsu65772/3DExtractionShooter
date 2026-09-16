@@ -8,9 +8,16 @@ public enum PlayerLocomotionState
     AimMove,
 }
 
-public enum  HitPart
+public enum HitPart
 {
     None,
     Head,
     Body
+}
+
+public enum  Weapontype
+{
+    None,
+    Melee,
+    Ranged
 }
