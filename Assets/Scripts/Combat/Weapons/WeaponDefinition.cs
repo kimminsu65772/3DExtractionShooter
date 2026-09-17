@@ -4,20 +4,34 @@ using System;
 [Serializable]
 public class WeaponDefinition
 {
-    [Header("¹«±â ±âº» Á¤º¸")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½âº» ï¿½ï¿½ï¿½ï¿½")]
     public int weaponId;
     public string displayName;
     public WeaponType weaponType;
 
-    [Header("¿¬»ç ¼Óµµ")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½")]
     public float fireRate;
 
-    [Header("µ¥¹ÌÁö ºÎºĞ")]
+    [Header("ë°˜ë™")]
+    public float verticalRecoilPerShot;
+    public float horizontalRecoilPerShot;
+    public float maxRecoilOffset;
+    public float recoilRecoverySpeed;
+
+    [Header("íƒ„í¼ì§")]
+    public float baseSpreadAngle;
+    public float maxSpreadAngle;
+    public float spreadIncreasePerShot;
+    public float spreadRecoverySpeed;
+    public float aimSpreadMultiplier;
+    public float moveSpreadMultiplier;
+
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½")]
     public float baseDamage;
     public float headMultiplier = 2f;
     public float bodyMultiplier = 1f;
 
-    [Header("»ç°Å¸®")]
+    [Header("ï¿½ï¿½Å¸ï¿½")]
     public float optimalRange;
     public float effectiveRange;    
     public float minDamageRange;
@@ -26,13 +40,13 @@ public class WeaponDefinition
     public float effectiveRangeMultiplier = 0.55f;
     public float minDamageMultiplier = 0.25f;
 
-    [Header("Åõ»çÃ¼")]
+    [Header("ï¿½ï¿½ï¿½ï¿½Ã¼")]
     public float projectileSpeed;
     public float projectileRadius;
     public string projectileKey;
     public int projectilePrewarmSize;
 
-    [Header("ÇÇµå¹é ¸®¼Ò½º")]
+    [Header("ï¿½Çµï¿½ï¿½ ï¿½ï¿½ï¿½Ò½ï¿½")]
     public string muzzleVfxKey;
     public string hitVfxKey;
     public string fireSoundKey;

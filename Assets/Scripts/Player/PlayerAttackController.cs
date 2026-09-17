@@ -6,6 +6,7 @@ public class PlayerAttackController : MonoBehaviour
     [SerializeField] private PlayerInputHandler inputHandler;
     [SerializeField] private PlayerAimController aimController;
     [SerializeField] private PlayerWeaponHolder weaponHolder;
+    [SerializeField] private PlayerRecoilController recoilController;
 
     [Header("투사체 설정")]
     [SerializeField] private Projectile projectilePrefab;
@@ -57,7 +58,30 @@ public class PlayerAttackController : MonoBehaviour
 
         Transform muzzleTransform = weaponHolder.MuzzleTransform;
         Vector3 fireTargetPoint = aimController.AimWorldPosition;
-        Vector3 fireDirection = (fireTargetPoint - muzzleTransform.position).normalized;
+        Vector3 fireVector = fireTargetPoint - muzzleTransform.position;
+
+        if (fireVector.sqrMagnitude < 0.0001f)
+        {
+            LogWarning("발사 방향이 너무 짧습니다.");
+            return;
+        }
+
+        Vector3 fireDirection = fireVector.normalized;
+        float fireDistance = fireVector.magnitude;
+
+        if (recoilController != null)
+        {
+            bool isMoving = inputHandler.MoveInput.sqrMagnitude > 0.0001f;
+
+            fireDirection = recoilController.GetFireDirection(
+                fireDirection,
+                weapon,
+                inputHandler.IsAimHeld,
+                isMoving
+            );
+
+            recoilController.AddRecoil(weapon);
+        }
 
         Projectile projectile = Instantiate(
             projectilePrefab,
@@ -70,7 +94,7 @@ public class PlayerAttackController : MonoBehaviour
             weapon,
             muzzleTransform.position,
             fireDirection,
-            aimController.AimDistance,
+            fireDistance,
             gameObject,
             projectileHitMask
         );
@@ -134,6 +158,11 @@ public class PlayerAttackController : MonoBehaviour
         if (weaponHolder == null)
         {
             weaponHolder = GetComponent<PlayerWeaponHolder>();
+        }
+
+        if (recoilController == null)
+        {
+            recoilController = GetComponent<PlayerRecoilController>();
         }
     }
 
