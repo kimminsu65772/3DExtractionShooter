@@ -25,6 +25,12 @@ public class PlayerAttackController : MonoBehaviour
 
     private void Update()
     {
+
+        if (recoilController != null && inputHandler != null)
+        {
+            recoilController.SetRecoveryBlocked(inputHandler.IsAttackHeld);
+        }
+
         if (inputHandler == null)
             return;
 
@@ -80,7 +86,7 @@ public class PlayerAttackController : MonoBehaviour
                 isMoving
             );
 
-            recoilController.AddRecoil(weapon);
+            recoilController.AddRecoil(weapon, inputHandler.IsAimHeld);
         }
 
         Projectile projectile = Instantiate(

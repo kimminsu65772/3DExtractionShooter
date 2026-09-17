@@ -7,6 +7,7 @@ public class PlayerAimController : MonoBehaviour
     [SerializeField] private PlayerInputHandler inputHandler;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Transform aimPlanePoint; // 만약에 수평을 맞출 기준 트랜스폼이 필요하다면 연결. 따로 설정이 없다면 플레이어의 중심 위치가 기준이 된다.
+    [SerializeField] private PlayerAimCursor aimCursor;
 
     [Header("조준 설정")]
     [SerializeField] private float aimDeadZone = 0.3f;
@@ -18,6 +19,8 @@ public class PlayerAimController : MonoBehaviour
     public Vector3 AimDirection { get; private set; } = Vector3.forward;
     public float AimDistance { get; private set; }
     public bool HasValidAimDirection { get; private set; }
+
+    public Vector2 EffectiveAimScreenPosition { get; private set; }
 
     private void Awake()
     {
@@ -32,6 +35,24 @@ public class PlayerAimController : MonoBehaviour
 
     public void RefreshAim()
     {
+        if (aimCursor != null)
+        {
+            aimCursor.RefreshCursor();
+            EffectiveAimScreenPosition = aimCursor.AimScreenPosition;
+        }
+        else
+        {
+            ResolveReferences();
+            EffectiveAimScreenPosition = inputHandler != null
+                ? inputHandler.AimScreenPosition
+                : Vector2.zero;
+        }
+        
+        RefreshAim(EffectiveAimScreenPosition);
+    }
+
+    public void RefreshAim(Vector2 aimScreenPosition)
+    {
         if (inputHandler == null || mainCamera == null)
         {
             ResolveReferences();
@@ -45,9 +66,7 @@ public class PlayerAimController : MonoBehaviour
             return;
         }
 
-        
-
-        if (AimTargetHelper.TryGetMouseWorldHit(mainCamera, inputHandler.AimScreenPosition, hitBuffer, aimLayer, out RaycastHit closestHit))
+        if (AimTargetHelper.TryGetMouseWorldHit(mainCamera, aimScreenPosition, hitBuffer, aimLayer, out RaycastHit closestHit))
         {
             AimWorldPosition = closestHit.point;
         }
@@ -57,7 +76,7 @@ public class PlayerAimController : MonoBehaviour
 
             AimWorldPosition = AimTargetHelper.GetMouseWorldPositionOnPlane(
                 mainCamera,
-                inputHandler.AimScreenPosition,
+                aimScreenPosition,
                 planePoint
             );
         }
@@ -85,6 +104,11 @@ public class PlayerAimController : MonoBehaviour
         if (inputHandler == null)
         {
             inputHandler = GetComponent<PlayerInputHandler>();
+        }
+
+        if (aimCursor == null)
+        {
+            aimCursor = GetComponent<PlayerAimCursor>();
         }
 
         if (mainCamera == null)

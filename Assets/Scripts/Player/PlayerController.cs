@@ -4,13 +4,13 @@ public class PlayerController : MonoBehaviour
 {
     private const float MoveInputThreshold = 0.01f;
 
-    [Header("ÂüÁ¶ ¼³Á¤")]
+    [Header("ì°¸ì¡° ì„¤ì •")]
     [SerializeField] private PlayerInputHandler _inputHandler;
     [SerializeField] private PlayerAimController aimController;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private Transform cameraTransform;
 
-    [Header("¹Ù´Ú ÆÇÁ¤ ¼³Á¤")]
+    [Header("ë°”ë‹¥ íŒì • ì„¤ì •")]
     [SerializeField] private Transform groundChecker;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float checkStartOffset = 0.1f;
@@ -18,17 +18,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.4f;
     [SerializeField] private float groundSnapDistance = 0.2f;
 
-    [Header("ÇÃ·¹ÀÌ¾î ÀÌµ¿ ¼Óµµ ¼³Á¤")]
+    [Header("í”Œë ˆì´ì–´ ì´ë™ ì†ë„ ì„¤ì •")]
     [SerializeField] private float aimMoveSpeed = 3f;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float sprintSpeed = 8f;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float fallMultiplier = 2f;
 
-    [Header("ÇÃ·¹ÀÌ¾î È¸Àü ¼³Á¤")]
+    [Header("í”Œë ˆì´ì–´ íšŒì „ ì„¤ì •")]
     [SerializeField] private float rotationSpeed = 12f;
 
-    [Header("ÇÃ·¹ÀÌ¾î »óÅÂ º¯È­ È®ÀÎ")]
+    [Header("í”Œë ˆì´ì–´ ìƒíƒœ ë³€í™” í™•ì¸")]
     [SerializeField] private float currentMoveSpeed;
     [SerializeField] private float _verticalVelocity;
     [SerializeField] private PlayerLocomotionState playerLocomotionState = PlayerLocomotionState.None;
@@ -52,14 +52,14 @@ public class PlayerController : MonoBehaviour
     {
         if (_inputHandler == null)
         {
-            Debug.LogError("ÀÎÇ² ÇÚµé·¯ÀÇ ÂüÁ¶ ¼³Á¤ÀÌ ¿Ï·áµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogError("ì¸í’‹ í•¸ë“¤ëŸ¬ì˜ ì°¸ì¡° ì„¤ì •ì´ ì™„ë£Œë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             return;
         }
             
 
         if (characterController == null)
         {
-            Debug.LogError("Ä³¸¯ÅÍ ÄÁÆ®·Ñ·¯ÀÇ ÂüÁ¶ ¼³Á¤ÀÌ ¿Ï·áµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogError("ìºë¦­í„° ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ì°¸ì¡° ì„¤ì •ì´ ì™„ë£Œë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -121,8 +121,8 @@ public class PlayerController : MonoBehaviour
 
         if (!hasMoveInput) return moveDirection;
 
-        // Vector3.ProjectOnPlane¸¦ »ç¿ëÇÏ¿© Ä«¸Ş¶óÀÇ forward¿Í right º¤ÅÍ¸¦ yÃà(¼öÁ÷ ¹æÇâ)À¸·Î Åõ¿µÇÏ¿©
-        // Æò¸é»ó¿¡¼­ÀÇ ÀÌµ¿ ¹æÇâÀ» °è»êÇÑ´Ù.
+        // Vector3.ProjectOnPlaneë¥¼ ì‚¬ìš©í•˜ì—¬ ì¹´ë©”ë¼ì˜ forwardì™€ right ë²¡í„°ë¥¼ yì¶•(ìˆ˜ì§ ë°©í–¥)ìœ¼ë¡œ íˆ¬ì˜í•˜ì—¬
+        // í‰ë©´ìƒì—ì„œì˜ ì´ë™ ë°©í–¥ì„ ê³„ì‚°í•œë‹¤.
         Vector3 cameraForward = Vector3.ProjectOnPlane(cameraTransform.forward, Vector3.up).normalized;
         Vector3 cameraRight = Vector3.ProjectOnPlane(cameraTransform.right, Vector3.up).normalized;
         moveDirection = cameraForward * _inputHandler.MoveInput.y + 
@@ -306,10 +306,10 @@ public class PlayerController : MonoBehaviour
 
     private void RotateTowards(Vector3 direction)
     {
-        // yÃà È¸ÀüÀ» ¹æÁöÇÏ±â À§ÇØ yÃà ¼ººĞÀ» 0À¸·Î ¼³Á¤
+        // yì¶• íšŒì „ì„ ë°©ì§€í•˜ê¸° ìœ„í•´ yì¶• ì„±ë¶„ì„ 0ìœ¼ë¡œ ì„¤ì •
         direction.y = 0f;
 
-        // ÀÌµ¿ ÀÔ·ÂÀÌ ¾øÀ» ¶§ È¸ÀüÀ» ¹æÁöÇÏ±â À§ÇØ ÀÌµ¿ ÀÔ·ÂÀÇ Å©±â¸¦ È®ÀÎÇÑ´Ù.
+        // ì´ë™ ì…ë ¥ì´ ì—†ì„ ë•Œ íšŒì „ì„ ë°©ì§€í•˜ê¸° ìœ„í•´ ì´ë™ ì…ë ¥ì˜ í¬ê¸°ë¥¼ í™•ì¸í•œë‹¤.
         if (direction.sqrMagnitude < MoveInputThreshold * MoveInputThreshold)
         {
             return;

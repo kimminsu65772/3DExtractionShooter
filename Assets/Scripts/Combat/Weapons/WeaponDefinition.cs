@@ -4,12 +4,12 @@ using System;
 [Serializable]
 public class WeaponDefinition
 {
-    [Header("���� �⺻ ����")]
+    [Header("총기 기본 설정")]
     public int weaponId;
     public string displayName;
     public WeaponType weaponType;
 
-    [Header("���� �ӵ�")]
+    [Header("연사 속도")]
     public float fireRate;
 
     [Header("반동")]
@@ -17,6 +17,7 @@ public class WeaponDefinition
     public float horizontalRecoilPerShot;
     public float maxRecoilOffset;
     public float recoilRecoverySpeed;
+    public float aimRecoilMultiplier;
 
     [Header("탄퍼짐")]
     public float baseSpreadAngle;
@@ -26,12 +27,12 @@ public class WeaponDefinition
     public float aimSpreadMultiplier;
     public float moveSpreadMultiplier;
 
-    [Header("������ �κ�")]
+    [Header("기본 스펙")]
     public float baseDamage;
     public float headMultiplier = 2f;
     public float bodyMultiplier = 1f;
 
-    [Header("��Ÿ�")]
+    [Header("유효 사거리")]
     public float optimalRange;
     public float effectiveRange;    
     public float minDamageRange;
@@ -40,13 +41,13 @@ public class WeaponDefinition
     public float effectiveRangeMultiplier = 0.55f;
     public float minDamageMultiplier = 0.25f;
 
-    [Header("����ü")]
+    [Header("탄환 설정")]
     public float projectileSpeed;
     public float projectileRadius;
     public string projectileKey;
     public int projectilePrewarmSize;
 
-    [Header("�ǵ�� ���ҽ�")]
+    [Header("피드백 관련 설정")]
     public string muzzleVfxKey;
     public string hitVfxKey;
     public string fireSoundKey;

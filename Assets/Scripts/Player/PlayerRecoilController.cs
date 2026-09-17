@@ -3,12 +3,23 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class PlayerRecoilController : MonoBehaviour
 {
+    [SerializeField] private float recoilScreenMultiplier = 12f;
+
     private WeaponDefinition currentWeapon;
     private Vector2 currentRecoilOffset;
     private float currentSpreadAngle;
+    private bool isRecoveryBlocked;
 
     public Vector2 CurrentRecoilOffset => currentRecoilOffset;
     public float CurrentSpreadAngle => currentSpreadAngle;
+
+    public Vector2 CurrentScreenRecoilOffset
+    {
+        get
+        {
+            return new Vector2(currentRecoilOffset.x, currentRecoilOffset.y) * recoilScreenMultiplier;
+        }
+    }
 
     private void Update()
     {
@@ -16,8 +27,8 @@ public class PlayerRecoilController : MonoBehaviour
         RecoverSpread();
     }
 
-    // ¹İµ¿ÀÌ Àû¿ëµÈ ¹ß»ç ¹æÇâÀ» ¹İÈ¯ÇÑ´Ù.
-    // baseDirectionÀº ÇÃ·¹ÀÌ¾î°¡ ¹Ù¶óº¸´Â ¹æÇâÀÌ¸ç, weaponÀº ÇöÀç »ç¿ë ÁßÀÎ ¹«±â Á¤ÀÇ, isAimingÀº Á¶ÁØ ¿©ºÎ, isMovingÀº ÀÌµ¿ ¿©ºÎ¸¦ ³ªÅ¸³½´Ù.
+    // ìŠ¤í”„ë ˆë“œê°€ ì ìš©ëœ ë°œì‚¬ ë°©í–¥ì„ ë°˜í™˜í•œë‹¤.
+    // ë°˜ë™ì€ í™”ë©´ ì¡°ì¤€ì  ì˜¤í”„ì…‹ì— ë°˜ì˜í•˜ê³ , ì—¬ê¸°ì„œëŠ” íƒ„í¼ì§ë§Œ ì ìš©í•œë‹¤.
     public Vector3 GetFireDirection(Vector3 baseDirection, WeaponDefinition weapon, bool isAiming, bool isMoving)
     {
         if (weapon == null)
@@ -25,33 +36,32 @@ public class PlayerRecoilController : MonoBehaviour
 
         currentWeapon = weapon;
 
-        Vector3 recoilDirection = ApplyRecoil(baseDirection.normalized);
         float effectiveSpreadAngle = GetEffectiveSpreadAngle(weapon, isAiming, isMoving);
 
-        return ApplySpread(recoilDirection, effectiveSpreadAngle);
+        return ApplySpread(baseDirection.normalized, effectiveSpreadAngle);
     }
 
-    // ¹«±â ¹ß»ç ½Ã ¹İµ¿°ú ½ºÇÁ·¹µå¸¦ Àû¿ëÇÑ´Ù.
-    public void AddRecoil(WeaponDefinition weapon)
+    // ë¬´ê¸° ë°œì‚¬ ì‹œ ë°˜ë™ê³¼ ìŠ¤í”„ë ˆë“œë¥¼ ì ìš©í•œë‹¤.
+    public void AddRecoil(WeaponDefinition weapon, bool isAiming)
     {
         if (weapon == null)
             return;
 
         currentWeapon = weapon;
 
-        // ¹«±âÀÇ ¼öÁ÷ ¹× ¼öÆò ¹İµ¿ °ªÀ» ¹üÀ§ ³»¿¡¼­ ·£´ıÇÏ°Ô Àû¿ëÇÏ¿© ÇöÀç ¹İµ¿ ¿ÀÇÁ¼ÂÀ» ¾÷µ¥ÀÌÆ®ÇÑ´Ù.
-        currentRecoilOffset += new Vector2(
-            Random.Range(-weapon.horizontalRecoilPerShot, weapon.horizontalRecoilPerShot),
-            weapon.verticalRecoilPerShot
+        float recoilMultiplier = GetEffectiveRecoilMultiplier(weapon, isAiming);
+        float horizontalRecoil = Random.Range(-weapon.horizontalRecoilPerShot, weapon.horizontalRecoilPerShot) * recoilMultiplier;
+
+        currentRecoilOffset.x = Mathf.Clamp(
+            currentRecoilOffset.x + horizontalRecoil,
+            -weapon.maxRecoilOffset,
+            weapon.maxRecoilOffset
         );
 
-        // ÇöÀç ¹İµ¿ ¿ÀÇÁ¼ÂÀÌ ¹«±âÀÇ ÃÖ´ë ¹İµ¿ ¿ÀÇÁ¼ÂÀ» ÃÊ°úÇÏÁö ¾Êµµ·Ï Á¦ÇÑÇÑ´Ù.
-        if (weapon.maxRecoilOffset > 0f)
-        {
-            currentRecoilOffset = Vector2.ClampMagnitude(currentRecoilOffset, weapon.maxRecoilOffset);
-        }
+        // yì¶• ë°˜ë™ì—ëŠ” ë³„ë„ì˜ ì œí•œì—†ì´ ì¦ê°€í•˜ë„ë¡ í•œë‹¤.
+        currentRecoilOffset.y += weapon.verticalRecoilPerShot * recoilMultiplier;
 
-        // ÇöÀç ½ºÇÁ·¹µå °¢µµ¸¦ ¹«±âÀÇ ½ºÇÁ·¹µå Áõ°¡·®¸¸Å­ Áõ°¡½ÃÅ°°í, ÃÖ´ë ½ºÇÁ·¹µå °¢µµ¸¦ ÃÊ°úÇÏÁö ¾Êµµ·Ï Á¦ÇÑÇÑ´Ù.
+        // í˜„ì¬ ìŠ¤í”„ë ˆë“œ ê°ë„ë¥¼ ë¬´ê¸°ì˜ ìŠ¤í”„ë ˆë“œ ì¦ê°€ëŸ‰ë§Œí¼ ì¦ê°€ì‹œí‚¤ê³ , ìµœëŒ€ ìŠ¤í”„ë ˆë“œ ê°ë„ë¥¼ ì´ˆê³¼í•˜ì§€ ì•Šë„ë¡ ì œí•œí•œë‹¤.
         currentSpreadAngle += weapon.spreadIncreasePerShot;
 
         if (weapon.maxSpreadAngle > 0f)
@@ -60,10 +70,34 @@ public class PlayerRecoilController : MonoBehaviour
         }
     }
 
-    // ¹İµ¿°ú ½ºÇÁ·¹µå°¡ ½Ã°£ÀÌ Áö³²¿¡ µû¶ó È¸º¹µÇµµ·Ï Ã³¸®ÇÑ´Ù.
+    // ë§ˆìš°ìŠ¤ ì…ë ¥ì´ í˜„ì¬ ë°˜ë™ ë°©í–¥ê³¼ ë°˜ëŒ€ë¼ë©´, ì‹¤ì œ ì¡°ì¤€ ì»¤ì„œë¥¼ ì´ë™ì‹œí‚¤ê¸° ì „ì— ë°˜ë™ ì˜¤í”„ì…‹ì„ ë¨¼ì € ìƒì‡„í•œë‹¤.
+    public Vector2 ConsumeScreenRecoil(Vector2 screenDelta)
+    {
+        if (recoilScreenMultiplier <= 0f)
+            return screenDelta;
+
+        screenDelta.x = ConsumeScreenRecoilAxis(screenDelta.x, ref currentRecoilOffset.x);
+        screenDelta.y = ConsumeScreenRecoilAxis(screenDelta.y, ref currentRecoilOffset.y);
+
+        return screenDelta;
+    }
+
+    public void SetRecoveryBlocked(bool isAttacking)
+    {
+        if (isAttacking)
+        {
+            isRecoveryBlocked = true;
+        }
+        else
+        {
+            isRecoveryBlocked = false;
+        }
+    }
+
+    // ë°˜ë™ê³¼ ìŠ¤í”„ë ˆë“œê°€ ì‹œê°„ì´ ì§€ë‚¨ì— ë”°ë¼ íšŒë³µë˜ë„ë¡ ì²˜ë¦¬í•œë‹¤.
     private void RecoverRecoil()
     {
-        if (currentWeapon == null || currentWeapon.recoilRecoverySpeed <= 0f)
+        if (currentWeapon == null || currentWeapon.recoilRecoverySpeed <= 0f || isRecoveryBlocked)
             return;
 
         currentRecoilOffset = Vector2.MoveTowards(
@@ -75,7 +109,7 @@ public class PlayerRecoilController : MonoBehaviour
 
     private void RecoverSpread()
     {
-        if (currentWeapon == null || currentWeapon.spreadRecoverySpeed <= 0f)
+        if (currentWeapon == null || currentWeapon.spreadRecoverySpeed <= 0f || isRecoveryBlocked)
             return;
 
         currentSpreadAngle = Mathf.MoveTowards(
@@ -85,26 +119,42 @@ public class PlayerRecoilController : MonoBehaviour
         );
     }
 
-    private Vector3 ApplyRecoil(Vector3 baseDirection)
+    private float ConsumeScreenRecoilAxis(float screenDelta, ref float recoilOffsetAxis)
     {
-        if (currentRecoilOffset.sqrMagnitude <= 0f)
-            return baseDirection;
+        if (Mathf.Approximately(screenDelta, 0f) || Mathf.Approximately(recoilOffsetAxis, 0f))
+            return screenDelta;
 
-        // yÃà°ú ¹ß»ç ¹æÇâÀÇ ¿ÜÀûÀ» °è»êÇÏ¿© ¿À¸¥ÂÊ ÃàÀ» ±¸ÇÑ´Ù. ¸¸¾à ¿ÜÀûÀÇ Å©±â°¡ °ÅÀÇ 0ÀÌ¸é, ¿À¸¥ÂÊ ÃàÀ» Vector3.right·Î ¼³Á¤ÇÑ´Ù.
-        Vector3 rightAxis = Vector3.Cross(Vector3.up, baseDirection).normalized;
+        float recoilScreenOffset = recoilOffsetAxis * recoilScreenMultiplier;
 
-        if (rightAxis.sqrMagnitude <= 0.0001f)
-        {
-            rightAxis = Vector3.right;
-        }
+        // í˜„ì¬ ë°˜ë™ê³¼ ê°™ì€ ë°©í–¥ì˜ ë§ˆìš°ìŠ¤ ì…ë ¥ì€ ë°˜ë™ ì œì–´ê°€ ì•„ë‹ˆë¯€ë¡œ ê·¸ëŒ€ë¡œ ì¡°ì¤€ ì»¤ì„œ ì´ë™ì— ì‚¬ìš©í•œë‹¤.
+        if (Mathf.Sign(screenDelta) == Mathf.Sign(recoilScreenOffset))
+            return screenDelta;
 
-        // yÃàÀ» ±âÁØÀ¸·Î ¼öÆò ¹İµ¿À» Àû¿ëÇÑ´Ù.
-        Quaternion yawRotation = Quaternion.AngleAxis(currentRecoilOffset.x, Vector3.up);
+        float deltaMagnitude = Mathf.Abs(screenDelta);
+        float recoilMagnitude = Mathf.Abs(recoilScreenOffset);
+        float consumedMagnitude = Mathf.Min(deltaMagnitude, recoilMagnitude);
+        float consumedDelta = consumedMagnitude * Mathf.Sign(screenDelta);
 
-        // ¿À¸¥ÂÊ ÃàÀ» ±âÁØÀ¸·Î ¼öÁ÷ ¹İµ¿À» Àû¿ëÇÑ´Ù.
-        Quaternion pitchRotation = Quaternion.AngleAxis(-currentRecoilOffset.y, rightAxis);
+        recoilScreenOffset += consumedDelta;
+        recoilOffsetAxis = Mathf.Approximately(recoilScreenOffset, 0f)
+            ? 0f
+            : recoilScreenOffset / recoilScreenMultiplier;
 
-        return (yawRotation * pitchRotation * baseDirection).normalized;
+        if (deltaMagnitude <= consumedMagnitude)
+            return 0f;
+
+        return (deltaMagnitude - consumedMagnitude) * Mathf.Sign(screenDelta);
+    }
+
+    private float GetEffectiveRecoilMultiplier(WeaponDefinition weapon, bool isAiming)
+    {
+        if (!isAiming)
+            return 1f;
+
+        if (weapon.aimRecoilMultiplier <= 0f)
+            return 1f;
+
+        return weapon.aimRecoilMultiplier;
     }
 
     private float GetEffectiveSpreadAngle(WeaponDefinition weapon, bool isAiming, bool isMoving)
@@ -134,7 +184,7 @@ public class PlayerRecoilController : MonoBehaviour
         if (spreadAngle <= 0f)
             return baseDirection;
 
-        // ÀÏÁ¤ ¹üÀ§ ³»¿¡¼­ ½ºÇÁ·¹µå °¢µµ¿¡ µû¶ó ·£´ıÇÑ Á¡À» »ı¼ºÇÑ´Ù.
+        // ì¼ì • ë²”ìœ„ ë‚´ì—ì„œ ìŠ¤í”„ë ˆë“œ ê°ë„ì— ë”°ë¼ ëœë¤í•œ ì ì„ ìƒì„±í•œë‹¤.
         Vector2 randomPoint = Random.insideUnitCircle * spreadAngle;
         Vector3 rightAxis = Vector3.Cross(Vector3.up, baseDirection).normalized;
 
@@ -143,10 +193,11 @@ public class PlayerRecoilController : MonoBehaviour
             rightAxis = Vector3.right;
         }
 
-        // YÃàÀ» ±âÁØÀ¸·Î ¼öÆò ½ºÇÁ·¹µå¸¦ Àû¿ëÇÏ°í, ¿À¸¥ÂÊ ÃàÀ» ±âÁØÀ¸·Î ¼öÁ÷ ½ºÇÁ·¹µå¸¦ Àû¿ëÇÑ´Ù.
+        // Yì¶•ì„ ê¸°ì¤€ìœ¼ë¡œ ìˆ˜í‰ ìŠ¤í”„ë ˆë“œë¥¼ ì ìš©í•˜ê³ , ì˜¤ë¥¸ìª½ ì¶•ì„ ê¸°ì¤€ìœ¼ë¡œ ìˆ˜ì§ ìŠ¤í”„ë ˆë“œë¥¼ ì ìš©í•œë‹¤.
         Quaternion yawRotation = Quaternion.AngleAxis(randomPoint.x, Vector3.up);
         Quaternion pitchRotation = Quaternion.AngleAxis(randomPoint.y, rightAxis);
 
         return (yawRotation * pitchRotation * baseDirection).normalized;
     }
+
 }
