@@ -42,7 +42,7 @@ public class PlayerRecoilController : MonoBehaviour
     }
 
     // 무기 발사 시 반동과 스프레드를 적용한다.
-    public void AddRecoil(WeaponDefinition weapon, bool isAiming)
+    public void AddRecoil(WeaponDefinition weapon, bool isAiming, Vector2 recoilDirection)
     {
         if (weapon == null)
             return;
@@ -52,14 +52,12 @@ public class PlayerRecoilController : MonoBehaviour
         float recoilMultiplier = GetEffectiveRecoilMultiplier(weapon, isAiming);
         float horizontalRecoil = Random.Range(-weapon.horizontalRecoilPerShot, weapon.horizontalRecoilPerShot) * recoilMultiplier;
 
-        currentRecoilOffset.x = Mathf.Clamp(
-            currentRecoilOffset.x + horizontalRecoil,
-            -weapon.maxRecoilOffset,
-            weapon.maxRecoilOffset
-        );
+        Vector2 forward = recoilDirection.normalized;
+        Vector2 right = new Vector2(forward.y, -forward.x);
 
-        // y축 반동에는 별도의 제한없이 증가하도록 한다.
-        currentRecoilOffset.y += weapon.verticalRecoilPerShot * recoilMultiplier;
+        float verticalRecoil = weapon.verticalRecoilPerShot * recoilMultiplier;
+
+        currentRecoilOffset += forward * verticalRecoil + right * horizontalRecoil;
 
         // 현재 스프레드 각도를 무기의 스프레드 증가량만큼 증가시키고, 최대 스프레드 각도를 초과하지 않도록 제한한다.
         currentSpreadAngle += weapon.spreadIncreasePerShot;

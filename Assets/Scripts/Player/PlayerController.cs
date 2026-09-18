@@ -164,7 +164,7 @@ public class PlayerController : MonoBehaviour
 
         if (slopeProbe.hasGround && moveDirection.sqrMagnitude > 0.001f)
         {
-            moveDirection = Vector3.ProjectOnPlane(moveDirection, slopeProbe.groundNormal);
+            moveDirection = Vector3.ProjectOnPlane(moveDirection, slopeProbe.groundNormal.normalized);
         }
 
         UpdateVerticalVelocity();
@@ -195,7 +195,7 @@ public class PlayerController : MonoBehaviour
             _verticalVelocity += gravity * fallMultiplier * Time.deltaTime;
         }
     }
-    private bool TryProbeGround(Vector3 origin, float distance, bool isRay, float radius, out GroundProbeState result)
+    private bool TryProbeGround(Vector3 origin, float distance, bool isRay,  out GroundProbeState result, float radius = 0f)
     {
         result = new GroundProbeState
         {
@@ -258,14 +258,14 @@ public class PlayerController : MonoBehaviour
         Vector3 centerPos = groundChecker.position + Vector3.up * checkStartOffset;
         Vector3 forwardPos = centerPos + moveDirection.normalized * forwardProbeDistance;
 
-        TryProbeGround(centerPos, groundCheckDistance, false, groundCheckRadius, out GroundProbeState slopeProbeResult);
+        TryProbeGround(centerPos, groundCheckDistance, false, out GroundProbeState slopeProbeResult, groundCheckRadius);
         slopeProbe = slopeProbeResult;
-        TryProbeGround(centerPos, groundCheckDistance, true, groundCheckRadius, out GroundProbeState centerProbeResult);
+        TryProbeGround(centerPos, groundCheckDistance, true, out GroundProbeState centerProbeResult);
         centerProbe = centerProbeResult;
 
-        if (moveDirection.sqrMagnitude > 0.01f)
+        if (moveDirection.sqrMagnitude > 0.0001f)
         {
-            TryProbeGround(forwardPos, groundCheckDistance, true, groundCheckDistance, out GroundProbeState forwardProbeResult);
+            TryProbeGround(forwardPos, groundCheckDistance, true, out GroundProbeState forwardProbeResult);
             forwardProbe = forwardProbeResult;
         }
         else
@@ -278,35 +278,40 @@ public class PlayerController : MonoBehaviour
 
     private void RotateCharacter(Vector3 moveDirection)
     {
-        if (_inputHandler.IsAimHeld || _inputHandler.IsAttackHeld)
+        bool shouldFaceMoveDirection =
+            playerLocomotionState == PlayerLocomotionState.Sprint &&
+            !_inputHandler.IsAimHeld &&
+            !_inputHandler.IsAttackHeld;
+
+        if (shouldFaceMoveDirection)
         {
-            if (aimController == null)
-            {
-                ResolveAimController();
-            }
-
-            if (aimController == null)
-            {
-                return;
-            }
-
-            aimController.RefreshAim();
-
-            if (!aimController.HasValidAimDirection)
-            {
-                return;
-            }
-
-            RotateTowards(aimController.AimDirection);
+            RotateTowards(moveDirection);
             return;
         }
 
-        RotateTowards(moveDirection);
+        if (aimController == null)
+        {
+            ResolveAimController();
+        }
+
+        if (aimController == null)
+        {
+            return;
+        }
+
+        aimController.RefreshAim();
+
+        if (!aimController.HasValidAimDirection)
+        {
+            return;
+        }
+
+        RotateTowards(aimController.AimDirection);
     }
 
     private void RotateTowards(Vector3 direction)
     {
-        // y축 회전을 방지하기 위해 y축 성분을 0으로 설정
+        // y축 기준으로 위 아래 방향을 제거하여 수직 회전을 방지한다.
         direction.y = 0f;
 
         // 이동 입력이 없을 때 회전을 방지하기 위해 이동 입력의 크기를 확인한다.

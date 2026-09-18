@@ -86,7 +86,9 @@ public class PlayerAttackController : MonoBehaviour
                 isMoving
             );
 
-            recoilController.AddRecoil(weapon, inputHandler.IsAimHeld);
+            Vector2 screenDirection = aimController.GetScreenAimDirection(muzzleTransform.position);
+
+            recoilController.AddRecoil(weapon, inputHandler.IsAimHeld, screenDirection);
         }
 
         Projectile projectile = Instantiate(

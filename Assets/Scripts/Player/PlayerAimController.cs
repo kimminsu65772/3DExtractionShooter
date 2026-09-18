@@ -19,7 +19,6 @@ public class PlayerAimController : MonoBehaviour
     public Vector3 AimDirection { get; private set; } = Vector3.forward;
     public float AimDistance { get; private set; }
     public bool HasValidAimDirection { get; private set; }
-
     public Vector2 EffectiveAimScreenPosition { get; private set; }
 
     private void Awake()
@@ -31,6 +30,13 @@ public class PlayerAimController : MonoBehaviour
     private void Update()
     {
         RefreshAim();
+    }
+
+    public Vector2 GetScreenAimDirection(Vector3 worldOrigin)
+    {
+        Vector2 originScreenPos = mainCamera.WorldToScreenPoint(worldOrigin);
+
+        return (EffectiveAimScreenPosition - originScreenPos).normalized;
     }
 
     public void RefreshAim()
@@ -51,7 +57,7 @@ public class PlayerAimController : MonoBehaviour
         RefreshAim(EffectiveAimScreenPosition);
     }
 
-    public void RefreshAim(Vector2 aimScreenPosition)
+    private void RefreshAim(Vector2 aimScreenPosition)
     {
         if (inputHandler == null || mainCamera == null)
         {
