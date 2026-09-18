@@ -44,13 +44,13 @@ public class WeaponDefinition
     [Header("탄환 설정")]
     public float projectileSpeed;
     public float projectileRadius;
-    public string projectileKey;
+    public string projectileAddress;
     public int projectilePrewarmSize;
 
     [Header("피드백 관련 설정")]
-    public string muzzleVfxKey;
-    public string hitVfxKey;
-    public string fireSoundKey;
+    public string muzzleVfxAddress;
+    public string hitVfxAddress;
+    public string fireSoundAddress;
 
     public float GetRangeMultiplier(float aimDistance)
     {
@@ -91,6 +91,6 @@ public class WeaponDefinition
                projectileSpeed > 0f &&
                projectileRadius > 0f &&
                minDamageRange > 0f &&
-               !string.IsNullOrWhiteSpace(projectileKey);
+               !string.IsNullOrWhiteSpace(projectileAddress);
     }
 }
