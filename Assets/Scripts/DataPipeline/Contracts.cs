@@ -22,12 +22,17 @@ namespace ExtractionShooter.DataPipeline
 
     public sealed class DataReport
     {
-        public bool HasErrors => throw new NotImplementedException("TODO S01: 누적 오류 여부");
-        public IReadOnlyList<DataIssue> Issues => throw new NotImplementedException("TODO S01: 읽기 전용 진단 목록");
+        private readonly List<DataIssue> _issues = new List<DataIssue>();
+
+        public bool HasErrors => _issues.Count > 0;
+        public IReadOnlyList<DataIssue> Issues => _issues;
         public void Add(DataIssue issue)
         {
             // TODO S01: 원본 위치와 오류를 보존. 보고 개수/문자 길이 상한을 정한다.
-            throw new NotImplementedException();
+            if (issue == null)
+                return;
+
+            _issues.Add(issue);
         }
     }
 
