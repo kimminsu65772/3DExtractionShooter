@@ -8,12 +8,46 @@ namespace ExtractionShooter.DataPipeline
 {
     public sealed class AssetLease<T> : IDisposable where T : UnityEngine.Object
     {
-        public T Asset => throw new NotImplementedException("TODO S06: 유효한 동안만 접근");
+        private T asset;
+        private Action release;
+        private bool isDisposed;
+
+        // 외부에서 직접 생성을 제한하면서도 같은 시스템 내에서는 생성할 수 있도록 internal로 제한한다.
+        internal AssetLease(T asset, Action release)
+        {
+            this.asset = asset != null ? asset : throw new ArgumentNullException(nameof(asset));
+            this.release = release ?? throw new ArgumentNullException(nameof(release));
+            isDisposed = false;
+        }
+        public T Asset
+        {
+            get
+            {
+                if (isDisposed)
+                {
+                    throw new ObjectDisposedException(
+                        nameof(AssetLease<T>));
+                }
+
+                return asset;
+            }
+        }
+
+        public bool IsDisposed => isDisposed;
+
         public void Dispose()
         {
-            // TODO S06: store의 소유 수를 정확히 한 번 감소. Unity 메인 스레드 계약.
-            // TODO: Dispose 후 Asset 접근 거부. 각 Acquire마다 독립 lease.
-            throw new NotImplementedException();
+            if (isDisposed) return;
+
+            // 중복 반환을 방지하기 위해서 먼저 상태를 폐기 상태로 전환한다.
+            isDisposed = true;
+
+            Action releaseCallback = release;
+
+            release = null;
+            asset = null;
+
+            releaseCallback.Invoke();
         }
     }
 }

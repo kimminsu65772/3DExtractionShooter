@@ -8,21 +8,52 @@ namespace ExtractionShooter.DataPipeline
 {
     public sealed class RuntimeAssetRegistry
     {
+        private readonly Dictionary<(string Address, AssetKind Kind), int> IdByAsset = new();
+        private readonly Dictionary<int, (string Address, AssetKind Kind)> assetById = new();
+
+        private int nextId = 1; // 0은 선택 리소스 없음.
+        private bool isFrozen;
+
         public int Register(string address, AssetKind kind)
         {
-            // TODO S04: (정확한 주소,종류)→연속 정수. 0은 선택 리소스 없음.
-            // TODO: string.GetHashCode를 유일/영구 ID로 쓰지 않는다. 중복은 기존 ID 반환.
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(address))
+                return 0;
+
+            if (isFrozen)
+            {
+                throw new InvalidOperationException(
+                    "고정된 RuntimeAssetRegistry에는 새로운 리소스를 등록할 수 없습니다.");
+            }
+
+            var key = (Address: address, Kind: kind);
+
+            if (IdByAsset.TryGetValue(key, out var existingId))
+            {
+                return existingId;
+            }
+
+            int newId = nextId++;
+            IdByAsset.Add(key, newId);
+            assetById.Add(newId, key);
+
+            return newId;
         }
+
         public bool TryResolve(int id, out string address, out AssetKind kind)
         {
-            // TODO S04: 세션 내 역방향 조회. Freeze 후 신규 등록 금지.
-            throw new NotImplementedException();
+            if (assetById.TryGetValue(id, out var asset))
+            {
+                address = asset.Address;
+                kind = asset.Kind;
+                return true;
+            }
+            address = string.Empty;
+            kind = default;
+            return false;
         }
         public void Freeze()
         {
-            // TODO S04: 세션 동안 ID 매핑을 고정.
-            throw new NotImplementedException();
+            isFrozen = true;
         }
     }
 }
