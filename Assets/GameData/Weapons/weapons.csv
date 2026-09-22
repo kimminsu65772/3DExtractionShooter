@@ -1,0 +1,4 @@
+weaponId,displayName,weaponType,fireRate,verticalRecoilPerShot,horizontalRecoilPerShot,maxRecoilOffset,recoilRecoverySpeed,aimRecoilMultiplier,baseSpreadAngle,maxSpreadAngle,spreadIncreasePerShot,spreadRecoverySpeed,aimSpreadMultiplier,moveSpreadMultiplier,baseDamage,headMultiplier,bodyMultiplier,optimalRange,effectiveRange,minDamageRange,optimalRangeMultiplier,effectiveRangeMultiplier,minDamageMultiplier,projectileSpeed,projectileRadius,projectileAddress,projectilePrewarmSize,muzzleVfxAddress,hitVfxAddress,fireSoundAddress,weaponViewAddress,weaponViewPrewarmSize
+1001,AK47,Ranged,5,0.65,0.55,4,1.5,0.7,0.3,4,0.35,5,0.5,1.5,47,2,1,15,28,42,1,0.55,0.25,45,0.08,projectiles/bullet,24,,,,weapons/ak47,5
+1002,Pistol,Ranged,2.5,0.35,0.25,2.5,2.2,0.75,0.2,2.2,0.2,6,0.65,1.25,32,2,1,12,22,32,1,0.6,0.3,38,0.06,projectiles/bullet,12,,,,,
+1003,Shotgun,Ranged,1.1,1.1,0.9,5,1.1,0.8,2.5,8,1.4,4,0.75,1.35,12,1.5,1,7,13,20,1,0.55,0.25,32,0.05,projectiles/bullet,40,,,,,

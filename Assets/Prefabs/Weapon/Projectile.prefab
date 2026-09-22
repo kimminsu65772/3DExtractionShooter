@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7690534067213915883}
   - component: {fileID: 1486132092320555762}
+  - component: {fileID: -9053076807221880580}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -45,6 +46,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e36731f6b2cf21246bc7a5cd485df33a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
+--- !u!114 &-9053076807221880580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5955678195501552300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 347bc42f50a452425f3243e610862395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExtractionShooter.DataPipeline.PooledProjectileLifecycle
+  projectile: {fileID: 1486132092320555762}
 --- !u!1 &6221958792407526820
 GameObject:
   m_ObjectHideFlags: 0

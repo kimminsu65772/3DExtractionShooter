@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Combat Pipeline Tests
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Combat Pipeline Tests
+  m_GUID: 38ca555496b173d4684262fac3189dc5
+  m_SerializeEntries:
+  - m_GUID: 727b981beba3b4648b6156d8ed1cb524
+    m_Address: tests/projectile_pool
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b72680c619d37a042ba6f5a2c1065656, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 80979bb4546afba4c8fbbf1813be926d, type: 2}
+    - {fileID: 11400000, guid: 1bdb5a2486dacf44fbb8f28f58884907, type: 2}

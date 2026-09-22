@@ -1,3 +1,4 @@
+using ExtractionShooter.DataPipeline;
 using UnityEngine;
 
 public class PlayerAttackController : MonoBehaviour
@@ -7,14 +8,15 @@ public class PlayerAttackController : MonoBehaviour
     [SerializeField] private PlayerAimController aimController;
     [SerializeField] private PlayerWeaponHolder weaponHolder;
     [SerializeField] private PlayerRecoilController recoilController;
+    [SerializeField] private CombatDataCompositionRoot dataRoot;
 
     [Header("투사체 설정")]
-    [SerializeField] private Projectile projectilePrefab;
-    [SerializeField] private Transform projectileParent;
     [SerializeField] private LayerMask projectileHitMask;
 
     [Header("디버그")]
     [SerializeField] private bool showDebugLog = true;
+
+    private readonly ProjectileSpawnService projectileSpawnService = new ProjectileSpawnService();
 
     private float nextFireTime;
 
@@ -25,19 +27,15 @@ public class PlayerAttackController : MonoBehaviour
 
     private void Update()
     {
-
         if (recoilController != null && inputHandler != null)
         {
             recoilController.SetRecoveryBlocked(inputHandler.IsAttackHeld);
         }
 
-        if (inputHandler == null)
-            return;
-
-        if (!inputHandler.IsAttackHeld)
-            return;
-
-        TryFire();
+        if (inputHandler != null && inputHandler.IsAttackHeld)
+        {
+            TryFire();
+        }
     }
 
     private void TryFire()
@@ -45,26 +43,24 @@ public class PlayerAttackController : MonoBehaviour
         if (!CanFire())
             return;
 
-        WeaponDefinition weapon = weaponHolder.CurrentWeapon;
-
         if (Time.time < nextFireTime)
             return;
+
+        RuntimeWeapon runtimeWeapon = weaponHolder.CurrentWeapon;
+
+        WeaponDefinition definition = runtimeWeapon.Definition;
 
         aimController.RefreshAim();
 
         if (!aimController.HasValidAimDirection)
         {
-            LogWarning("유효한 조준 방향이 없어 발사를 취소합니다.");
+            LogWarning("Cannot fire: Invalid aim direction.");
             return;
         }
 
-        float fireInterval = 1f / weapon.fireRate;
+        Transform muzzle = weaponHolder.MuzzleTransform;
 
-        nextFireTime = Time.time + fireInterval;
-
-        Transform muzzleTransform = weaponHolder.MuzzleTransform;
-        Vector3 fireTargetPoint = aimController.AimWorldPosition;
-        Vector3 fireVector = fireTargetPoint - muzzleTransform.position;
+        Vector3 fireVector = aimController.AimWorldPosition - muzzle.position;
 
         if (fireVector.sqrMagnitude < 0.0001f)
         {
@@ -73,78 +69,113 @@ public class PlayerAttackController : MonoBehaviour
         }
 
         Vector3 fireDirection = fireVector.normalized;
+
         float fireDistance = fireVector.magnitude;
 
         if (recoilController != null)
         {
-            bool isMoving = inputHandler.MoveInput.sqrMagnitude > 0.0001f;
+            bool isMoving = inputHandler.MoveInput.sqrMagnitude > 0.01f;
 
-            fireDirection = recoilController.GetFireDirection(
-                fireDirection,
-                weapon,
-                inputHandler.IsAimHeld,
-                isMoving
-            );
-
-            Vector2 screenDirection = aimController.GetScreenAimDirection(muzzleTransform.position);
-
-            recoilController.AddRecoil(weapon, inputHandler.IsAimHeld, screenDirection);
+            fireDirection = recoilController.GetFireDirection(fireDirection, definition, inputHandler.IsAimHeld, isMoving);
         }
 
-        Projectile projectile = Instantiate(
-            projectilePrefab,
-            muzzleTransform.position,
-            Quaternion.LookRotation(fireDirection, Vector3.up),
-            projectileParent
-        );
-
-        projectile.Initialize(
-            weapon,
-            muzzleTransform.position,
+        bool spawned = projectileSpawnService.TrySpawn(
+            runtimeWeapon,
+            muzzle.position,
             fireDirection,
             fireDistance,
             gameObject,
-            projectileHitMask
-        );
+            projectileHitMask,
+            dataRoot.Pools
+            );
+
+        if (!spawned)
+        {
+            LogWarning("발사 실패: 투사체를 생성할 수 없습니다.");
+            return;
+        }
+
+        nextFireTime = Time.time + 1f / definition.fireRate;
+
+        if (recoilController != null)
+        {
+            Vector2 screenDirection = aimController.GetScreenAimDirection(muzzle.position);
+
+            // 다음 발사에 영향을 줄 반동을 미리 계산한다.
+            recoilController.AddRecoil(definition, inputHandler.IsAimHeld, screenDirection);
+        }
     }
 
     private bool CanFire()
     {
         ResolveReferences();
 
+        if (inputHandler == null)
+        {
+            LogWarning(
+                "PlayerInputHandler 참조가 없습니다."
+            );
+
+            return false;
+        }
+
         if (aimController == null)
         {
-            LogWarning("PlayerAimController 참조가 없습니다.");
+            LogWarning(
+                "PlayerAimController 참조가 없습니다."
+            );
+
             return false;
         }
 
         if (weaponHolder == null)
         {
-            LogWarning("PlayerWeaponHolder 참조가 없습니다.");
+            LogWarning(
+                "PlayerWeaponHolder 참조가 없습니다."
+            );
+
+            return false;
+        }
+
+        if (dataRoot == null ||
+            !dataRoot.isReady ||
+            dataRoot.Pools == null ||
+            !dataRoot.Pools.IsReady)
+        {
+            LogWarning(
+                "전투 데이터 파이프라인이 준비되지 않았습니다."
+            );
+
             return false;
         }
 
         if (!weaponHolder.HasWeapon)
         {
-            LogWarning("발사 가능한 무기 데이터가 없습니다.");
+            LogWarning(
+                "장착된 RuntimeWeapon이 없습니다."
+            );
+
             return false;
         }
 
         if (!weaponHolder.HasMuzzle)
         {
-            LogWarning("무기 총구 위치가 설정되지 않았습니다.");
+            LogWarning(
+                "MuzzleTransform이 없습니다."
+            );
+
             return false;
         }
 
-        if (projectilePrefab == null)
-        {
-            LogWarning("Projectile Prefab이 설정되지 않았습니다.");
-            return false;
-        }
+        WeaponDefinition definition =
+            weaponHolder.CurrentWeapon.Definition;
 
-        if (weaponHolder.CurrentWeapon.fireRate <= 0f)
+        if (definition.fireRate <= 0f)
         {
-            LogWarning("fireRate가 올바르지 않습니다.");
+            LogWarning(
+                "fireRate가 올바르지 않습니다."
+            );
+
             return false;
         }
 
@@ -155,22 +186,26 @@ public class PlayerAttackController : MonoBehaviour
     {
         if (inputHandler == null)
         {
-            inputHandler = GetComponent<PlayerInputHandler>();
+            inputHandler =
+                GetComponent<PlayerInputHandler>();
         }
 
         if (aimController == null)
         {
-            aimController = GetComponent<PlayerAimController>();
+            aimController =
+                GetComponent<PlayerAimController>();
         }
 
         if (weaponHolder == null)
         {
-            weaponHolder = GetComponent<PlayerWeaponHolder>();
+            weaponHolder =
+                GetComponent<PlayerWeaponHolder>();
         }
 
         if (recoilController == null)
         {
-            recoilController = GetComponent<PlayerRecoilController>();
+            recoilController =
+                GetComponent<PlayerRecoilController>();
         }
     }
 

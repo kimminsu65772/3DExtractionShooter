@@ -1,28 +1,116 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ExtractionShooter.DataPipeline
 {
-    // TODO S08: 투사체 프리팹에 연결하고 Projectile이 이 컴포넌트로 반환을 요청하도록 연결한다.
+    // 투사체가 현재 어느 풀에서 대여되었는지를 기억하고,
+    // 사용이 끝났을 때 올바른 세대의 대여권을 소유 풀로 반환한다.
     public sealed class PooledProjectileLifecycle : MonoBehaviour, IPoolLifecycle
     {
+        [SerializeField] private Projectile projectile;
+
+        private TrailRenderer[] trails;
+        private PoolLease currentLease;
+        private IPoolReturner owner;
+        private bool hasLease;
+
+        public Projectile Projectile => projectile;
+
+        private void Awake()
+        {
+            EnsureCache();
+        }
+
+        private void EnsureCache()
+        {
+            if (projectile == null)
+                projectile = GetComponent<Projectile>();
+
+            trails ??= GetComponentsInChildren<TrailRenderer>(includeInactive: true);
+        }
+
         public void OnRent(PoolLease lease, IPoolReturner owner)
         {
-            // TODO S08: 세대와 owner 저장. 컴포넌트/Trail 캐시는 최초 생성 때만 확보.
-            throw new NotImplementedException();
+            // 비활성 부모 아래에서 생성된 프리팹은 Awake보다 OnRent가 먼저 올 수 있다.
+            EnsureCache();
+
+            Debug.Log(
+                $"[Projectile Rent] " +
+                $"Instance: {lease.Instance.GetInstanceID()}, " +
+                $"Generation: {lease.Generation}"
+            );
+
+            if (owner == null)
+                throw new System.ArgumentNullException(nameof(owner));
+
+            if (projectile == null)
+            {
+                throw new MissingComponentException(
+                    $"{nameof(PooledProjectileLifecycle)}에는 {nameof(Projectile)}이 필요합니다.");
+            }
+
+            currentLease = lease;
+            this.owner = owner;
+            hasLease = true;
+
+            // 이전 발사에서 남은 궤적이 새 발사 위치까지 이어지지 않도록 지운다.
+            for (int i = 0; i < trails.Length; i++)
+            {
+                TrailRenderer trail = trails[i];
+
+                if (trail == null)
+                    continue;
+
+                trail.Clear();
+                trail.emitting = true;
+            }
         }
+
         public void OnReturn()
         {
-            // TODO S08: 공격자/무기/거리/방향, 이벤트, TrailRenderer.Clear 등 이전 사용 상태 제거.
-            throw new NotImplementedException();
+            Debug.Log(
+                $"[Projectile Return] " +
+                $"Instance: {currentLease.Instance.GetInstanceID()}, " +
+                $"Generation: {currentLease.Generation}"
+            );
+
+            // 다음 대여가 이전 공격의 무기, 공격자, 방향을 재사용하지 않도록 초기화한다.
+            projectile?.ResetForPool();
+
+            for (int i = 0; i < trails.Length; i++)
+            {
+                TrailRenderer trail = trails[i];
+
+                if (trail == null)
+                    continue;
+
+                trail.emitting = false;
+                trail.Clear();
+            }
+
+            hasLease = false;
+            currentLease = default;
+            owner = null;
         }
+
+
+
         public void ReturnToOwner()
         {
-            // TODO S08: 현재 lease 반환. OnDisable에서 재귀 반환하지 않는다.
-            throw new NotImplementedException();
+            if (!hasLease || owner == null)
+                return;
+
+            // TryReturn 안에서 OnReturn이 동기적으로 호출된다.
+            // 먼저 플래그를 내리면 같은 프레임의 중복 반환 요청도 한 번만 처리된다.
+            PoolLease lease = currentLease;
+            IPoolReturner returner = owner;
+            hasLease = false;
+
+            if (!returner.TryReturn(lease))
+            {
+                // 이미 반환되었거나 이전 세대의 대여권이면 다시 시도하지 않는다.
+                currentLease = default;
+                owner = null;
+            }
         }
     }
 }

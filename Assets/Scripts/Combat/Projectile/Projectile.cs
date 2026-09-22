@@ -1,10 +1,11 @@
+using ExtractionShooter.DataPipeline;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
     private WeaponDefinition weapon;
     private Vector3 direction;
-    // ¹ß»ç À§Ä¡¿Í ¹ß»ç ½ÃÁ¡ÀÇ ¸¶¿ì½º Ä¿¼­ À§Ä¡ »çÀÌÀÇ °Å¸®
+    // ë°œì‚¬ ìœ„ì¹˜ì™€ ë°œì‚¬ ì‹œì ì˜ ë§ˆìš°ìŠ¤ ì»¤ì„œ ìœ„ì¹˜ ì‚¬ì´ì˜ ê±°ë¦¬
     private float aimDistance;
     private float traveledDistance;
     private float maxTravelDistance;
@@ -14,8 +15,14 @@ public class Projectile : MonoBehaviour
     private Vector3 currentPosition;
     private Vector3 nextPosition;
 
+    private PooledProjectileLifecycle pooledLifecycle;
+
     private readonly RaycastHit[] hitBuffer = new RaycastHit[8];
 
+    private void Awake()
+    {
+        TryGetComponent(out pooledLifecycle);
+    }
 
     public void Initialize(WeaponDefinition weapon, Vector3 startPos, Vector3 fireDirection, float aimDistance, GameObject attacker, LayerMask hitMask)
     {
@@ -27,7 +34,22 @@ public class Projectile : MonoBehaviour
         this.attacker = attacker;
         this.hitLayerMask = hitMask;
         transform.position = startPos;
-        gameObject.SetActive(true);
+    }
+
+    // í’€ë¡œ ëŒì•„ê°ˆ ë•Œ ì´ì „ ë°œì‚¬ì˜ ì°¸ì¡°ì™€ ì§„í–‰ ìƒíƒœë¥¼ ì œê±°í•œë‹¤.
+    // GameObject í™œì„±í™”/ë¹„í™œì„±í™”ëŠ” PrefabPoolë§Œ ë‹´ë‹¹í•œë‹¤.
+    public void ResetForPool()
+    {
+        weapon = null;
+        direction = Vector3.zero;
+        aimDistance = 0f;
+        traveledDistance = 0f;
+        maxTravelDistance = 0f;
+        attacker = null;
+        hitLayerMask = default;
+        currentPosition = Vector3.zero;
+        nextPosition = Vector3.zero;
+        System.Array.Clear(hitBuffer, 0, hitBuffer.Length);
     }
 
     private void Update()
@@ -41,10 +63,10 @@ public class Projectile : MonoBehaviour
         currentPosition = transform.position;
         float moveDistance = weapon.projectileSpeed * Time.deltaTime;
 
-        // ´ÙÀ½ ÇÁ·¹ÀÓ¿¡¼­ ÀÌµ¿ÇÒ °Å¸®°¡ ÃÖ´ë ÀÌµ¿ °Å¸®º¸´Ù Å©¸é, ÃÖ´ë ÀÌµ¿ °Å¸®±îÁö¸¸ ÀÌµ¿ÇÏµµ·Ï ÇÑ´Ù.
+        // ë‹¤ìŒ í”„ë ˆì„ì—ì„œ ì´ë™í•  ê±°ë¦¬ê°€ ìµœëŒ€ ì´ë™ ê±°ë¦¬ë³´ë‹¤ í¬ë©´, ìµœëŒ€ ì´ë™ ê±°ë¦¬ê¹Œì§€ë§Œ ì´ë™í•˜ë„ë¡ í•œë‹¤.
         float remainingDistance = maxTravelDistance - traveledDistance;
 
-        // ÀÌ¹Ì ÃÖ´ë ÀÌµ¿ °Å¸®¸¦ ÃÊ°úÇÑ °æ¿ì, ¹İÈ¯ ¿äÃ»À» ÇÑ´Ù.
+        // ì´ë¯¸ ìµœëŒ€ ì´ë™ ê±°ë¦¬ë¥¼ ì´ˆê³¼í•œ ê²½ìš°, ë°˜í™˜ ìš”ì²­ì„ í•œë‹¤.
         if (remainingDistance <= 0f)
         {
             RequestReturn();
@@ -55,7 +77,7 @@ public class Projectile : MonoBehaviour
 
         nextPosition = currentPosition + direction * moveDistance;
 
-        // ÇöÀç À§Ä¡¿Í ´ÙÀ½ ÇÁ·¹ÀÓ À§Ä¡ »çÀÌ¿¡ Ãæµ¹ÀÌ ÀÖ´ÂÁö È®ÀÎÇÑ´Ù.
+        // í˜„ì¬ ìœ„ì¹˜ì™€ ë‹¤ìŒ í”„ë ˆì„ ìœ„ì¹˜ ì‚¬ì´ì— ì¶©ëŒì´ ìˆëŠ”ì§€ í™•ì¸í•œë‹¤.
         int hitCount = Physics.SphereCastNonAlloc(
             currentPosition,
             weapon.projectileRadius,
@@ -72,7 +94,7 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        // Ãæµ¹ÀÌ ¾øÀ¸¸é ÀÌµ¿
+        // ì¶©ëŒì´ ì—†ìœ¼ë©´ ì´ë™
         transform.position = nextPosition;
         traveledDistance += moveDistance;
     }
@@ -110,10 +132,10 @@ public class Projectile : MonoBehaviour
 
     private void HandleHit(RaycastHit hit)
     {
-        // 1. Ãæµ¹ ÁöÁ¡À¸·Î Åõ»çÃ¼ÀÇ À§Ä¡¸¦ ÀÌµ¿½ÃÅ²´Ù.
+        // 1. ì¶©ëŒ ì§€ì ìœ¼ë¡œ íˆ¬ì‚¬ì²´ì˜ ìœ„ì¹˜ë¥¼ ì´ë™ì‹œí‚¨ë‹¤.
         transform.position = hit.point;
 
-        // 2. Ãæµ¹ÇÑ ¿ÀºêÁ§Æ®°¡ IDamageableÀ» °®°í ÀÖ´ÂÁö È®ÀÎÇÑ´Ù.
+        // 2. ì¶©ëŒí•œ ì˜¤ë¸Œì íŠ¸ê°€ IDamageableì„ ê°–ê³  ìˆëŠ”ì§€ í™•ì¸í•œë‹¤.
         IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
 
         if (damageable == null)
@@ -134,19 +156,26 @@ public class Projectile : MonoBehaviour
         RequestReturn();
     }
 
-    // ¿ÀºêÁ§Æ® Ç®¸µÀ¸·Î ¹İÈ¯ÇÏ´Â ¸Ş¼­µå
+    // í’€ì—ì„œ ëŒ€ì—¬í•œ íˆ¬ì‚¬ì²´ë¼ë©´ ì†Œìœ  í’€ì— ë°˜í™˜í•˜ê³ ,
+    // ê¸°ì¡´ Instantiate ê²½ë¡œì—ì„œ ìƒì„±ëœ íˆ¬ì‚¬ì²´ë¼ë©´ ë¹„í™œì„±í™”í•œë‹¤.
     private void RequestReturn()
     {
+        if (pooledLifecycle != null)
+        {
+            pooledLifecycle.ReturnToOwner();
+            return;
+        }
+
         gameObject.SetActive(false);
     }
 
-    // Ãæµ¹Ã¼·ÎºÎÅÍ È÷Æ® ÆÄÆ®¸¦ ¾ò¾î¿À´Â ¸Ş¼­µå
+    // ì¶©ëŒì²´ë¡œë¶€í„° íˆíŠ¸ íŒŒíŠ¸ë¥¼ ì–»ì–´ì˜¤ëŠ” ë©”ì„œë“œ
     private HitPart ResolveHitPart(Collider hitCollider)
     {
         IHitPartProvider hitPartProvider = hitCollider.GetComponentInParent<IHitPartProvider>();
 
-        // IHitPartProvider°¡ Á¸ÀçÇÏ¸é HitPart¸¦ ¹İÈ¯ÇÏ°í, Á¸ÀçÇÏÁö ¾ÊÀ¸¸é HitPart.Body¸¦ ¹İÈ¯ÇÑ´Ù.
-        // ºÎ¼­Áú ¼ö ÀÖ´Â ¿ÀºêÁ§Æ®ÀÇ °æ¿ì, ÀÏ°ıÀûÀ¸·Î HitPart.Body¸¦ ¹İÈ¯ÇÏ¿© µ¥¹ÌÁö¸¦ Àû¿ëÇÏµµ·Ï ÇÒ ¼ö ÀÖµµ·Ï ÇÑ´Ù.
+        // IHitPartProviderê°€ ì¡´ì¬í•˜ë©´ HitPartë¥¼ ë°˜í™˜í•˜ê³ , ì¡´ì¬í•˜ì§€ ì•Šìœ¼ë©´ HitPart.Bodyë¥¼ ë°˜í™˜í•œë‹¤.
+        // ë¶€ì„œì§ˆ ìˆ˜ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ì˜ ê²½ìš°, ì¼ê´„ì ìœ¼ë¡œ HitPart.Bodyë¥¼ ë°˜í™˜í•˜ì—¬ ë°ë¯¸ì§€ë¥¼ ì ìš©í•˜ë„ë¡ í•  ìˆ˜ ìˆë„ë¡ í•œë‹¤.
         if (hitPartProvider == null)
             return HitPart.Body;
 
