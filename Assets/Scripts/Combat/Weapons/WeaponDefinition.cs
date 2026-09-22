@@ -1,5 +1,6 @@
-using UnityEngine;
+using ExtractionShooter.DataPipeline;
 using System;
+using UnityEngine;
 
 [Serializable]
 public class WeaponDefinition
@@ -47,9 +48,21 @@ public class WeaponDefinition
     public string projectileAddress;
     public int projectilePrewarmSize;
 
+    [Header("무기 외형 설정")]
+    [CsvColumn(Optional = true)]
+    public string weaponViewAddress;
+
+    [CsvColumn(Optional = true)]
+    public int weaponViewPrewarmSize;
+
     [Header("피드백 관련 설정")]
+    [CsvColumn(Optional = true)]
     public string muzzleVfxAddress;
+
+    [CsvColumn(Optional = true)]
     public string hitVfxAddress;
+
+    [CsvColumn(Optional = true)]
     public string fireSoundAddress;
 
     public float GetRangeMultiplier(float aimDistance)

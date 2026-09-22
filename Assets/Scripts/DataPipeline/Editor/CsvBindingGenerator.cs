@@ -30,6 +30,7 @@ namespace ExtractionShooter.DataPipeline
 
             StringBuilder builder = new StringBuilder();
             StringBuilder bindingBody = new StringBuilder();
+            StringBuilder requiredHeaders = new StringBuilder();
 
             string modelName = modelType.Name;
 
@@ -103,6 +104,12 @@ namespace ExtractionShooter.DataPipeline
                 string escapedColumnName = columnName.Replace("\"", "\"\"");
 
                 builder.AppendLine($"                @\"{escapedColumnName}\",");
+
+                if (!isOptional)
+                {
+                    requiredHeaders.AppendLine($"                @\"{escapedColumnName}\",");
+                }
+
                 bindingBody.AppendLine("            {");
                 bindingBody.AppendLine($"                bool hasColumn = header.TryGetValue(@\"{escapedColumnName}\", out int columnIndex);");
                 bindingBody.AppendLine("                if (!hasColumn)");
@@ -151,6 +158,12 @@ namespace ExtractionShooter.DataPipeline
                 bindingBody.AppendLine("                }");
                 bindingBody.AppendLine("            }");
             }
+            builder.AppendLine("            };");
+            builder.AppendLine();
+            builder.AppendLine("        public IReadOnlyList<string> RequiredHeaders { get; } =");
+            builder.AppendLine("            new string[]");
+            builder.AppendLine("            {");
+            builder.Append(requiredHeaders.ToString());
             builder.AppendLine("            };");
             builder.AppendLine();
             builder.AppendLine(

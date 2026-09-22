@@ -40,6 +40,41 @@ namespace ExtractionShooter.DataPipeline
                 @"verticalRecoilPerShot",
                 @"weaponId",
                 @"weaponType",
+                @"weaponViewAddress",
+                @"weaponViewPrewarmSize",
+            };
+
+        public IReadOnlyList<string> RequiredHeaders { get; } =
+            new string[]
+            {
+                @"aimRecoilMultiplier",
+                @"aimSpreadMultiplier",
+                @"baseDamage",
+                @"baseSpreadAngle",
+                @"bodyMultiplier",
+                @"displayName",
+                @"effectiveRange",
+                @"effectiveRangeMultiplier",
+                @"fireRate",
+                @"headMultiplier",
+                @"horizontalRecoilPerShot",
+                @"maxRecoilOffset",
+                @"maxSpreadAngle",
+                @"minDamageMultiplier",
+                @"minDamageRange",
+                @"moveSpreadMultiplier",
+                @"optimalRange",
+                @"optimalRangeMultiplier",
+                @"projectileAddress",
+                @"projectilePrewarmSize",
+                @"projectileRadius",
+                @"projectileSpeed",
+                @"recoilRecoverySpeed",
+                @"spreadIncreasePerShot",
+                @"spreadRecoverySpeed",
+                @"verticalRecoilPerShot",
+                @"weaponId",
+                @"weaponType",
             };
 
         public bool TryBind(CsvRecord row, IReadOnlyDictionary<string, int> header, DataReport report, out global::WeaponDefinition result)
@@ -578,13 +613,6 @@ namespace ExtractionShooter.DataPipeline
                 bool hasColumn = header.TryGetValue(@"fireSoundAddress", out int columnIndex);
                 if (!hasColumn)
                 {
-                    isValid = false;
-                    report.Add(new DataIssue
-                    {
-                        Record = row.Number,
-                        Column = @"fireSoundAddress",
-                        Message = "필수 열이 없습니다."
-                    });
                 }
                 else
                 {
@@ -603,14 +631,7 @@ namespace ExtractionShooter.DataPipeline
                         string raw = row.Cells[columnIndex];
                         if (string.IsNullOrWhiteSpace(raw))
                         {
-                            isValid = false;
-                            report.Add(new DataIssue
-                            {
-                                Record = row.Number,
-                                Column = @"fireSoundAddress",
-                                RawValue = raw,
-                                Message = "필수 값이 비어 있습니다."
-                            });
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
                         }
                         else
                         {
@@ -684,13 +705,6 @@ namespace ExtractionShooter.DataPipeline
                 bool hasColumn = header.TryGetValue(@"hitVfxAddress", out int columnIndex);
                 if (!hasColumn)
                 {
-                    isValid = false;
-                    report.Add(new DataIssue
-                    {
-                        Record = row.Number,
-                        Column = @"hitVfxAddress",
-                        Message = "필수 열이 없습니다."
-                    });
                 }
                 else
                 {
@@ -709,14 +723,7 @@ namespace ExtractionShooter.DataPipeline
                         string raw = row.Cells[columnIndex];
                         if (string.IsNullOrWhiteSpace(raw))
                         {
-                            isValid = false;
-                            report.Add(new DataIssue
-                            {
-                                Record = row.Number,
-                                Column = @"hitVfxAddress",
-                                RawValue = raw,
-                                Message = "필수 값이 비어 있습니다."
-                            });
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
                         }
                         else
                         {
@@ -1090,13 +1097,6 @@ namespace ExtractionShooter.DataPipeline
                 bool hasColumn = header.TryGetValue(@"muzzleVfxAddress", out int columnIndex);
                 if (!hasColumn)
                 {
-                    isValid = false;
-                    report.Add(new DataIssue
-                    {
-                        Record = row.Number,
-                        Column = @"muzzleVfxAddress",
-                        Message = "필수 열이 없습니다."
-                    });
                 }
                 else
                 {
@@ -1115,14 +1115,7 @@ namespace ExtractionShooter.DataPipeline
                         string raw = row.Cells[columnIndex];
                         if (string.IsNullOrWhiteSpace(raw))
                         {
-                            isValid = false;
-                            report.Add(new DataIssue
-                            {
-                                Record = row.Number,
-                                Column = @"muzzleVfxAddress",
-                                RawValue = raw,
-                                Message = "필수 값이 비어 있습니다."
-                            });
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
                         }
                         else
                         {
@@ -1832,6 +1825,84 @@ namespace ExtractionShooter.DataPipeline
                             else
                             {
                                 candidate.weaponType = weaponTypeValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // weaponViewAddress 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"weaponViewAddress", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"weaponViewAddress",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            candidate.weaponViewAddress = raw;
+                        }
+                    }
+                }
+            }
+            // weaponViewPrewarmSize 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"weaponViewPrewarmSize", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"weaponViewPrewarmSize",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryInt(raw, out int weaponViewPrewarmSizeValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"weaponViewPrewarmSize",
+                                    RawValue = raw,
+                                    Message = "값을 int 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.weaponViewPrewarmSize = weaponViewPrewarmSizeValue;
                             }
                         }
                     }
