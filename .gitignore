@@ -110,6 +110,6 @@ InitTestScene*.unity*
 /AGENTS.md
 /.codex/
 
-# Local Codex project environment
-/AGENTS.md
-/.codex/
+# Third-party asset packages kept locally
+/[Aa]ssets/Third_Party_Assets/
+/[Aa]ssets/Third_Party_Assets.meta
