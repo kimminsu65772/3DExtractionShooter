@@ -1,0 +1,2 @@
+ammoId,displayName,iconAddress,ammoType,armorPenetrationLevel,damageMultiplier,maxStackCount,unitWeight
+2001,Rifle Standard,,Rifle,1,1,99,0.01

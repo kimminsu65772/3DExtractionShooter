@@ -398,6 +398,7 @@ namespace ExtractionShooter.DataPipeline
         }
 
         private const string WeaponBindingDestination = "Assets/Scripts/DataPipeline/Csv/GeneratedWeaponBinding.cs";
+        private const string AmmoBindingDestination = "Assets/Scripts/DataPipeline/Csv/GeneratedAmmoBinding.cs";
 
         [UnityEditor.MenuItem("Tools/CSV/Generate Weapon Binding")]
 
@@ -406,10 +407,22 @@ namespace ExtractionShooter.DataPipeline
             WriteIfChanged(typeof(WeaponDefinition), WeaponBindingDestination);
         }
 
+        [UnityEditor.MenuItem("Tools/CSV/Generate Ammo Binding")]
+        private static void GenerateAmmoBinding()
+        {
+            WriteIfChanged(typeof(AmmoDefinition), AmmoBindingDestination);
+        }
+
         [UnityEditor.MenuItem("Tools/CSV/Validate Weapon Binding")]
         private static void ValidateWeaponBinding()
         {
             ValidateGeneratedCode(typeof(WeaponDefinition), WeaponBindingDestination);
+        }
+
+        [UnityEditor.MenuItem("Tools/CSV/Validate Ammo Binding")]
+        private static void ValidateAmmoBinding()
+        {
+            ValidateGeneratedCode(typeof(AmmoDefinition), AmmoBindingDestination);
         }
     }
 }

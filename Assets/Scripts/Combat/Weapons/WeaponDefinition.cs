@@ -9,6 +9,12 @@ public class WeaponDefinition
     public int weaponId;
     public string displayName;
     public WeaponType weaponType;
+    public WeaponAnimationStyle animationStyle;
+
+    [Header("탄약과 탄창")]
+    public AmmoType ammoType;
+    public int magazineCapacity;
+    public float reloadDuration;
 
     [Header("연사 속도")]
     public float fireRate;
@@ -99,11 +105,15 @@ public class WeaponDefinition
 
     public bool IsValid()
     {
+        bool hasValidRangedData = weaponType != WeaponType.Ranged ||
+                                  (ammoType != AmmoType.None && magazineCapacity > 0 && reloadDuration > 0f);
+
         return weaponId != 0 &&
                baseDamage > 0f &&
                projectileSpeed > 0f &&
                projectileRadius > 0f &&
                minDamageRange > 0f &&
-               !string.IsNullOrWhiteSpace(projectileAddress);
+               !string.IsNullOrWhiteSpace(projectileAddress) &&
+               hasValidRangedData;
     }
 }

@@ -93,6 +93,10 @@ namespace ExtractionShooter.DataPipeline
         void Validate(T row, int record, DataReport report);
     }
 
+    // C# 어트리뷰트를 통해 CSV 헤더와 데이터 구조를 매핑할 때 사용한다.
+    // 이 때 어트리뷰트를 선언하고 나면 나중에 어트리뷰트를 사용할 때
+    // 어트리뷰트를 생략하고 사용할 수 있다.
+    // CsvColumnAttribute => CsvColumn 이렇게 사용 가능하다. 
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class CsvColumnAttribute : Attribute
     {

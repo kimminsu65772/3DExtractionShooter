@@ -73,6 +73,14 @@ namespace ExtractionShooter.DataPipeline
             int record,
             DataReport report)
         {
+            if (row.ammoType == AmmoType.None)
+            {
+                AddIssue(record, nameof(row.ammoType), row.ammoType.ToString(), "원거리 무기에 사용할 탄약 종류가 지정되지 않았습니다.", report);
+            }
+
+            ValidatePositiveInt(row.magazineCapacity, nameof(row.magazineCapacity), record, report);
+            ValidatePositiveFloat(row.reloadDuration, nameof(row.reloadDuration), record, report);
+
             ValidateNonNegativeFloat(
                 row.verticalRecoilPerShot,
                 nameof(row.verticalRecoilPerShot),

@@ -11,6 +11,8 @@ namespace ExtractionShooter.DataPipeline
             {
                 @"aimRecoilMultiplier",
                 @"aimSpreadMultiplier",
+                @"ammoType",
+                @"animationStyle",
                 @"baseDamage",
                 @"baseSpreadAngle",
                 @"bodyMultiplier",
@@ -22,6 +24,7 @@ namespace ExtractionShooter.DataPipeline
                 @"headMultiplier",
                 @"hitVfxAddress",
                 @"horizontalRecoilPerShot",
+                @"magazineCapacity",
                 @"maxRecoilOffset",
                 @"maxSpreadAngle",
                 @"minDamageMultiplier",
@@ -35,6 +38,7 @@ namespace ExtractionShooter.DataPipeline
                 @"projectileRadius",
                 @"projectileSpeed",
                 @"recoilRecoverySpeed",
+                @"reloadDuration",
                 @"spreadIncreasePerShot",
                 @"spreadRecoverySpeed",
                 @"verticalRecoilPerShot",
@@ -49,6 +53,8 @@ namespace ExtractionShooter.DataPipeline
             {
                 @"aimRecoilMultiplier",
                 @"aimSpreadMultiplier",
+                @"ammoType",
+                @"animationStyle",
                 @"baseDamage",
                 @"baseSpreadAngle",
                 @"bodyMultiplier",
@@ -58,6 +64,7 @@ namespace ExtractionShooter.DataPipeline
                 @"fireRate",
                 @"headMultiplier",
                 @"horizontalRecoilPerShot",
+                @"magazineCapacity",
                 @"maxRecoilOffset",
                 @"maxSpreadAngle",
                 @"minDamageMultiplier",
@@ -70,6 +77,7 @@ namespace ExtractionShooter.DataPipeline
                 @"projectileRadius",
                 @"projectileSpeed",
                 @"recoilRecoverySpeed",
+                @"reloadDuration",
                 @"spreadIncreasePerShot",
                 @"spreadRecoverySpeed",
                 @"verticalRecoilPerShot",
@@ -197,6 +205,126 @@ namespace ExtractionShooter.DataPipeline
                             else
                             {
                                 candidate.aimSpreadMultiplier = aimSpreadMultiplierValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // ammoType 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"ammoType", out int columnIndex);
+                if (!hasColumn)
+                {
+                    isValid = false;
+                    report.Add(new DataIssue
+                    {
+                        Record = row.Number,
+                        Column = @"ammoType",
+                        Message = "필수 열이 없습니다."
+                    });
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"ammoType",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            isValid = false;
+                            report.Add(new DataIssue
+                            {
+                                Record = row.Number,
+                                Column = @"ammoType",
+                                RawValue = raw,
+                                Message = "필수 값이 비어 있습니다."
+                            });
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryEnum<global::AmmoType>(raw, out global::AmmoType ammoTypeValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"ammoType",
+                                    RawValue = raw,
+                                    Message = "값을 AmmoType 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.ammoType = ammoTypeValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // animationStyle 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"animationStyle", out int columnIndex);
+                if (!hasColumn)
+                {
+                    isValid = false;
+                    report.Add(new DataIssue
+                    {
+                        Record = row.Number,
+                        Column = @"animationStyle",
+                        Message = "필수 열이 없습니다."
+                    });
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"animationStyle",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            isValid = false;
+                            report.Add(new DataIssue
+                            {
+                                Record = row.Number,
+                                Column = @"animationStyle",
+                                RawValue = raw,
+                                Message = "필수 값이 비어 있습니다."
+                            });
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryEnum<global::WeaponAnimationStyle>(raw, out global::WeaponAnimationStyle animationStyleValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"animationStyle",
+                                    RawValue = raw,
+                                    Message = "값을 WeaponAnimationStyle 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.animationStyle = animationStyleValue;
                             }
                         }
                     }
@@ -787,6 +915,66 @@ namespace ExtractionShooter.DataPipeline
                             else
                             {
                                 candidate.horizontalRecoilPerShot = horizontalRecoilPerShotValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // magazineCapacity 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"magazineCapacity", out int columnIndex);
+                if (!hasColumn)
+                {
+                    isValid = false;
+                    report.Add(new DataIssue
+                    {
+                        Record = row.Number,
+                        Column = @"magazineCapacity",
+                        Message = "필수 열이 없습니다."
+                    });
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"magazineCapacity",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            isValid = false;
+                            report.Add(new DataIssue
+                            {
+                                Record = row.Number,
+                                Column = @"magazineCapacity",
+                                RawValue = raw,
+                                Message = "필수 값이 비어 있습니다."
+                            });
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryInt(raw, out int magazineCapacityValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"magazineCapacity",
+                                    RawValue = raw,
+                                    Message = "값을 int 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.magazineCapacity = magazineCapacityValue;
                             }
                         }
                     }
@@ -1525,6 +1713,66 @@ namespace ExtractionShooter.DataPipeline
                             else
                             {
                                 candidate.recoilRecoverySpeed = recoilRecoverySpeedValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // reloadDuration 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"reloadDuration", out int columnIndex);
+                if (!hasColumn)
+                {
+                    isValid = false;
+                    report.Add(new DataIssue
+                    {
+                        Record = row.Number,
+                        Column = @"reloadDuration",
+                        Message = "필수 열이 없습니다."
+                    });
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"reloadDuration",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            isValid = false;
+                            report.Add(new DataIssue
+                            {
+                                Record = row.Number,
+                                Column = @"reloadDuration",
+                                RawValue = raw,
+                                Message = "필수 값이 비어 있습니다."
+                            });
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float reloadDurationValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"reloadDuration",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.reloadDuration = reloadDurationValue;
                             }
                         }
                     }

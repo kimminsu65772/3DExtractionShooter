@@ -16,6 +16,10 @@ namespace ExtractionShooter.DataPipeline
         private readonly IRowValidator<WeaponDefinition> weaponValidator;
         private readonly CsvTableLoader<WeaponDefinition> weaponTableLoader;
         private readonly WeaponCatalog weaponCatalog;
+        private readonly ICsvBinding<AmmoDefinition> ammoBinding;
+        private readonly IRowValidator<AmmoDefinition> ammoValidator;
+        private readonly CsvTableLoader<AmmoDefinition> ammoTableLoader;
+        private readonly AmmoCatalog ammoCatalog;
         private readonly PoolPlanBuilder poolPlanBuilder;
         private readonly KeyedPoolService pools;
         private readonly IReadOnlyDictionary<AssetKind, PoolPolicy> poolPolicies;
@@ -38,6 +42,7 @@ namespace ExtractionShooter.DataPipeline
         public PipelineState State => state;
         public DataReport LastReport { get; private set; }
         public WeaponCatalog WeaponCatalog => weaponCatalog;
+        public AmmoCatalog AmmoCatalog => ammoCatalog;
         public KeyedPoolService Pools => pools;
         public int AudioEmitterPoolId => audioEmitterPoolId;
 
@@ -48,6 +53,10 @@ namespace ExtractionShooter.DataPipeline
             IRowValidator<WeaponDefinition> weaponValidator,
             CsvTableLoader<WeaponDefinition> weaponTableLoader,
             WeaponCatalog weaponCatalog,
+            ICsvBinding<AmmoDefinition> ammoBinding,
+            IRowValidator<AmmoDefinition> ammoValidator,
+            CsvTableLoader<AmmoDefinition> ammoTableLoader,
+            AmmoCatalog ammoCatalog,
             PoolPlanBuilder poolPlanBuilder,
             KeyedPoolService pools,
             IReadOnlyDictionary<AssetKind, PoolPolicy> poolPolicies,
@@ -71,6 +80,18 @@ namespace ExtractionShooter.DataPipeline
 
             this.weaponCatalog = weaponCatalog ??
                 throw new ArgumentNullException(nameof(weaponCatalog));
+
+            this.ammoBinding = ammoBinding ??
+                throw new ArgumentNullException(nameof(ammoBinding));
+
+            this.ammoValidator = ammoValidator ??
+                throw new ArgumentNullException(nameof(ammoValidator));
+
+            this.ammoTableLoader = ammoTableLoader ??
+                throw new ArgumentNullException(nameof(ammoTableLoader));
+
+            this.ammoCatalog = ammoCatalog ??
+                throw new ArgumentNullException(nameof(ammoCatalog));
 
             this.poolPlanBuilder = poolPlanBuilder ??
                 throw new ArgumentNullException(nameof(poolPlanBuilder));
@@ -114,10 +135,12 @@ namespace ExtractionShooter.DataPipeline
             return audioClip != null;
         }
 
-        public Task InitializeAsync(string csvAddress, CancellationToken token)
+        public Task InitializeAsync(string weaponCsvAddress, string ammoCsvAddress, CancellationToken token)
         {
-            if (string.IsNullOrWhiteSpace(csvAddress))
-                throw new ArgumentException("CSV 주소가 비어있습니다.", nameof(csvAddress));
+            if (string.IsNullOrWhiteSpace(weaponCsvAddress))
+                throw new ArgumentException("무기 CSV 주소가 비어있습니다.", nameof(weaponCsvAddress));
+            if (string.IsNullOrWhiteSpace(ammoCsvAddress))
+                throw new ArgumentException("탄약 CSV 주소가 비어있습니다.", nameof(ammoCsvAddress));
 
             if (state == PipelineState.Failed)
             {
@@ -143,12 +166,12 @@ namespace ExtractionShooter.DataPipeline
             initializationCancellation?.Dispose();
             initializationCancellation = CancellationTokenSource.CreateLinkedTokenSource(token);
 
-            initializationTask = InitializationCoreAsync(csvAddress, initializationCancellation.Token);
+            initializationTask = InitializationCoreAsync(weaponCsvAddress, ammoCsvAddress, initializationCancellation.Token);
 
             return initializationTask;
         }
 
-        private async Task InitializationCoreAsync(string csvAddress, CancellationToken token)
+        private async Task InitializationCoreAsync(string weaponCsvAddress, string ammoCsvAddress, CancellationToken token)
         {
             LastReport = new DataReport();
 
@@ -156,7 +179,8 @@ namespace ExtractionShooter.DataPipeline
             {
                 state = PipelineState.LoadingData;
 
-                IReadOnlyList<WeaponDefinition> definitions = await LoadWeaponDefinitionsAsync(csvAddress, LastReport, token);
+                IReadOnlyList<WeaponDefinition> definitions = await LoadDefinitionsAsync(weaponCsvAddress, weaponBinding, weaponValidator, weaponTableLoader, LastReport, token);
+                IReadOnlyList<AmmoDefinition> ammoDefinitions = await LoadDefinitionsAsync(ammoCsvAddress, ammoBinding, ammoValidator, ammoTableLoader, LastReport, token);
 
                 token.ThrowIfCancellationRequested();
 
@@ -165,7 +189,7 @@ namespace ExtractionShooter.DataPipeline
                 // 이번 초기화에서 사용할 Address ↔ 정수 ID 대응표를 생성한다.
                 runtimeAssetRegistry = new RuntimeAssetRegistry();
 
-                IReadOnlyList<RuntimeWeapon> runtimeWeapons = BuildRuntimeWeapons(definitions, runtimeAssetRegistry, csvAddress, LastReport);
+                IReadOnlyList<RuntimeWeapon> runtimeWeapons = BuildRuntimeWeapons(definitions, runtimeAssetRegistry, weaponCsvAddress, LastReport);
 
                 ThrowIfReportHasErrors
                     (LastReport,
@@ -196,10 +220,11 @@ namespace ExtractionShooter.DataPipeline
                 token.ThrowIfCancellationRequested();
 
                 weaponCatalog.Publish(runtimeWeapons, LastReport);
+                ammoCatalog.Publish(ammoDefinitions, LastReport);
 
                 ThrowIfReportHasErrors(
                     LastReport,
-                    "WeaponCatalog 공개 과정에서 오류가 발생했습니다.");
+                    "전투 데이터 카탈로그 공개 과정에서 오류가 발생했습니다.");
 
                 state = PipelineState.Ready;
             }
@@ -211,11 +236,18 @@ namespace ExtractionShooter.DataPipeline
             }
         }
 
-        private async Task<IReadOnlyList<WeaponDefinition>> LoadWeaponDefinitionsAsync(
+        private async Task<IReadOnlyList<T>> LoadDefinitionsAsync<T>(
             string csvAddress,
+            ICsvBinding<T> binding,
+            IRowValidator<T> validator,
+            CsvTableLoader<T> tableLoader,
             DataReport report,
-            CancellationToken token)
+            CancellationToken token) where T : class
         {
+            if (binding == null) throw new ArgumentNullException(nameof(binding));
+            if (validator == null) throw new ArgumentNullException(nameof(validator));
+            if (tableLoader == null) throw new ArgumentNullException(nameof(tableLoader));
+
             AssetLease<TextAsset> csvLease = null;
 
             try
@@ -270,12 +302,12 @@ namespace ExtractionShooter.DataPipeline
                         "CSV Reader가 CsvDocument를 생성하지 못했습니다.");
                 }
 
-                // 헤더 검사, 각 행 바인딩, WeaponDefinition 규칙 검증을 실행한다.
-                IReadOnlyList<WeaponDefinition> definitions = weaponTableLoader.Load(document, weaponBinding, weaponValidator, report);
+                // 헤더 검사, 각 행 바인딩, 데이터 타입별 규칙 검증을 실행한다.
+                IReadOnlyList<T> definitions = tableLoader.Load(document, binding, validator, report);
 
                 ThrowIfReportHasErrors(
                     report,
-                    "무기 데이터 바인딩 또는 검증에 실패했습니다.");
+                    $"{typeof(T).Name} 데이터 바인딩 또는 검증에 실패했습니다.");
 
                 return definitions;
             }
@@ -453,6 +485,7 @@ namespace ExtractionShooter.DataPipeline
         {
             // 외부에서 불완전한 무기 데이터를 조회하지 못하도록 먼저 비운다.
             weaponCatalog.Clear();
+            ammoCatalog.Clear();
 
             // 풀까지 준비된 이후 실패했다면 모든 인스턴스와 프리팹 lease를 정리한다.
             if (pools.IsReady)
@@ -539,6 +572,7 @@ namespace ExtractionShooter.DataPipeline
             state = PipelineState.ShuttingDown;
 
             weaponCatalog.Clear();
+            ammoCatalog.Clear();
 
             try
             {

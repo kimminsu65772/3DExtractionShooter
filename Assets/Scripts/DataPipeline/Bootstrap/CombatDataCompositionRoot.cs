@@ -12,6 +12,7 @@ namespace ExtractionShooter.DataPipeline
     {
         [Header("데이터 주소")]
         [SerializeField] private string weaponCsvAddress = "data/weapons";
+        [SerializeField] private string ammoCsvAddress = "data/ammo";
 
         [Header("비활성 풀 보관 위치")]
         [SerializeField] private Transform inactivePoolRoot;
@@ -58,6 +59,7 @@ namespace ExtractionShooter.DataPipeline
         public bool isReady => bootstrap != null && bootstrap.State == PipelineState.Ready;
 
         public WeaponCatalog WeaponCatalog => bootstrap?.WeaponCatalog;
+        public AmmoCatalog AmmoCatalog => bootstrap?.AmmoCatalog;
 
         public KeyedPoolService Pools => bootstrap?.Pools;
 
@@ -84,6 +86,11 @@ namespace ExtractionShooter.DataPipeline
 
             WeaponCatalog weaponCatalog = new WeaponCatalog();
 
+            GeneratedAmmoBinding ammoBinding = new GeneratedAmmoBinding();
+            AmmoValidator ammoValidator = new AmmoValidator();
+            CsvTableLoader<AmmoDefinition> ammoTableLoader = new CsvTableLoader<AmmoDefinition>();
+            AmmoCatalog ammoCatalog = new AmmoCatalog();
+
             PoolPlanBuilder poolPlanBuilder =
                 new PoolPlanBuilder();
 
@@ -97,6 +104,10 @@ namespace ExtractionShooter.DataPipeline
                 weaponValidator,
                 weaponTableLoader,
                 weaponCatalog,
+                ammoBinding,
+                ammoValidator,
+                ammoTableLoader,
+                ammoCatalog,
                 poolPlanBuilder,
                 pools,
                 poolPolicies,
@@ -109,13 +120,13 @@ namespace ExtractionShooter.DataPipeline
         {
             try
             {
-                await bootstrap.InitializeAsync(weaponCsvAddress, lifetimeCancellation.Token);
+                await bootstrap.InitializeAsync(weaponCsvAddress, ammoCsvAddress, lifetimeCancellation.Token);
 
                 OnInitialized?.Invoke();
 
                 Debug.Log(
                     $"전투 데이터 파이프라인 준비 완료. " +
-                    $"등록된 무기: {bootstrap.WeaponCatalog.Count}",
+                    $"등록된 무기: {bootstrap.WeaponCatalog.Count}, 등록된 탄약: {bootstrap.AmmoCatalog.Count}",
                     this
                 );
             }
