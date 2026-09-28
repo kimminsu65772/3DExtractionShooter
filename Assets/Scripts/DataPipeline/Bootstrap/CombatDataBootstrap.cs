@@ -8,7 +8,7 @@ using UnityEngine;
 namespace ExtractionShooter.DataPipeline
 {
     // 씬에 자동 부착되지 않는 orchestration 뼈대. 구현 후 composition root에서 생성/호출한다.
-    public sealed class CombatDataBootstrap
+    public class CombatDataBootstrap
     {
         private readonly AddressablesAssetStore assets;
         private readonly ICsvRecordReader csvReader;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class ProjectileSpawnService
+    public class ProjectileSpawnService
     {
         public bool TrySpawn(RuntimeWeapon weapon, AmmoDefinition ammo, Vector3 position, Vector3 direction,
             float aimDistance, GameObject attacker, LayerMask hitMask, DamageStatSnapshot damageStats, KeyedPoolService pools)

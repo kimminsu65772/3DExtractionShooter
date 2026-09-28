@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class AssetLease<T> : IDisposable where T : UnityEngine.Object
+    public class AssetLease<T> : IDisposable where T : UnityEngine.Object
     {
         private T asset;
         private Action release;

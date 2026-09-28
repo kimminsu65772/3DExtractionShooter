@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 [DisallowMultipleComponent]
-public sealed class FOVMaskRenderer : MonoBehaviour
+public class FOVMaskRenderer : MonoBehaviour
 {
     [Header("마스크 한 변의 픽셀 수")]
     [SerializeField, Min(64)] private int maskTextureSize = 512;

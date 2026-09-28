@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class CombatFeedbackService
+    public class CombatFeedbackService
     {
         private readonly CombatDataBootstrap bootstrap;
 

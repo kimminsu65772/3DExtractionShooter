@@ -86,7 +86,7 @@ public class WeaponCsvLoader
         };
     }
 
-    public sealed class CsvTable
+    public class CsvTable
     {
         public IReadOnlyDictionary<string, int> HeaderMap { get; }
         public IReadOnlyList<string[]> Rows { get; }

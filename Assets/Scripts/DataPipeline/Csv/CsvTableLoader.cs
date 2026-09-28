@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class CsvTableLoader<T> where T : class
+    public class CsvTableLoader<T> where T : class
     {
 
         public IReadOnlyList<T> Load(CsvDocument document, ICsvBinding<T> binding,

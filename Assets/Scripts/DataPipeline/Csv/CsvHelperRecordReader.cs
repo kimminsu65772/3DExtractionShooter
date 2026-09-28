@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class CsvHelperRecordReader : ICsvRecordReader
+    public class CsvHelperRecordReader : ICsvRecordReader
     {
         /// <summary>
         /// CSVReader를 통해 CSV 파일을 읽고 CsvDocument를 생성한다.

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class WeaponCatalog
+    public class WeaponCatalog
     {
 
         private Dictionary<int, RuntimeWeapon> weapons = new();

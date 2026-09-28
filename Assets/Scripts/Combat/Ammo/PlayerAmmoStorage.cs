@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public sealed class PlayerAmmoStorage : MonoBehaviour, IAmmoStorage
+public class PlayerAmmoStorage : MonoBehaviour, IAmmoStorage
 {
     [Serializable]
     private struct StartingAmmoEntry

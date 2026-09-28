@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class AmmoValidator : IRowValidator<AmmoDefinition>
+    public class AmmoValidator : IRowValidator<AmmoDefinition>
     {
         public void Validate(AmmoDefinition row, int record, DataReport report)
         {

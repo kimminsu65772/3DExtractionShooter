@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class AmmoCatalog
+    public class AmmoCatalog
     {
         private static readonly IReadOnlyList<AmmoDefinition> EmptyAmmoList = Array.Empty<AmmoDefinition>();
 

@@ -862,50 +862,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 374942618}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &388978170
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 388978172}
-  - component: {fileID: 388978171}
-  m_Layer: 0
-  m_Name: CsvValueConverterTest
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &388978171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 388978170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39465615d9de9684aafea6b96e353882, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CsvValueConverterTest
---- !u!4 &388978172
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 388978170}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.79897, y: 0.05, z: -0.37973}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2528,8 +2484,6 @@ GameObject:
   - component: {fileID: 1702241353}
   - component: {fileID: 1702241352}
   - component: {fileID: 1702241351}
-  - component: {fileID: 1702241354}
-  - component: {fileID: 1702241355}
   - component: {fileID: 1702241356}
   m_Layer: 8
   m_Name: Enemy
@@ -2585,39 +2539,6 @@ Transform:
   - {fileID: 1831387088}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1702241354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1702241350}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7d2f9c661e34e74a8b6f9c15b37d8af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TargetDummyHealthReset
-  resetDelay: 3
-  showDebugLog: 1
---- !u!114 &1702241355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1702241350}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f26bba13886f4b2d9057a755bf73e5da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TargetDummyHitIndicator
-  targetCamera: {fileID: 0}
-  displayDuration: 1.2
-  markerSize: 22
-  labelOffset: {x: 18, y: -34}
-  headColor: {r: 1, g: 0.25, b: 0.2, a: 1}
-  bodyColor: {r: 1, g: 0.85, b: 0.25, a: 1}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &1702241356
 MonoBehaviour:
   m_ObjectHideFlags: 0

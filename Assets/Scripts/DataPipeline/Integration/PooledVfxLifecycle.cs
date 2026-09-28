@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class PooledVfxLifecycle : MonoBehaviour, IPoolLifecycle
+    public class PooledVfxLifecycle : MonoBehaviour, IPoolLifecycle
     {
         [Header("안전 반환 설정")]
         [SerializeField, Min(0.1f)] private float maxPlaybackSeconds = 10f;

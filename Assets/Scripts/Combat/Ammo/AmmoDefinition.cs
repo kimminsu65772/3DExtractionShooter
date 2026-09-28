@@ -2,7 +2,7 @@ using System;
 using ExtractionShooter.DataPipeline;
 
 [Serializable]
-public sealed class AmmoDefinition
+public class AmmoDefinition
 {
     // 탄약 데이터를 구분하는 고유 번호다.
     public int ammoId;

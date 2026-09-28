@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ExtractionShooter.DataPipeline
 {
     [RequireComponent(typeof(AudioSource))]
-    public sealed class PooledAudioLifecycle : MonoBehaviour, IPoolLifecycle
+    public class PooledAudioLifecycle : MonoBehaviour, IPoolLifecycle
     {
         [SerializeField]
         private AudioSource audioSource;

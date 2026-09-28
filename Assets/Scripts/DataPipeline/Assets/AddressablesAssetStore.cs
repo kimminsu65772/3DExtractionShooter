@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class AddressablesAssetStore
+    public class AddressablesAssetStore
     {
         private readonly Dictionary<AssetKey, AssetEntry> entries = new();
 
@@ -53,7 +53,7 @@ namespace ExtractionShooter.DataPipeline
             }
         }
 
-        private sealed class AssetEntry
+        private class AssetEntry
         {
             // 해제 완료를 나타내는 신호.
             private readonly TaskCompletionSource<bool> releasedSource = new TaskCompletionSource<bool>();

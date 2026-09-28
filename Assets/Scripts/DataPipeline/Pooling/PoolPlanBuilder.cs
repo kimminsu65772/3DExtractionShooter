@@ -7,7 +7,7 @@ using UnityEngine;
 namespace ExtractionShooter.DataPipeline
 {
     // 각 총기에 대한 풀링 계획을 생성한다. 풀링 계획은 런타임에서 풀을 생성할 때 사용된다.
-    public sealed class PoolPlanBuilder
+    public class PoolPlanBuilder
     {
         public IReadOnlyList<PoolSpec> Build(IReadOnlyList<RuntimeWeapon> encounterWeapons,
             RuntimeAssetRegistry registry,

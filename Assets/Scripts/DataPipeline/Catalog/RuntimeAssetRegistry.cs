@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class RuntimeAssetRegistry
+    public class RuntimeAssetRegistry
     {
         private readonly Dictionary<(string Address, AssetKind Kind), int> IdByAsset = new();
         private readonly Dictionary<int, (string Address, AssetKind Kind)> assetById = new();

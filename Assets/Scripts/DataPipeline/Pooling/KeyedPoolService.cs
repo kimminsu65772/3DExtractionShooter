@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class KeyedPoolService : IPoolReturner
+    public class KeyedPoolService : IPoolReturner
     {
         private readonly Dictionary<int, PrefabPool> poolsById = new();
 

@@ -7,7 +7,7 @@ using UnityEngine.Pool;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class PrefabPool : IPoolReturner
+    public class PrefabPool : IPoolReturner
     {
         private enum InstanceStatus
         {
@@ -18,7 +18,7 @@ namespace ExtractionShooter.DataPipeline
             Destroyed
         }
 
-        private sealed class InstanceState
+        private class InstanceState
         {
             public GameObject Instance;
             public IPoolLifecycle[] Lifecycles;

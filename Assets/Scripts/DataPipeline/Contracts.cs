@@ -21,7 +21,7 @@ namespace ExtractionShooter.DataPipeline
     public enum PoolOverflowPolicy { Reject, GrowWithinLimit }
 
     // CSV 데이터 처리 과정에서 발생한 문제를 나타낸다.
-    public sealed class DataIssue
+    public class DataIssue
     {
         public string Source; // 파일/Addressable 주소
         public int Record; // 논리 레코드 번호. 인용부호 안 개행과 물리 줄을 구분한다.
@@ -33,7 +33,7 @@ namespace ExtractionShooter.DataPipeline
     // CSV 데이터 처리 과정에서 발생한 문제를 수집하는 클래스다.
     // 해당 클래스에 있는 오류 목록을 통해 데이터 처리 과정에서 발생한 문제를 확인하고
     // CSV 내 문제 위치를 추적할 수 있도록 한다.
-    public sealed class DataReport
+    public class DataReport
     {
         private readonly List<DataIssue> _issues = new List<DataIssue>();
 
@@ -50,13 +50,13 @@ namespace ExtractionShooter.DataPipeline
     }
 
     // CSV 문서의 한 행에 해당하는 단위다.
-    public sealed class CsvRecord
+    public class CsvRecord
     {
         public int Number; // 행 번호
         public string[] Cells; // 행을 구성하는 셀 값 배열.
     }
 
-    public sealed class CsvDocument
+    public class CsvDocument
     {
         public string Source; // CSV 파일 경로
         public string[] Headers; // CSV 헤더 목록
@@ -98,7 +98,7 @@ namespace ExtractionShooter.DataPipeline
     // 어트리뷰트를 생략하고 사용할 수 있다.
     // CsvColumnAttribute => CsvColumn 이렇게 사용 가능하다. 
     [AttributeUsage(AttributeTargets.Field)]
-    public sealed class CsvColumnAttribute : Attribute
+    public class CsvColumnAttribute : Attribute
     {
         public string Name { get; set; } // 데이터 구조에서 매핑할 CSV 헤더 이름
         public bool Optional { get; set; } // 누락/빈 셀 허용 여부
@@ -106,10 +106,10 @@ namespace ExtractionShooter.DataPipeline
 
     // 공개 필드지만 CSV 바인딩에서 제외하고 싶은 경우에 사용한다.
     [AttributeUsage(AttributeTargets.Field)]
-    public sealed class CsvIgnoreAttribute : Attribute { }
+    public class CsvIgnoreAttribute : Attribute { }
 
     // weaponDefinition에서 정의한 무기 정보를 실제 사용할 게임 리소스의 ID와 매핑한 런타임 무기 정보다.
-    public sealed class RuntimeWeapon
+    public class RuntimeWeapon
     {
         public WeaponDefinition Definition { get; }
 
@@ -158,7 +158,7 @@ namespace ExtractionShooter.DataPipeline
 
     // 풀링 정책을 나타내는 클래스다.
     // 풀링 정책은 풀의 종류와 풀링 대상 에셋의 종류, 풀의 초기화 시점과 최대 활성 인스턴스 수, 최대 유지 인스턴스 수, 인스턴스 부족 시 정책을 정의한다.
-    public sealed class PoolPolicy
+    public class PoolPolicy
     {
         public AssetKind Kind { get; }
         public int PrewarmCount { get; }
@@ -197,7 +197,7 @@ namespace ExtractionShooter.DataPipeline
     }
 
     // 풀의 설정을 나타내는 클래스다.
-    public sealed class PoolSpec
+    public class PoolSpec
     {
         public int PoolId;
         public AssetKind Kind;

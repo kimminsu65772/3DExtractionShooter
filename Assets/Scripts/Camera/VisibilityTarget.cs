@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public sealed class VisibilityTarget : MonoBehaviour
+public class VisibilityTarget : MonoBehaviour
 {
     [SerializeField] private Transform visibilityPoint;
 

@@ -2,7 +2,7 @@ using ExtractionShooter.DataPipeline;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public sealed class PlayerReloadController : MonoBehaviour
+public class PlayerReloadController : MonoBehaviour
 {
     [SerializeField] private PlayerStateMachine stateMachine;
     [SerializeField] private PlayerWeaponHolder weaponHolder;

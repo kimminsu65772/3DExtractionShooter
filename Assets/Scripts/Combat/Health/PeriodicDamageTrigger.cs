@@ -4,13 +4,13 @@ using UnityEngine;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Rigidbody))]
-public sealed class PeriodicDamageTrigger : MonoBehaviour
+public class PeriodicDamageTrigger : MonoBehaviour
 {
     [Header("피해 설정")]
     [SerializeField, Min(0f)] private float damagePerTick = 10f;
     [SerializeField, Min(0.01f)] private float tickInterval = 0.3f;
 
-    private sealed class ContactState
+    private class ContactState
     {
         public readonly IDamageable Damageable;
         public int ColliderCount;

@@ -60,3 +60,14 @@ public enum WeaponAnimationStyle
     // 양손 근접 무기 자세
     TwoHandedMelee = 4
 }
+
+// 적의 상태를 구분하는 용도
+public enum  EnemyState
+{
+    None,
+    Idle,
+    Investigate,
+    Chase,
+    Attack,
+    Dead
+}

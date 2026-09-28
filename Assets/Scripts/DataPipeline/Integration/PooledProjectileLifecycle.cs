@@ -4,7 +4,7 @@ namespace ExtractionShooter.DataPipeline
 {
     // 투사체가 현재 어느 풀에서 대여되었는지를 기억하고,
     // 사용이 끝났을 때 올바른 세대의 대여권을 소유 풀로 반환한다.
-    public sealed class PooledProjectileLifecycle : MonoBehaviour, IPoolLifecycle
+    public class PooledProjectileLifecycle : MonoBehaviour, IPoolLifecycle
     {
         [SerializeField] private Projectile projectile;
 

@@ -1,7 +1,7 @@
 using System;
 
 // 실제 무기 한 자루의 탄창 상태다. Unity 오브젝트의 생명주기와 관계없는 순수 C# 객체로 둔다.
-public sealed class WeaponAmmoState
+public class WeaponAmmoState
 {
     private int loadedAmmoId;
     private int loadedAmmoCount;

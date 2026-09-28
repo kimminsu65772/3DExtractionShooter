@@ -2,7 +2,7 @@ using System;
 using ExtractionShooter.DataPipeline;
 
 // 플레이어나 적이 실제로 소유한 무기 한 자루의 변경 가능한 상태다.
-public sealed class WeaponInstance
+public class WeaponInstance
 {
     public RuntimeWeapon RuntimeWeapon { get; }
     public WeaponAmmoState AmmoState { get; }
