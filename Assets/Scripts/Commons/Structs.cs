@@ -2,34 +2,46 @@ using UnityEngine;
 
 public struct DamageInfo
 {
-    // µ¥¹ÌÁö¸¦ ¹ß»ı½ÃÅ² ¹«±âÀÇ ID
+    // ë°ë¯¸ì§€ë¥¼ ë°œìƒì‹œí‚¨ ë¬´ê¸°ì˜ ID
     public int weaponId;
 
-    // ½ÇÁ¦·Î ÁÖ·Á´Â µ¥¹ÌÁö
+    // í”¼í•´ë¥¼ ë°œìƒì‹œí‚¨ íƒ„ì•½ê³¼ ë°©ì–´êµ¬ ê´€í†µ ì •ë³´
+    public int ammoId;
+    public int armorPenetrationLevel;
+    public float ammoDamageMultiplier;
+
+    // ì‹¤ì œë¡œ ì£¼ë ¤ëŠ” ë°ë¯¸ì§€
     public float incomingDamage;
 
-    // ¹ß»ç À§Ä¡¿Í ¸¶¿ì½º Ä¿¼­ À§Ä¡ »çÀÌÀÇ °Å¸®
+    // í”¼ê²©ìì˜ ë°©ì–´êµ¬ê¹Œì§€ ê³„ì‚°í•œ ë’¤ ì‹¤ì œ ì²´ë ¥ì—ì„œ ì°¨ê°í•œ ë°ë¯¸ì§€
+    public float appliedDamage;
+
+    // í”¼ê²©ìê°€ ì‚¬ìš©í•œ ë°©ì–´êµ¬ ë ˆë²¨ê³¼ ê·¸ ê²°ê³¼ë¡œ ì ìš©ëœ ë°ë¯¸ì§€ ë°°ìœ¨
+    public int armorLevel;
+    public float armorMultiplier;
+
+    // ë°œì‚¬ ìœ„ì¹˜ì™€ ë§ˆìš°ìŠ¤ ì»¤ì„œ ìœ„ì¹˜ ì‚¬ì´ì˜ ê±°ë¦¬
     public float aimDistance;
 
-    // ½ÇÁ¦ Ãæµ¹ À§Ä¡
+    // ì‹¤ì œ ì¶©ëŒ ìœ„ì¹˜
     public Vector3 hitPoint;
 
-    // Åõ»çÃ¼ ÁøÇà ¹æÇâ
+    // íˆ¬ì‚¬ì²´ ì§„í–‰ ë°©í–¥
     public Vector3 hitDirection;
 
-    // ÇÇ°İ ºÎÀ§
+    // í”¼ê²© ë¶€ìœ„
     public HitPart hitPart;
 
-    // °ø°İÀÚ
+    // ê³µê²©ì
     public GameObject attacker;
 
     /*
-     * µğ¹ö±×¿ë Á¤º¸
+     * ë””ë²„ê·¸ìš© ì •ë³´
      */
-    // ÇØ´ç ¹«±âÀÇ ±âº» µ¥¹ÌÁö
+    // í•´ë‹¹ ë¬´ê¸°ì˜ ê¸°ë³¸ ë°ë¯¸ì§€
     public float baseDamage;
-    // »ç°Å¸® ±¸°£¿¡ µû¸¥ µ¥¹ÌÁö ¹èÀ²
+    // ì‚¬ê±°ë¦¬ êµ¬ê°„ì— ë”°ë¥¸ ë°ë¯¸ì§€ ë°°ìœ¨
     public float rangeMultiplier;
-    // ÇÇ°İ ºÎÀ§¿¡ µû¸¥ µ¥¹ÌÁö ¹èÀ²
+    // í”¼ê²© ë¶€ìœ„ì— ë”°ë¥¸ ë°ë¯¸ì§€ ë°°ìœ¨
     public float hitPartMultiplier;
 }

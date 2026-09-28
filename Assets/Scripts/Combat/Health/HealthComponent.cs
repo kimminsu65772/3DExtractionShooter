@@ -4,31 +4,57 @@ using System;
 public class HealthComponent : MonoBehaviour, IDamageable
 {
     [SerializeField] private float defaultMaxHealth = 100f;
+    [SerializeField] private CharacterStats characterStats;
     [SerializeField] private bool showDebugLog = true;
 
     private float maxHealth;
     private float currentHealth;
+    private bool isInvulnerable;
 
     public float MaxHealth => maxHealth;
     public float CurrentHealth => currentHealth;
     public bool IsDead => currentHealth <= 0f;  
     public bool IsAlive => !IsDead;
+    public bool IsInvulnerable => isInvulnerable;
 
-    // UI Ã¼·Â º¯°æ Àü¿ë ÀÌº¥Æ®
+    // UI ì²´ë ¥ ë³€ê²½ ì „ìš© ì´ë²¤íŠ¸
     public event Action<float, float> OnHealthChanged;
 
-    // µ¥¹ÌÁö¸¦ ¹Ş°Å³ª »ç¸ÁÇßÀ» ¶§ »óÅÂ º¯°æÀ» °¡´ÉÇÏµµ·Ï ÇÏ±â À§ÇÑ ÀÌº¥Æ®µé
+    // ë°ë¯¸ì§€ë¥¼ ë°›ê±°ë‚˜ ì‚¬ë§í–ˆì„ ë•Œ ìƒíƒœ ë³€ê²½ì„ ê°€ëŠ¥í•˜ë„ë¡ í•˜ê¸° ìœ„í•œ ì´ë²¤íŠ¸ë“¤
     public event Action<DamageInfo> OnDamageTaken;
     public event Action<DamageInfo> OnDeath;
 
     private void Awake()
     {
-        Initialize(defaultMaxHealth);
+        if (characterStats == null)
+        {
+            characterStats = GetComponent<CharacterStats>();
+        }
+
+        Initialize(GetConfiguredMaxHealth());
+    }
+
+    private void OnEnable()
+    {
+        if (characterStats != null)
+        {
+            characterStats.OnStatChanged += HandleStatChanged;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (characterStats != null)
+        {
+            characterStats.OnStatChanged -= HandleStatChanged;
+        }
+
+        isInvulnerable = false;
     }
 
     public void Initialize(float newMaxHealth)
     {
-        maxHealth = newMaxHealth;
+        maxHealth = Mathf.Max(newMaxHealth, 1f);
         currentHealth = maxHealth;
 
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
@@ -37,12 +63,24 @@ public class HealthComponent : MonoBehaviour, IDamageable
     public void TakeDamage(DamageInfo damageInfo)
     {
         if (IsDead) return;
+
+        if (IsInvulnerable) return;
         
         if (damageInfo.incomingDamage <= 0f) return;
 
-        bool wasAlive = IsAlive;
+        int armorLevel = GetArmorLevel(damageInfo.hitPart);
+        float armorMultiplier = ArmorDamageCalculator.GetDamageMultiplier(damageInfo.armorPenetrationLevel, armorLevel);
+        float appliedDamage = ArmorDamageCalculator.CalculateDamage(damageInfo.incomingDamage, damageInfo.armorPenetrationLevel, armorLevel);
 
-        currentHealth = Mathf.Max(currentHealth - damageInfo.incomingDamage, 0f);
+        if (appliedDamage <= 0f)
+            return;
+
+        bool wasAlive = IsAlive;
+        currentHealth = Mathf.Max(currentHealth - appliedDamage, 0f);
+
+        damageInfo.appliedDamage = appliedDamage;
+        damageInfo.armorLevel = armorLevel;
+        damageInfo.armorMultiplier = armorMultiplier;
 
         OnDamageTaken?.Invoke(damageInfo);
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
@@ -50,11 +88,10 @@ public class HealthComponent : MonoBehaviour, IDamageable
         if (showDebugLog)
         {
             Debug.Log(
-            $"[{name}] Damage: {damageInfo.incomingDamage} / " +
-            $"Part: {damageInfo.hitPart} / " +
-            $"Weapon: {damageInfo.weaponId} / " +
-            $"HP: {currentHealth}/{maxHealth}"
-        );
+                $"[{name}] IncomingDamage: {damageInfo.incomingDamage} / AppliedDamage: {appliedDamage} / " +
+                $"Part: {damageInfo.hitPart} / Ammo: {damageInfo.ammoId} / Penetration: {damageInfo.armorPenetrationLevel} / " +
+                $"Armor: {armorLevel} / ArmorMultiplier: {armorMultiplier:F3} / Weapon: {damageInfo.weaponId} / " +
+                $"HP: {currentHealth}/{maxHealth}", this);
         }
 
         if (wasAlive && IsDead)
@@ -73,6 +110,37 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
 
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
+    public void SetInvulnerable(bool value)
+    {
+        isInvulnerable = value;
+    }
+
+    private int GetArmorLevel(HitPart hitPart)
+    {
+        if (characterStats == null)
+            return 0;
+
+        StatType armorStat = hitPart == HitPart.Head ? StatType.HeadArmorLevel : StatType.BodyArmorLevel;
+        return Mathf.Max(0, Mathf.RoundToInt(characterStats.GetValue(armorStat)));
+    }
+
+    private float GetConfiguredMaxHealth()
+    {
+        return characterStats != null ? characterStats.GetValue(StatType.MaxHealth, defaultMaxHealth) : defaultMaxHealth;
+    }
+
+    private void HandleStatChanged(StatType statType, float previousValue, float currentValue)
+    {
+        if (statType != StatType.MaxHealth)
+            return;
+
+        float previousMaxHealth = maxHealth;
+        float healthRatio = previousMaxHealth > 0f ? currentHealth / previousMaxHealth : 1f;
+        maxHealth = Mathf.Max(currentValue, 1f);
+        currentHealth = Mathf.Clamp(maxHealth * healthRatio, 0f, maxHealth);
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 }
