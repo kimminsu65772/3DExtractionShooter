@@ -10,7 +10,7 @@ public class PlayerWeaponHolder : MonoBehaviour
     [SerializeField] private Transform weaponMount;
 
 
-    private RuntimeWeapon currentWeapon;
+    private WeaponInstance currentWeaponInstance;
     private WeaponView currentWeaponView;
 
     private PoolLease currentWeaponViewLease;
@@ -18,7 +18,11 @@ public class PlayerWeaponHolder : MonoBehaviour
 
     public WeaponView CurrentWeaponView => currentWeaponView;
 
-    public RuntimeWeapon CurrentWeapon => currentWeapon;
+    // 기존 사격 코드는 RuntimeWeapon을 계속 읽을 수 있게 유지한다.
+    public RuntimeWeapon CurrentWeapon => currentWeaponInstance?.RuntimeWeapon;
+    public WeaponInstance CurrentWeaponInstance => currentWeaponInstance;
+    public WeaponAmmoState CurrentAmmoState => currentWeaponInstance?.AmmoState;
+    public CombatDataCompositionRoot DataRoot => dataRoot;
 
     public Transform MuzzleTransform =>
         currentWeaponView != null
@@ -26,9 +30,9 @@ public class PlayerWeaponHolder : MonoBehaviour
         : null;
 
     public bool HasWeapon =>
-        currentWeapon != null &&
-        currentWeapon.Definition != null &&
-        currentWeapon.ProjectileId > 0;
+        CurrentWeapon != null &&
+        CurrentWeapon.Definition != null &&
+        CurrentWeapon.ProjectileId > 0;
 
     public bool HasMuzzle =>
         currentWeaponView != null &&
@@ -154,7 +158,7 @@ public class PlayerWeaponHolder : MonoBehaviour
 
         Unequip(); // 이전 무기 해제
 
-        currentWeapon = runtimeWeapon;
+        currentWeaponInstance = new WeaponInstance(runtimeWeapon);
         currentWeaponView = newWeaponView;
         currentWeaponViewLease = newLease;
         hasWeaponViewLease = true;
@@ -171,7 +175,7 @@ public class PlayerWeaponHolder : MonoBehaviour
             );
         }
 
-        currentWeapon = null;
+        currentWeaponInstance = null;
         currentWeaponView = null;
         currentWeaponViewLease = default;
         hasWeaponViewLease = false;

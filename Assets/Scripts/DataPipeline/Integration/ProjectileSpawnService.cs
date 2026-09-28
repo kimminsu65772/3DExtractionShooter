@@ -4,8 +4,8 @@ namespace ExtractionShooter.DataPipeline
 {
     public sealed class ProjectileSpawnService
     {
-        public bool TrySpawn(RuntimeWeapon weapon, Vector3 position, Vector3 direction,
-            float aimDistance, GameObject attacker, LayerMask hitMask, KeyedPoolService pools)
+        public bool TrySpawn(RuntimeWeapon weapon, AmmoDefinition ammo, Vector3 position, Vector3 direction,
+            float aimDistance, GameObject attacker, LayerMask hitMask, DamageStatSnapshot damageStats, KeyedPoolService pools)
         {
             if (weapon == null || weapon.Definition == null)
                 return false;
@@ -46,11 +46,13 @@ namespace ExtractionShooter.DataPipeline
 
                 lifecycle.Projectile.Initialize(
                     weapon.Definition,
+                    ammo,
                     position,
                     normalizedDirection,
                     aimDistance,
                     attacker,
-                    hitMask);
+                    hitMask,
+                    damageStats);
 
                 // 설정이 끝난 뒤에만 활성화하여 Update가 불완전한 값을 읽지 않게 한다.
                 pools.Activate(lease);

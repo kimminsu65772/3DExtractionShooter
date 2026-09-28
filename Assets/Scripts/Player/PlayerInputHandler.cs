@@ -11,6 +11,7 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private InputActionReference _dodgeAction;
     [SerializeField] private InputActionReference _aimAction;
     [SerializeField] private InputActionReference _attackAction;
+    [SerializeField] private InputActionReference _reloadAction;
 
 #if UNITY_EDITOR
     [Header("Input Debug")]
@@ -26,6 +27,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     private bool _dodgeRequested;
     private bool _attackRequested;
+    private bool _reloadRequested;
 
     private void OnEnable()
     {
@@ -49,6 +51,13 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (!_attackRequested) return false;
         _attackRequested = false;
+        return true;
+    }
+
+    public bool ConsumeReloadInput()
+    {
+        if (!_reloadRequested) return false;
+        _reloadRequested = false;
         return true;
     }
 
@@ -101,6 +110,15 @@ public class PlayerInputHandler : MonoBehaviour
 #endif
     }
 
+    private void OnReloadInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            _reloadRequested = true;
+#if UNITY_EDITOR
+        LogButtonInput("Reload", context.phase, true);
+#endif
+    }
+
     private void ResetInputState()
     {
         MoveInput = Vector2.zero;
@@ -110,6 +128,7 @@ public class PlayerInputHandler : MonoBehaviour
         IsAttackHeld = false;
         _dodgeRequested = false;
         _attackRequested = false;
+        _reloadRequested = false;
     }
 
     private void SubscribeInputEvents()
@@ -125,6 +144,7 @@ public class PlayerInputHandler : MonoBehaviour
         _attackAction.action.performed += OnAttackInput;
         _attackAction.action.canceled += OnAttackInput;
         _dodgeAction.action.performed += OnDodgeInput;
+        _reloadAction.action.performed += OnReloadInput;
     }
 
     private void UnsubscribeInputEvents()
@@ -140,7 +160,8 @@ public class PlayerInputHandler : MonoBehaviour
         _attackAction.action.performed -= OnAttackInput;
         _attackAction.action.canceled -= OnAttackInput;
         _dodgeAction.action.performed -= OnDodgeInput;
-        
+        _reloadAction.action.performed -= OnReloadInput;
+
     }
 
     private void SyncCurrentInputState()
@@ -153,6 +174,7 @@ public class PlayerInputHandler : MonoBehaviour
 
         _dodgeRequested = false;
         _attackRequested = false;
+        _reloadRequested = false;
     }
 
 #if UNITY_EDITOR
@@ -170,6 +192,7 @@ public class PlayerInputHandler : MonoBehaviour
         GUILayout.Label($"Attack Held: {IsAttackHeld}");
         GUILayout.Label($"Dodge Requested: {_dodgeRequested}");
         GUILayout.Label($"Attack Requested: {_attackRequested}");
+        GUILayout.Label($"Reload Requested: {_reloadRequested}");
         GUILayout.EndArea();
     }
 

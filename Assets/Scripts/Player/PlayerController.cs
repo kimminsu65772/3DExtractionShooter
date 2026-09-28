@@ -3,11 +3,18 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private const float MoveInputThreshold = 0.01f;
+    private const float DefaultWalkSpeed = 5f;
+    private const float DefaultSprintSpeed = 8f;
+    private const float DefaultAimMoveSpeedMultiplier = 0.6f;
 
     [Header("참조 설정")]
     [SerializeField] private PlayerInputHandler _inputHandler;
     [SerializeField] private PlayerAimController aimController;
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private PlayerReloadController reloadController;
+    [SerializeField] private CharacterStats characterStats;
+    [SerializeField] private HealthComponent healthComponent;
+    [SerializeField] private PlayerStateMachine stateMachine;
     [SerializeField] private Transform cameraTransform;
 
     [Header("바닥 판정 설정")]
@@ -19,11 +26,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundSnapDistance = 0.2f;
 
     [Header("플레이어 이동 속도 설정")]
-    [SerializeField] private float aimMoveSpeed = 3f;
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float sprintSpeed = 8f;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float fallMultiplier = 2f;
+
+    [Header("플레이어 회피 설정")]
+    [SerializeField] private float dodgeDistance = 3f;
+    [SerializeField] private float dodgeDuration = 0.55f;
+    [SerializeField] private float dodgeCooldown = 0.2f;
 
     [Header("플레이어 회전 설정")]
     [SerializeField] private float rotationSpeed = 12f;
@@ -33,6 +42,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _verticalVelocity;
     [SerializeField] private PlayerLocomotionState playerLocomotionState = PlayerLocomotionState.None;
 
+
+    // 회피를 시작할 때 확정한 이동 방향
+    private Vector3 dodgeDirection;
+
+    // 현재 회피가 얼마나 진행됐는지 기록하는 시간
+    private float dodgeElapsedTime;
+
+    // 회피가 끝난 후 다음 회피를 시작할 수 있는 시간
+    private float nextDodgeTime;
 
     private float forwardProbeDistance;
     private readonly RaycastHit[] _groundProbeHits = new RaycastHit[8];
@@ -47,6 +65,29 @@ public class PlayerController : MonoBehaviour
     private GroundProbeState slopeProbe;
     private GroundProbeState centerProbe;
     private GroundProbeState forwardProbe;
+
+    public PlayerLocomotionState PlayerLocomotionState => playerLocomotionState;
+
+    public Vector3 CurrentMoveDirection { get; private set; }
+
+    public float CurrentMoveSpeed => currentMoveSpeed;
+
+    private bool IsAimActive => stateMachine != null && stateMachine.CurrentState == PlayerActionState.Free && _inputHandler.IsAimHeld;
+    private bool IsAttackActive => stateMachine != null && stateMachine.CurrentState == PlayerActionState.Free && _inputHandler.IsAttackHeld;
+
+    public bool ShouldFOVFollowCharacter
+    {
+        get
+        {
+            if (stateMachine.CurrentState == PlayerActionState.Dodge)
+                return false;
+
+            if (IsAimActive || IsAttackActive)
+                return false;
+
+            return playerLocomotionState == PlayerLocomotionState.Sprint;
+        }
+    }
 
     private void Awake()
     {
@@ -63,6 +104,32 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        if (stateMachine == null)
+        {
+            Debug.LogError("상태 머신의 참조 설정이 완료되지 않았습니다.");
+            return;
+        }
+
+        if (characterStats == null)
+        {
+            characterStats = GetComponent<CharacterStats>();
+        }
+
+        if (healthComponent == null)
+        {
+            healthComponent = GetComponent<HealthComponent>();
+        }
+
+        if (reloadController == null)
+        {
+            reloadController = GetComponent<PlayerReloadController>();
+        }
+
+        if (characterStats == null)
+        {
+            Debug.LogWarning("CharacterStats 참조가 없어 기본 이동 속도를 사용합니다.", this);
+        }
+
         if (cameraTransform == null)
         {
             cameraTransform = Camera.main.transform;
@@ -75,6 +142,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        bool dodgeRequested = _inputHandler.ConsumeDodgeInput();
+
+        if (stateMachine.CurrentState == PlayerActionState.Dodge)
+        {
+            UpdateDodge();
+            return;
+        }
+
+        if (dodgeRequested && TryStartDodge())
+        {
+            UpdateDodge();
+            return;
+        }
+
         UpdateLocomotionState();
         MoveCharacter();
     }
@@ -85,7 +166,7 @@ public class PlayerController : MonoBehaviour
 
         if (!hasMoveInput)
         {
-            if (_inputHandler.IsAimHeld)
+            if (IsAimActive)
             {
                 playerLocomotionState = PlayerLocomotionState.AimIdle;
                 return;
@@ -95,7 +176,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (_inputHandler.IsAimHeld)
+            if (IsAimActive)
             {
                 playerLocomotionState = PlayerLocomotionState.AimMove;
                 return;
@@ -140,17 +221,22 @@ public class PlayerController : MonoBehaviour
                 return 0f;
 
             case PlayerLocomotionState.Move:
-                return moveSpeed;
+                return GetStatValue(StatType.WalkSpeed, DefaultWalkSpeed);
 
             case PlayerLocomotionState.Sprint:
-                return sprintSpeed;
+                return GetStatValue(StatType.SprintSpeed, DefaultSprintSpeed);
 
             case PlayerLocomotionState.AimMove:
-                return aimMoveSpeed;
+                return GetStatValue(StatType.WalkSpeed, DefaultWalkSpeed) * GetStatValue(StatType.AimMoveSpeedMultiplier, DefaultAimMoveSpeedMultiplier);
 
             default:
                 return 0f;
         }
+    }
+
+    private float GetStatValue(StatType statType, float fallbackValue)
+    {
+        return characterStats != null ? Mathf.Max(0f, characterStats.GetValue(statType, fallbackValue)) : fallbackValue;
     }
 
     private void MoveCharacter()
@@ -166,6 +252,8 @@ public class PlayerController : MonoBehaviour
         {
             moveDirection = Vector3.ProjectOnPlane(moveDirection, slopeProbe.groundNormal.normalized);
         }
+
+        CurrentMoveDirection = moveDirection;
 
         UpdateVerticalVelocity();
 
@@ -280,8 +368,8 @@ public class PlayerController : MonoBehaviour
     {
         bool shouldFaceMoveDirection =
             playerLocomotionState == PlayerLocomotionState.Sprint &&
-            !_inputHandler.IsAimHeld &&
-            !_inputHandler.IsAttackHeld;
+            !IsAimActive &&
+            !IsAttackActive;
 
         if (shouldFaceMoveDirection)
         {
@@ -324,6 +412,132 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
+    private bool TryStartDodge()
+    {
+        PlayerActionState actionState = stateMachine.CurrentState;
+
+        // 행동에 어떤 제약도 없는 Free 상태나 행동 취소가 가능한 Reload 상태에서만 회피를 시작할 수 있다.
+        if (actionState != PlayerActionState.Free && actionState != PlayerActionState.Reload)
+        {
+            return false;
+        }
+
+        if (Time.time < nextDodgeTime)
+        {
+            return false;
+        }
+
+        // 현재 입력을 카메라 기준으로 변환하여 회피 방향을 계산한다.
+        Vector3 requestedDirection = CalculateMoveDirection();
+
+        // 만약 어떤 입력도 없으면 캐릭터가 바라보는 방향으로 회피한다.
+        if (requestedDirection.sqrMagnitude < MoveInputThreshold * MoveInputThreshold)
+            requestedDirection = transform.forward;
+
+        // 회피 방향으로 실제로 이동할 수 있는 지면이 있는지 확인한다.
+        RefreshGroundProbe(requestedDirection);
+
+        // 캐릭터가 지면에 서있거나, 캐릭터 중심 아래에 지면이 있거나, 회피 방향에 경사면 지면이 있는 경우에만 회피를 허용한다.
+        bool canDodge = characterController.isGrounded || centerProbe.hasGround || slopeProbe.hasGround;
+
+        if (!canDodge)
+            return false;
+
+        // 경사면에서 회피할 때, 회피 방향을 경사면에 맞춰서 이동하도록 보정한다.
+        if (slopeProbe.hasGround)
+        {
+            requestedDirection = Vector3.ProjectOnPlane(requestedDirection, slopeProbe.groundNormal.normalized);
+        }
+
+        // 회피 방향을 정규화하여 단위 벡터로 만든다.
+        dodgeDirection = requestedDirection.normalized;
+
+        dodgeElapsedTime = 0f;
+
+        Vector3 lookDirection = dodgeDirection;
+
+        lookDirection.y = 0f;
+
+        // 플레이어가 회피를 시작할 때 회피 방향으로 캐릭터가 회전하도록 한다.
+        if (lookDirection.sqrMagnitude > MoveInputThreshold * MoveInputThreshold)
+        {
+            transform.rotation = Quaternion.LookRotation(lookDirection.normalized, Vector3.up);
+        }
+
+        if (actionState == PlayerActionState.Reload)
+        {
+            if (reloadController != null)
+            {
+                reloadController.CancelReload();
+            }
+        }
+
+        if (!stateMachine.TryChangeState(PlayerActionState.Dodge))
+            return false;
+
+        healthComponent?.SetInvulnerable(true);
+        return true;
+    }
+
+    private void UpdateDodge()
+    {
+        // 회피 속도를 계산한다.
+        float safeDodgeDuration = Mathf.Max(dodgeDuration, 0.01f);
+
+        float dodgeSpeed = dodgeDistance / safeDodgeDuration;
+
+        // 마지막 프레임에 회피 시간을 초과해서 이동하지 않도록 나머지 회피 시간을 계산한다.
+        float remainingDodgeTime = Mathf.Max(safeDodgeDuration - dodgeElapsedTime, 0f);
+
+        // 이번 프레임에서 이동할 시간을 계산한다.
+        float stepTime = Mathf.Min(Time.deltaTime, remainingDodgeTime);
+
+        RefreshGroundProbe(dodgeDirection);
+
+        Vector3 moveDirection = dodgeDirection;
+
+        if (slopeProbe.hasGround)
+        {
+            moveDirection = Vector3.ProjectOnPlane(dodgeDirection, slopeProbe.groundNormal).normalized;
+        }
+
+        CurrentMoveDirection = moveDirection;
+
+        currentMoveSpeed = dodgeSpeed;
+
+        // 회피 중에도 중력 법칙을 유지한다.
+        UpdateVerticalVelocity();
+
+        Vector3 velocity = moveDirection * currentMoveSpeed + Vector3.up * _verticalVelocity;
+
+        // 회피 중에는 CharacterController.Move를 사용하여 이동하여 벽을 통과하지 않도록 한다.
+        characterController.Move(velocity * stepTime);
+
+        dodgeElapsedTime += stepTime;
+
+        if (dodgeElapsedTime >= safeDodgeDuration)
+        {
+            EndDodge();
+        }
+    }
+
+    private void EndDodge()
+    {
+        dodgeElapsedTime = 0f;
+        dodgeDirection = Vector3.zero;
+        currentMoveSpeed = 0f;
+
+        nextDodgeTime = Time.time + dodgeCooldown;
+
+        healthComponent?.SetInvulnerable(false);
+        stateMachine.TryChangeState(PlayerActionState.Free);
+    }
+
+    private void OnDisable()
+    {
+        healthComponent?.SetInvulnerable(false);
+    }
+
     private void ResolveAimController()
     {
         if (aimController != null)
@@ -352,4 +566,5 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawLine(forwardPos, forwardPos + Vector3.down * groundSnapDistance);
         }
     }
+
 }

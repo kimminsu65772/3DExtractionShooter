@@ -8,7 +8,12 @@ public class PlayerAttackController : MonoBehaviour
     [SerializeField] private PlayerAimController aimController;
     [SerializeField] private PlayerWeaponHolder weaponHolder;
     [SerializeField] private PlayerRecoilController recoilController;
+    [SerializeField] private CharacterStats characterStats;
+    [SerializeField] private PlayerAnimationController animationController;
+    [SerializeField] private PlayerStateMachine stateMachine;
+    [SerializeField] private PlayerReloadController reloadController;
     [SerializeField] private CombatDataCompositionRoot dataRoot;
+
 
     [Header("투사체 설정")]
     [SerializeField] private LayerMask projectileHitMask;
@@ -20,6 +25,8 @@ public class PlayerAttackController : MonoBehaviour
 
     private float nextFireTime;
 
+    private bool isFirePending;
+
     private void Awake()
     {
         ResolveReferences();
@@ -27,28 +34,90 @@ public class PlayerAttackController : MonoBehaviour
 
     private void Update()
     {
+        // 뭔가를 하고 있는 상태에서는 공격을 할 수 없도록 한다.
+        bool canAttack = stateMachine != null && stateMachine.CurrentState == PlayerActionState.Free;
+
         if (recoilController != null && inputHandler != null)
         {
-            recoilController.SetRecoveryBlocked(inputHandler.IsAttackHeld);
+            recoilController.SetRecoveryBlocked(inputHandler.IsAttackHeld && canAttack);
         }
 
-        if (inputHandler != null && inputHandler.IsAttackHeld)
+        // 발사 애니메이션을 요청한 직후 회피가 시작될 수도 있다.
+        // 이때 남아 있던 Animation Event가 회피 도중 투사체를 만들지 않도록 예약을 취소한다.
+        if (!canAttack)
         {
-            TryFire();
+            isFirePending = false;
+            return;
+        }
+
+        if (inputHandler != null && inputHandler.IsAttackHeld && animationController)
+        {
+            TryRequestFire();
         }
     }
 
-    private void TryFire()
+    private void TryRequestFire()
     {
+        if (isFirePending)
+            return;
+
         if (!CanFire())
             return;
+
+        if (!HasLoadedRound())
+        {
+            reloadController?.TryStartReload();
+            return;
+        }
 
         if (Time.time < nextFireTime)
             return;
 
-        RuntimeWeapon runtimeWeapon = weaponHolder.CurrentWeapon;
+        aimController.RefreshAim();
 
+        if (!aimController.HasValidAimDirection)
+        {
+            LogWarning("[PlayerAttackController]: 발사 방향이 적절하지 않아 발사할 수 없습니다.");
+            return;
+        }
+
+        WeaponDefinition definition = weaponHolder.CurrentWeapon.Definition;
+
+        // 이제 Animation Event가 들어오기 전까지 추가 발사 요청을 받지 않는다.
+        isFirePending = true;
+
+        nextFireTime = Time.time + 1f / definition.fireRate;
+
+        // 총을 발사하기 위한 애니메이션을 재생한다.
+        animationController.PlayFireAnimation();
+    }
+
+    public void ExecutePendingFire()
+    {
+        if (!isFirePending)
+            return;
+
+        isFirePending = false;
+
+        if (!CanFire())
+            return;
+
+
+        RuntimeWeapon runtimeWeapon = weaponHolder.CurrentWeapon;
         WeaponDefinition definition = runtimeWeapon.Definition;
+        WeaponAmmoState ammoState = weaponHolder.CurrentAmmoState;
+
+        if (ammoState == null || !ammoState.CanFire)
+        {
+            reloadController?.TryStartReload();
+            return;
+        }
+
+        if (dataRoot.AmmoCatalog == null || !dataRoot.AmmoCatalog.TryGet(ammoState.LoadedAmmoId, out AmmoDefinition ammoDefinition))
+        {
+            LogWarning($"장전된 AmmoId {ammoState.LoadedAmmoId}를 AmmoCatalog에서 찾을 수 없습니다.");
+            return;
+        }
 
         aimController.RefreshAim();
 
@@ -81,11 +150,13 @@ public class PlayerAttackController : MonoBehaviour
 
         bool spawned = projectileSpawnService.TrySpawn(
             runtimeWeapon,
+            ammoDefinition,
             muzzle.position,
             fireDirection,
             fireDistance,
             gameObject,
             projectileHitMask,
+            GetDamageStatSnapshot(),
             dataRoot.Pools
             );
 
@@ -95,7 +166,15 @@ public class PlayerAttackController : MonoBehaviour
             return;
         }
 
-        nextFireTime = Time.time + 1f / definition.fireRate;
+        // 공격 입력이나 애니메이션 요청 시점이 아니라 실제 투사체 생성 성공 뒤에만 한 발을 소비한다.
+        if (!ammoState.TryConsumeRound(out int consumedAmmoId))
+        {
+            Debug.LogError("투사체 생성 후 탄약 소비에 실패했습니다. 탄창 상태를 확인해야 합니다.", this);
+            return;
+        }
+
+        if (showDebugLog)
+            Debug.Log($"AmmoId {consumedAmmoId} 발사. 남은 장탄: {ammoState.LoadedAmmoCount}/{ammoState.Capacity}", this);
 
         if (recoilController != null)
         {
@@ -105,10 +184,19 @@ public class PlayerAttackController : MonoBehaviour
             recoilController.AddRecoil(definition, inputHandler.IsAimHeld, screenDirection);
         }
     }
+    public void OnFireFrame()
+    {
+        ExecutePendingFire();
+    }
 
     private bool CanFire()
     {
         ResolveReferences();
+
+        if (stateMachine == null || stateMachine.CurrentState != PlayerActionState.Free)
+        {
+            return false;
+        }
 
         if (inputHandler == null)
         {
@@ -179,6 +267,15 @@ public class PlayerAttackController : MonoBehaviour
             return false;
         }
 
+        if (animationController == null)
+        {
+            LogWarning(
+                "PlayerAnimationController 참조가 없습니다."
+            );
+
+            return false;
+        }
+
         return true;
     }
 
@@ -204,9 +301,45 @@ public class PlayerAttackController : MonoBehaviour
 
         if (recoilController == null)
         {
-            recoilController =
-                GetComponent<PlayerRecoilController>();
+            recoilController = GetComponent<PlayerRecoilController>();
         }
+
+        if (characterStats == null)
+        {
+            characterStats = GetComponent<CharacterStats>();
+        }
+
+        if (animationController == null)
+        {
+            animationController =
+                GetComponent<PlayerAnimationController>();
+        }
+
+        if (stateMachine == null)
+        {
+            stateMachine =
+                GetComponent<PlayerStateMachine>();
+        }
+
+        if (reloadController == null)
+        {
+            reloadController = GetComponent<PlayerReloadController>();
+        }
+    }
+
+    private bool HasLoadedRound()
+    {
+        return weaponHolder != null && weaponHolder.CurrentAmmoState != null && weaponHolder.CurrentAmmoState.CanFire;
+    }
+
+    private DamageStatSnapshot GetDamageStatSnapshot()
+    {
+        if (characterStats == null)
+            return DamageStatSnapshot.Identity;
+
+        float outgoingDamageMultiplier = characterStats.GetValue(StatType.OutgoingDamageMultiplier, 1f);
+        float headshotDamageMultiplier = characterStats.GetValue(StatType.HeadshotDamageMultiplier, 1f);
+        return new DamageStatSnapshot(outgoingDamageMultiplier, headshotDamageMultiplier);
     }
 
     private void LogWarning(string message)

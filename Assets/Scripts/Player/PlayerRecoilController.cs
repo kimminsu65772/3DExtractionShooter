@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerRecoilController : MonoBehaviour
 {
     [SerializeField] private float recoilScreenMultiplier = 12f;
+    [SerializeField] private CharacterStats characterStats;
 
     private WeaponDefinition currentWeapon;
     private Vector2 currentRecoilOffset;
@@ -18,6 +19,14 @@ public class PlayerRecoilController : MonoBehaviour
         get
         {
             return new Vector2(currentRecoilOffset.x, currentRecoilOffset.y) * recoilScreenMultiplier;
+        }
+    }
+
+    private void Awake()
+    {
+        if (characterStats == null)
+        {
+            characterStats = GetComponent<CharacterStats>();
         }
     }
 
@@ -49,7 +58,7 @@ public class PlayerRecoilController : MonoBehaviour
 
         currentWeapon = weapon;
 
-        float recoilMultiplier = GetEffectiveRecoilMultiplier(weapon, isAiming);
+        float recoilMultiplier = GetEffectiveRecoilMultiplier(weapon, isAiming) * GetStatMultiplier(StatType.RecoilControlMultiplier);
         float horizontalRecoil = Random.Range(-weapon.horizontalRecoilPerShot, weapon.horizontalRecoilPerShot) * recoilMultiplier;
 
         Vector2 forward = recoilDirection.normalized;
@@ -169,12 +178,19 @@ public class PlayerRecoilController : MonoBehaviour
             spreadAngle *= weapon.moveSpreadMultiplier;
         }
 
+        spreadAngle *= GetStatMultiplier(StatType.SpreadControlMultiplier);
+
         if (weapon.maxSpreadAngle > 0f)
         {
             spreadAngle = Mathf.Min(spreadAngle, weapon.maxSpreadAngle);
         }
 
         return Mathf.Max(0f, spreadAngle);
+    }
+
+    private float GetStatMultiplier(StatType statType)
+    {
+        return characterStats != null ? Mathf.Max(0f, characterStats.GetValue(statType, 1f)) : 1f;
     }
 
     private Vector3 ApplySpread(Vector3 baseDirection, float spreadAngle)

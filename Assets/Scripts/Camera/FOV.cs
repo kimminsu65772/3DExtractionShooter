@@ -15,6 +15,10 @@ public class FOV : MonoBehaviour
     [Header("시야 원점")]
     [SerializeField] private Transform viewOrigin;
 
+    [Header("시야 방향")]
+    [SerializeField] private PlayerAimController aimController;
+    [SerializeField] private PlayerController playerController;
+
     [Header("인지 범위 전용 원형 메시")]
     [SerializeField, Min(3)] private int awarenessSegments;
     [SerializeField] private MeshFilter awarenessMeshFilter;
@@ -91,6 +95,12 @@ public class FOV : MonoBehaviour
     private void Awake()
     {
         ClampSettings();
+
+        if (aimController == null)
+            aimController = GetComponent<PlayerAimController>();
+
+        if (playerController == null)
+            playerController = GetComponent<PlayerController>();
 
         if (viewMeshFilter == null &&
             !TryGetComponent(out viewMeshFilter))
@@ -186,6 +196,26 @@ public class FOV : MonoBehaviour
         DrawAwarenessMesh();
     }
 
+    private Vector3 GetViewDirection()
+    {
+        if (playerController != null && playerController.ShouldFOVFollowCharacter)
+        {
+            Vector3 characterForward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+            if (characterForward.sqrMagnitude > 0.0001f)
+                return characterForward.normalized;
+        }
+
+        if (aimController != null && aimController.HasValidAimDirection)
+        {
+            Vector3 aimDirection = Vector3.ProjectOnPlane(aimController.AimDirection, Vector3.up);
+            if (aimDirection.sqrMagnitude > 0.0001f)
+                return aimDirection.normalized;
+        }
+
+        Vector3 fallbackDirection = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+        return fallbackDirection.sqrMagnitude > 0.0001f ? fallbackDirection.normalized : Vector3.forward;
+    }
+
     // 일반적인 수학 좌표계에서 0도는 X축이다. (오른쪽)
     // 그래서 원래는 x축에 Cos, z축에 Sin을 적용해야 한다.
     // 그러나 유니티에서 0도는 Z축이다. (앞쪽)
@@ -228,7 +258,7 @@ public class FOV : MonoBehaviour
 
         Vector3 origin = ViewOriginPosition;
 
-        Vector3 horizontalForward = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+        Vector3 horizontalForward = GetViewDirection();
 
         float minimumDot = Mathf.Cos(viewAngle * 0.5f * Mathf.Deg2Rad);
 
@@ -346,13 +376,15 @@ public class FOV : MonoBehaviour
 
         int stepCount = Mathf.Max(1, Mathf.CeilToInt(viewAngle * meshResolution));
         float stepAngleSize = viewAngle / stepCount;
+        Vector3 viewDirection = GetViewDirection();
+        float viewCenterAngle = Mathf.Atan2(viewDirection.x, viewDirection.z) * Mathf.Rad2Deg;
 
         // 시야각을 시각화하기 위해 Ray를 쏘아 시야각의 경계점을 구한다.
         ViewCastInfo oldViewCast = new ViewCastInfo();
         for (int i = 0; i <= stepCount; i++)
         {
             // 시야각의 시작점부터 끝점까지 stepAngleSize만큼 각도를 증가시키며 Ray를 쏜다.
-            float angle = transform.eulerAngles.y - viewAngle / 2 + stepAngleSize * i;
+            float angle = viewCenterAngle - viewAngle / 2f + stepAngleSize * i;
             // 충돌 감지 메서드를 호출하여 충돌 지점의 정보를 가져온다.
             ViewCastInfo newViewCast = ViewCast(angle, viewRadius);
 

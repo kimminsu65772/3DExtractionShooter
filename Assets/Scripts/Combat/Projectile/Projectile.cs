@@ -4,6 +4,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     private WeaponDefinition weapon;
+    private AmmoDefinition ammo;
     private Vector3 direction;
     // 발사 위치와 발사 시점의 마우스 커서 위치 사이의 거리
     private float aimDistance;
@@ -11,6 +12,7 @@ public class Projectile : MonoBehaviour
     private float maxTravelDistance;
     private GameObject attacker;
     private LayerMask hitLayerMask;
+    private DamageStatSnapshot damageStats = DamageStatSnapshot.Identity;
 
     private Vector3 currentPosition;
     private Vector3 nextPosition;
@@ -24,15 +26,17 @@ public class Projectile : MonoBehaviour
         TryGetComponent(out pooledLifecycle);
     }
 
-    public void Initialize(WeaponDefinition weapon, Vector3 startPos, Vector3 fireDirection, float aimDistance, GameObject attacker, LayerMask hitMask)
+    public void Initialize(WeaponDefinition weapon, AmmoDefinition ammo, Vector3 startPos, Vector3 fireDirection, float aimDistance, GameObject attacker, LayerMask hitMask, DamageStatSnapshot damageStats)
     {
         this.weapon = weapon;
+        this.ammo = ammo;
         this.direction = fireDirection.normalized;
         this.aimDistance = aimDistance;
         this.traveledDistance = 0f;
-        this.maxTravelDistance = Mathf.Min(aimDistance, weapon.minDamageRange);
+        this.maxTravelDistance = Mathf.Max(aimDistance, weapon.minDamageRange);
         this.attacker = attacker;
         this.hitLayerMask = hitMask;
+        this.damageStats = damageStats;
         transform.position = startPos;
     }
 
@@ -41,12 +45,14 @@ public class Projectile : MonoBehaviour
     public void ResetForPool()
     {
         weapon = null;
+        ammo = null;
         direction = Vector3.zero;
         aimDistance = 0f;
         traveledDistance = 0f;
         maxTravelDistance = 0f;
         attacker = null;
         hitLayerMask = default;
+        damageStats = DamageStatSnapshot.Identity;
         currentPosition = Vector3.zero;
         nextPosition = Vector3.zero;
         System.Array.Clear(hitBuffer, 0, hitBuffer.Length);
@@ -187,12 +193,17 @@ public class Projectile : MonoBehaviour
     private DamageInfo BuildDamageInfo(RaycastHit hit, HitPart hitPart)
     {
         float rangeMultiplier = weapon.GetRangeMultiplier(aimDistance);
-        float hitPartMultiplier = weapon.GetHitPartMultiplier(hitPart);
-        float incomingDamage = weapon.baseDamage * rangeMultiplier * hitPartMultiplier;
+        float characterHitPartMultiplier = hitPart == HitPart.Head ? damageStats.HeadshotDamageMultiplier : 1f;
+        float hitPartMultiplier = weapon.GetHitPartMultiplier(hitPart) * characterHitPartMultiplier;
+        float ammoDamageMultiplier = ammo?.damageMultiplier ?? 1f;
+        float incomingDamage = weapon.baseDamage * ammoDamageMultiplier * rangeMultiplier * hitPartMultiplier * damageStats.OutgoingDamageMultiplier;
 
         return new DamageInfo
         {
             weaponId = weapon.weaponId,
+            ammoId = ammo?.ammoId ?? 0,
+            armorPenetrationLevel = ammo?.armorPenetrationLevel ?? 0,
+            ammoDamageMultiplier = ammoDamageMultiplier,
             incomingDamage = incomingDamage,
             aimDistance = aimDistance,
             hitPoint = hit.point,
