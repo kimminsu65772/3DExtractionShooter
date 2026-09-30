@@ -62,7 +62,7 @@ public enum WeaponAnimationStyle
 }
 
 // 적의 상태를 구분하는 용도
-public enum  EnemyState
+public enum EnemyStateType
 {
     None,
     Idle,
@@ -70,4 +70,17 @@ public enum  EnemyState
     Chase,
     Attack,
     Dead
+}
+
+// 적이 플레이어를 인식한 정도를 구분하는 용도
+public enum EnemyPerceptionLevel
+{
+    // 현재 플레이어를 직접 확인하지 못한 상태
+    None,
+
+    // 먼 시야에서 발견하여 확인하러 가야 하는 상태
+    Suspicious,
+
+    // 가까운 시야에서 명확하게 발견한 상태
+    Confirmed
 }

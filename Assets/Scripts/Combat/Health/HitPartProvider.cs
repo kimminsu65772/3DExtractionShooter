@@ -16,7 +16,7 @@ public class HitPartProvider : MonoBehaviour, IHitPartProvider
     {
         if (collider == null)
         {
-            Debug.LogWarning("Collider°¡ nullÀÔ´Ï´Ù.", this);
+            Debug.LogWarning("Colliderê°€ nullì…ë‹ˆë‹¤.", this);
             return HitPart.None;
         }
 
@@ -34,13 +34,13 @@ public class HitPartProvider : MonoBehaviour, IHitPartProvider
 
         if (hitBoxes == null)
         {
-            Debug.LogWarning("ÇÒ´çµÈ È÷Æ® ¹Ú½º°¡ ¾ø½À´Ï´Ù.", this);
+            Debug.LogWarning("í• ë‹¹ëœ íˆíŠ¸ ë°•ìŠ¤ê°€ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 
         if (hitBoxes.Length == 0)
         {
-            Debug.LogWarning("ÇÒ´çµÈ È÷Æ® ¹Ú½º ¹è¿­ÀÌ ºñ¾î ÀÖ½À´Ï´Ù.", this);
+            Debug.LogWarning("í• ë‹¹ëœ íˆíŠ¸ ë°•ìŠ¤ ë°°ì—´ì´ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤.", this);
             return;
         }
 
@@ -48,22 +48,34 @@ public class HitPartProvider : MonoBehaviour, IHitPartProvider
         {
             if (hitBox == null)
             {
-                Debug.LogWarning("HitBox ¹è¿­¿¡ null °ªÀÌ ÀÖ½À´Ï´Ù.", this);
+                Debug.LogWarning("HitBox ë°°ì—´ì— null ê°’ì´ ìˆìŠµë‹ˆë‹¤.", this);
                 continue;
             }
 
             if (!hitBox.TryGetComponent(out Collider hitCollider))
             {
-                Debug.LogWarning($"{hitBox.name}¿¡ Collider°¡ ¾ø½À´Ï´Ù.", hitBox);
+                Debug.LogWarning($"{hitBox.name}ì— Colliderê°€ ì—†ìŠµë‹ˆë‹¤.", hitBox);
                 continue;
             }
 
             if (hitPartMap.ContainsKey(hitCollider))
             {
-                Debug.LogWarning($"{hitCollider.name} Collider°¡ Áßº¹ µî·ÏµÇ¾ú½À´Ï´Ù.", hitCollider);
+                Debug.LogWarning($"{hitCollider.name} Colliderê°€ ì¤‘ë³µ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.", hitCollider);
             }
 
             hitPartMap[hitCollider] = hitBox.HitPart;
         }
+    }
+
+    public void InactiveHitBoxes()
+    {
+        for (int i = 0; i < hitBoxes.Length; i++)
+        {
+            if (hitBoxes[i] != null)
+            {
+                hitBoxes[i].gameObject.SetActive(false);
+            }
+        }
+        hitPartMap.Clear();
     }
 }
