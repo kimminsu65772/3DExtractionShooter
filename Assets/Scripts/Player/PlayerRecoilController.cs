@@ -47,7 +47,7 @@ public class PlayerRecoilController : MonoBehaviour
 
         float effectiveSpreadAngle = GetEffectiveSpreadAngle(weapon, isAiming, isMoving);
 
-        return ApplySpread(baseDirection.normalized, effectiveSpreadAngle);
+        return WeaponSpreadUtility.ApplySpread(baseDirection, effectiveSpreadAngle);
     }
 
     // 무기 발사 시 반동과 스프레드를 적용한다.
@@ -68,13 +68,7 @@ public class PlayerRecoilController : MonoBehaviour
 
         currentRecoilOffset += forward * verticalRecoil + right * horizontalRecoil;
 
-        // 현재 스프레드 각도를 무기의 스프레드 증가량만큼 증가시키고, 최대 스프레드 각도를 초과하지 않도록 제한한다.
-        currentSpreadAngle += weapon.spreadIncreasePerShot;
-
-        if (weapon.maxSpreadAngle > 0f)
-        {
-            currentSpreadAngle = Mathf.Min(currentSpreadAngle, weapon.maxSpreadAngle);
-        }
+        currentSpreadAngle = WeaponSpreadUtility.IncreaseSpread(currentSpreadAngle, weapon);
     }
 
     // 마우스 입력이 현재 반동 방향과 반대라면, 실제 조준 커서를 이동시키기 전에 반동 오프셋을 먼저 상쇄한다.
@@ -119,11 +113,7 @@ public class PlayerRecoilController : MonoBehaviour
         if (currentWeapon == null || currentWeapon.spreadRecoverySpeed <= 0f || isRecoveryBlocked)
             return;
 
-        currentSpreadAngle = Mathf.MoveTowards(
-            currentSpreadAngle,
-            0f,
-            currentWeapon.spreadRecoverySpeed * Time.deltaTime
-        );
+        currentSpreadAngle = WeaponSpreadUtility.RecoverSpread(currentSpreadAngle, currentWeapon, Time.deltaTime);
     }
 
     private float ConsumeScreenRecoilAxis(float screenDelta, ref float recoilOffsetAxis)
@@ -166,52 +156,22 @@ public class PlayerRecoilController : MonoBehaviour
 
     private float GetEffectiveSpreadAngle(WeaponDefinition weapon, bool isAiming, bool isMoving)
     {
-        float spreadAngle = weapon.baseSpreadAngle + currentSpreadAngle;
+        float spreadMultiplier = 1f;
 
         if (isAiming)
-        {
-            spreadAngle *= weapon.aimSpreadMultiplier;
-        }
+            spreadMultiplier *= weapon.aimSpreadMultiplier;
 
         if (isMoving)
-        {
-            spreadAngle *= weapon.moveSpreadMultiplier;
-        }
+            spreadMultiplier *= weapon.moveSpreadMultiplier;
 
-        spreadAngle *= GetStatMultiplier(StatType.SpreadControlMultiplier);
+        spreadMultiplier *= GetStatMultiplier(StatType.SpreadControlMultiplier);
 
-        if (weapon.maxSpreadAngle > 0f)
-        {
-            spreadAngle = Mathf.Min(spreadAngle, weapon.maxSpreadAngle);
-        }
-
-        return Mathf.Max(0f, spreadAngle);
+        return WeaponSpreadUtility.GetEffectiveSpreadAngle(weapon, currentSpreadAngle, spreadMultiplier);
     }
 
     private float GetStatMultiplier(StatType statType)
     {
         return characterStats != null ? Mathf.Max(0f, characterStats.GetValue(statType, 1f)) : 1f;
-    }
-
-    private Vector3 ApplySpread(Vector3 baseDirection, float spreadAngle)
-    {
-        if (spreadAngle <= 0f)
-            return baseDirection;
-
-        // 일정 범위 내에서 스프레드 각도에 따라 랜덤한 점을 생성한다.
-        Vector2 randomPoint = Random.insideUnitCircle * spreadAngle;
-        Vector3 rightAxis = Vector3.Cross(Vector3.up, baseDirection).normalized;
-
-        if (rightAxis.sqrMagnitude <= 0.0001f)
-        {
-            rightAxis = Vector3.right;
-        }
-
-        // Y축을 기준으로 수평 스프레드를 적용하고, 오른쪽 축을 기준으로 수직 스프레드를 적용한다.
-        Quaternion yawRotation = Quaternion.AngleAxis(randomPoint.x, Vector3.up);
-        Quaternion pitchRotation = Quaternion.AngleAxis(randomPoint.y, rightAxis);
-
-        return (yawRotation * pitchRotation * baseDirection).normalized;
     }
 
 }
