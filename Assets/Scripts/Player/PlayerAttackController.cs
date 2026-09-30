@@ -173,6 +173,19 @@ public class PlayerAttackController : MonoBehaviour
             return;
         }
 
+        SoundStimulusHub.Emit(
+            muzzle.position,
+            definition.shotNoiseRadius,
+            gameObject
+        );
+
+        // 실제 발사가 확정된 뒤 총구 VFX와 발사음을 풀에서 대여해 재생한다.
+        dataRoot.FeedbackService?.PlayMuzzleAndSound(
+            runtimeWeapon,
+            muzzle.position,
+            muzzle.rotation
+        );
+
         if (showDebugLog)
             Debug.Log($"AmmoId {consumedAmmoId} 발사. 남은 장탄: {ammoState.LoadedAmmoCount}/{ammoState.Capacity}", this);
 

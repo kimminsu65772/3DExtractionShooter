@@ -30,13 +30,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 846ed2c0d5f04c53a9afd506b1d511a2
-    m_Address: data/weapons
+  - m_GUID: 5d5922334da46994a8b3de9a23628464
+    m_Address: rifle/shot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 720cea86776378944877627ef5ee611e
+    m_Address: weapons/muzzleVfx
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 79ad2438b22513a4a9264d97779ed84f
     m_Address: data/ammo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 846ed2c0d5f04c53a9afd506b1d511a2
+    m_Address: data/weapons
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

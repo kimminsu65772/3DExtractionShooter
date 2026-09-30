@@ -54,6 +54,9 @@ public class WeaponDefinition
     public string projectileAddress;
     public int projectilePrewarmSize;
 
+    [Header("AI 소리 감지")]
+    public float shotNoiseRadius;
+
     [Header("무기 외형 설정")]
     [CsvColumn(Optional = true)]
     public string weaponViewAddress;
@@ -64,7 +67,6 @@ public class WeaponDefinition
     [Header("피드백 관련 설정")]
     [CsvColumn(Optional = true)]
     public string muzzleVfxAddress;
-
     [CsvColumn(Optional = true)]
     public string hitVfxAddress;
 

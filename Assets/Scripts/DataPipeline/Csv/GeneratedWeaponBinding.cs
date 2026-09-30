@@ -39,6 +39,7 @@ namespace ExtractionShooter.DataPipeline
                 @"projectileSpeed",
                 @"recoilRecoverySpeed",
                 @"reloadDuration",
+                @"shotNoiseRadius",
                 @"spreadIncreasePerShot",
                 @"spreadRecoverySpeed",
                 @"verticalRecoilPerShot",
@@ -78,6 +79,7 @@ namespace ExtractionShooter.DataPipeline
                 @"projectileSpeed",
                 @"recoilRecoverySpeed",
                 @"reloadDuration",
+                @"shotNoiseRadius",
                 @"spreadIncreasePerShot",
                 @"spreadRecoverySpeed",
                 @"verticalRecoilPerShot",
@@ -1773,6 +1775,66 @@ namespace ExtractionShooter.DataPipeline
                             else
                             {
                                 candidate.reloadDuration = reloadDurationValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // shotNoiseRadius 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"shotNoiseRadius", out int columnIndex);
+                if (!hasColumn)
+                {
+                    isValid = false;
+                    report.Add(new DataIssue
+                    {
+                        Record = row.Number,
+                        Column = @"shotNoiseRadius",
+                        Message = "필수 열이 없습니다."
+                    });
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"shotNoiseRadius",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            isValid = false;
+                            report.Add(new DataIssue
+                            {
+                                Record = row.Number,
+                                Column = @"shotNoiseRadius",
+                                RawValue = raw,
+                                Message = "필수 값이 비어 있습니다."
+                            });
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float shotNoiseRadiusValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"shotNoiseRadius",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.shotNoiseRadius = shotNoiseRadiusValue;
                             }
                         }
                     }

@@ -53,8 +53,10 @@ namespace ExtractionShooter.DataPipeline
 
         private CancellationTokenSource lifetimeCancellation;
         private CombatDataBootstrap bootstrap;
+        private CombatFeedbackService feedbackService;
 
         public CombatDataBootstrap Bootstrap => bootstrap;
+        public CombatFeedbackService FeedbackService => feedbackService;
 
         public bool isReady => bootstrap != null && bootstrap.State == PipelineState.Ready;
 
@@ -114,6 +116,9 @@ namespace ExtractionShooter.DataPipeline
                 inactivePoolRoot,
                 audioEmitterAddress
             );
+
+            // 플레이어와 적이 동일한 풀링 기반 전투 피드백 재생기를 공유한다.
+            feedbackService = new CombatFeedbackService(bootstrap);
         }
 
         private async void Start()
