@@ -471,7 +471,8 @@ namespace ExtractionShooter.DataPipeline
                     {
                         IPoolLifecycle lifecycle = state.Lifecycles[i];
 
-                        if (lifecycle == null)
+                        // IPoolLifecycle가 UnityEngine.Object를 상속받은 컴포넌트라면 이미 파괴되어 null이 될 수 있으므로, null 체크 후 OnReturn을 호출한다.
+                        if (!IsLifecycleAlive(lifecycle))
                             continue;
 
                         try
@@ -507,6 +508,18 @@ namespace ExtractionShooter.DataPipeline
 
             _spec = null;
             _inactiveRoot = null;
+        }
+
+        private static bool IsLifecycleAlive(IPoolLifecycle lifecycle)
+        {
+            if (lifecycle == null)
+                return false;
+
+            // 단순히 인터페이스로 null 체크만 해서는, UnityEngine.Object를 상속받은 컴포넌트가 이미 파괴되어도 null이 아닌 것으로 판단될 수 있다.
+            if (lifecycle is UnityEngine.Object unityObject)
+                return unityObject != null;
+
+            return true;
         }
     }
 }
