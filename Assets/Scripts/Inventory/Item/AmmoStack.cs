@@ -33,4 +33,32 @@ public class AmmoStack : IInventoryItem
         return currentCount;
     }
 
+    public int TakeUpTo(int amount)
+    {
+        if (amount <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(amount), "amount는 0보다 커야합니다.");
+        }
+        int taken = Math.Min(amount, currentCount);
+        currentCount -= taken;
+        return taken;
+    }
+
+    public void AddAmmo(int amount, out int overflow)
+    {
+        if (amount <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(amount), "amount는 0보다 커야합니다.");
+        }
+
+        int newCount = Math.Min(amount, GetRemainingCapacity());
+        currentCount += newCount;
+        overflow = amount - newCount;
+    }
+
+    public int GetRemainingCapacity()
+    {
+        return ammo.maxStackCount - currentCount;
+    }
+
 }
