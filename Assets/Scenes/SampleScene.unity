@@ -2982,6 +2982,10 @@ MonoBehaviour:
     m_Bits: 704
   spreadMultiplier: 1.5
   showDebugLog: 1
+  minBurstShotCount: 3
+  maxBurstShotCount: 6
+  minBurstCooldown: 0.8
+  maxBurstCooldown: 1.4
 --- !u!114 &1702241363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3031,6 +3035,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1791486116}
   - component: {fileID: 1791486120}
+  - component: {fileID: 1791486135}
+  - component: {fileID: 1791486134}
   - component: {fileID: 1791486121}
   - component: {fileID: 1791486119}
   - component: {fileID: 1791486123}
@@ -3309,7 +3315,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponHolder
   dataRoot: {fileID: 885059671}
-  initialWeaponId: 1001
   weaponMount: {fileID: 631807527}
 --- !u!114 &1791486128
 MonoBehaviour:
@@ -3340,7 +3345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerReloadController
   stateMachine: {fileID: 1791486119}
   weaponHolder: {fileID: 1791486127}
-  ammoStorage: {fileID: 1791486128}
+  inventory: {fileID: 0}
   healthComponent: {fileID: 1791486130}
   dataRoot: {fileID: 885059671}
   _inputHandler: {fileID: 1791486121}
@@ -3428,6 +3433,36 @@ MonoBehaviour:
   hitBoxes:
   - {fileID: 73274183}
   - {fileID: 83766005}
+--- !u!114 &1791486134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791486115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09dbc1e21e690bf49893194d605ac021, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
+  baseCapacity: 16
+  dataRoot: {fileID: 885059671}
+--- !u!114 &1791486135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791486115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d9fee2f141b1d042b254421bdbb21a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
+  weaponHolder: {fileID: 1791486127}
+  reloadController: {fileID: 1791486129}
+  attackController: {fileID: 1791486125}
+  stateMachine: {fileID: 1791486119}
 --- !u!1 &1831387083
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,6 @@ public class PlayerWeaponHolder : MonoBehaviour
 {
     [Header("전투 관련 데이터")]
     [SerializeField] private CombatDataCompositionRoot dataRoot;
-    [SerializeField] private int initialWeaponId = 1001;
     [SerializeField] private Transform weaponMount;
 
 
@@ -38,49 +37,12 @@ public class PlayerWeaponHolder : MonoBehaviour
         currentWeaponView != null &&
         currentWeaponView.HasMuzzle;
 
-    private void OnEnable()
-    {
-        if (dataRoot == null)
-        {
-            Debug.LogError(
-                "CombatDataCompositionRoot 참조가 설정되지 않았습니다.",
-                this
-            );
-
-            return;
-        }
-
-        dataRoot.OnInitialized += HandleDataInitialized;
-
-        // 파이프라인이 먼저 준비된 뒤 Player가 활성화된 경우를 처리한다.
-        if (dataRoot.isReady)
-        {
-            TryEquip(initialWeaponId);
-        }
-    }
     private void OnDisable()
     {
-        if (dataRoot != null)
-        {
-            dataRoot.OnInitialized -= HandleDataInitialized;
-        }
-
         Unequip();
     }
 
-    private void HandleDataInitialized()
-    {
-        if (!TryEquip(initialWeaponId))
-        {
-            Debug.LogError(
-                $"초기 무기를 장착하지 못했습니다. " +
-                $"WeaponId: {initialWeaponId}",
-                this
-            );
-        }
-    }
-
-    public bool TryEquip(int weaponId)
+    public bool TryEquip(WeaponInstance weapon)
     {
         if (dataRoot == null || !dataRoot.isReady)
         {
@@ -92,27 +54,19 @@ public class PlayerWeaponHolder : MonoBehaviour
             return false;
         }
 
-        WeaponCatalog catalog = dataRoot.WeaponCatalog;
-
-        if (catalog == null)
-            {
-            Debug.LogError(
-                "WeaponCatalog가 준비되지 않았습니다. " +
-                "무기를 장착할 수 없습니다.",
-                this
-            );
-            return false;
-        }
-
-        if (!catalog.TryGet(weaponId, out RuntimeWeapon runtimeWeapon))
+        if (weapon == null)
         {
-            Debug.LogError(
-                $"WeaponCatalog에서 WeaponId {weaponId}에 해당하는 무기를 찾을 수 없습니다.",
+            Debug.LogWarning(
+                "장착할 무기 인스턴스가 null입니다.",
                 this
             );
-
             return false;
         }
+
+        RuntimeWeapon runtimeWeapon = weapon.RuntimeWeapon;
+
+        int weaponId = weapon.WeaponId;
+
 
         if (runtimeWeapon.WeaponViewId <= 0)
         {
@@ -158,12 +112,29 @@ public class PlayerWeaponHolder : MonoBehaviour
 
         Unequip(); // 이전 무기 해제
 
-        currentWeaponInstance = new WeaponInstance(runtimeWeapon);
+        currentWeaponInstance = weapon;
         currentWeaponView = newWeaponView;
         currentWeaponViewLease = newLease;
         hasWeaponViewLease = true;
 
         return true;
+    }
+    public bool TryEquip(int weaponId)
+    {
+        if (dataRoot == null || !dataRoot.isReady)
+            return false;
+
+        WeaponCatalog catalog = dataRoot.WeaponCatalog;
+        if (catalog == null || !catalog.TryGet(weaponId, out RuntimeWeapon runtimeWeapon))
+            return false;
+
+        if (runtimeWeapon.Definition.weaponType != WeaponType.Ranged)
+            return false;
+
+        WeaponInstance weapon = new WeaponInstance(runtimeWeapon);
+
+        // 외형 준비와 실제 장착 처리는 위에서 변경한 메서드에 맡깁니다.
+        return TryEquip(weapon);
     }
 
     public void Unequip()
