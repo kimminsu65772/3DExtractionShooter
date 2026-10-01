@@ -2,6 +2,7 @@
 public interface IAmmoStorage
 {
     int GetCount(int ammoId);
-    bool TryAdd(int ammoId, int amount);
+    // 일부만 들어가도 true이며, 원본에서는 addedCount만 차감한다. 실패하면 addedCount는 0이다.
+    bool TryAdd(int ammoId, int amount, out int addedCount);
     bool TryRemove(int ammoId, int amount);
 }

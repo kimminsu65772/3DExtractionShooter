@@ -30,16 +30,18 @@ public class PlayerAmmoStorage : MonoBehaviour, IAmmoStorage
         return ammoId > 0 && ammoCounts.TryGetValue(ammoId, out int count) ? count : 0;
     }
 
-    public bool TryAdd(int ammoId, int amount)
+    public bool TryAdd(int ammoId, int amount, out int addedCount)
     {
+        addedCount = 0;
         if (ammoId <= 0 || amount <= 0)
             return false;
 
         int currentCount = GetCount(ammoId);
-        if (currentCount > int.MaxValue - amount)
+        addedCount = Math.Min(amount, int.MaxValue - currentCount);
+        if (addedCount == 0)
             return false;
 
-        int nextCount = currentCount + amount;
+        int nextCount = currentCount + addedCount;
         ammoCounts[ammoId] = nextCount;
         OnAmmoCountChanged?.Invoke(ammoId, nextCount);
         return true;
