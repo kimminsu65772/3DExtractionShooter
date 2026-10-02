@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerReloadController reloadController;
     [SerializeField] private CharacterStats characterStats;
     [SerializeField] private HealthComponent healthComponent;
+    [SerializeField] private StaminaComponent staminaComponent;
     [SerializeField] private PlayerStateMachine stateMachine;
     [SerializeField] private Transform cameraTransform;
 
@@ -28,6 +29,10 @@ public class PlayerController : MonoBehaviour
     [Header("플레이어 이동 속도 설정")]
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float fallMultiplier = 2f;
+
+    [Header("플레이어 행동 소비 스태미너 설정")]
+    [SerializeField] private float sprintStaminaCostPerSecond = 10f;
+    [SerializeField] private float dodgeStaminaCost = 20f;
 
     [Header("플레이어 회피 설정")]
     [SerializeField] private float dodgeDistance = 3f;
@@ -164,8 +169,10 @@ public class PlayerController : MonoBehaviour
     {
         bool hasMoveInput = _inputHandler.MoveInput.sqrMagnitude > MoveInputThreshold * MoveInputThreshold;
 
+        // 먼저 이동 입력이 없는 경우를 처리한다. 이동 입력이 없으면 Idle 상태로 전환한다.
         if (!hasMoveInput)
         {
+            // idle 상태에서 조준 중이면 AimIdle 상태로 전환한다.
             if (IsAimActive)
             {
                 playerLocomotionState = PlayerLocomotionState.AimIdle;
@@ -174,19 +181,24 @@ public class PlayerController : MonoBehaviour
             playerLocomotionState = PlayerLocomotionState.Idle;
             return;
         }
+        // 이동 입력이 있는 경우를 처리한다.
         else
         {
+            // 이동 입력이 있는 경우, 조준 중이면 AimMove 상태로 전환한다.
             if (IsAimActive)
             {
                 playerLocomotionState = PlayerLocomotionState.AimMove;
                 return;
             }
-
-            if (_inputHandler.IsSprintHeld)
+            // 이동 입력이 있는 경우, 스프린트 입력이 있고 스태미너가 충분하면 Sprint 상태로 전환한다.
+            if (_inputHandler.IsSprintHeld &&
+                staminaComponent.CanSprint &&
+                staminaComponent.TryConsumeSprintStamina(sprintStaminaCostPerSecond * Time.deltaTime))
             {
                 playerLocomotionState = PlayerLocomotionState.Sprint;
                 return;
             }
+            // 그 외의 경우에는 Move 상태로 전환한다.
             else
             {
                 playerLocomotionState = PlayerLocomotionState.Move;
@@ -245,8 +257,6 @@ public class PlayerController : MonoBehaviour
         currentMoveSpeed = GetCurrentMoveSpeed();
 
         RefreshGroundProbe(moveDirection);
-
-
 
         if (slopeProbe.hasGround && moveDirection.sqrMagnitude > 0.001f)
         {
@@ -439,8 +449,11 @@ public class PlayerController : MonoBehaviour
 
         // 캐릭터가 지면에 서있거나, 캐릭터 중심 아래에 지면이 있거나, 회피 방향에 경사면 지면이 있는 경우에만 회피를 허용한다.
         bool canDodge = characterController.isGrounded || centerProbe.hasGround || slopeProbe.hasGround;
+        bool hasEnoughStamina = staminaComponent != null && canDodge && staminaComponent.TryUseStamina(dodgeStaminaCost);
 
         if (!canDodge)
+            return false;
+        if (!hasEnoughStamina)
             return false;
 
         // 경사면에서 회피할 때, 회피 방향을 경사면에 맞춰서 이동하도록 보정한다.

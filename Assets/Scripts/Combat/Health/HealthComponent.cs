@@ -5,7 +5,6 @@ public class HealthComponent : MonoBehaviour, IDamageable
 {
     [SerializeField] private float defaultMaxHealth = 100f;
     [SerializeField] private CharacterStats characterStats;
-    [SerializeField] private bool showDebugLog = true;
 
     private float maxHealth;
     private float currentHealth;
@@ -84,15 +83,6 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
         OnDamageTaken?.Invoke(damageInfo);
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
-
-        if (showDebugLog)
-        {
-            Debug.Log(
-                $"[{name}] IncomingDamage: {damageInfo.incomingDamage} / AppliedDamage: {appliedDamage} / " +
-                $"Part: {damageInfo.hitPart} / Ammo: {damageInfo.ammoId} / Penetration: {damageInfo.armorPenetrationLevel} / " +
-                $"Armor: {armorLevel} / ArmorMultiplier: {armorMultiplier:F3} / Weapon: {damageInfo.weaponId} / " +
-                $"HP: {currentHealth}/{maxHealth}", this);
-        }
 
         if (wasAlive && IsDead)
         {
