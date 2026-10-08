@@ -104,9 +104,12 @@ public class PlayerWeaponHolder : MonoBehaviour
             return false;
         }
 
-        viewInstance.transform.SetParent(weaponMount, false);
-        viewInstance.transform.localPosition = Vector3.zero;
-        viewInstance.transform.localRotation = Quaternion.identity;
+        // 홀더의 크기 배율을 상쇄하며 장착하고, 실패하면 새 외형만 반환한다.
+        if (!newWeaponView.TryAttachTo(weaponMount))
+        {
+            dataRoot.Pools.TryReturn(newLease);
+            return false;
+        }
 
         dataRoot.Pools.Activate(newLease);
 

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Assets filename="C:\Users\admin\Desktop\에셋\.tools\MedicineExtra\assets.xml" createdAt="2026-10-02T04:38:20">
+  <Asset>
+    <Name>T_AED_C</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>1931</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>349700</Size>
+  </Asset>
+  <Asset>
+    <Name>Medicine_bottle02</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>2148</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87568</Size>
+  </Asset>
+  <Asset>
+    <Name>T_AED_N</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>2783</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>349700</Size>
+  </Asset>
+  <Asset>
+    <Name>Pill</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>3283</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87552</Size>
+  </Asset>
+  <Asset>
+    <Name>T_AED_MMOR</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>3651</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>349704</Size>
+  </Asset>
+  <Asset>
+    <Name>Medicine_bottle02</Name>
+    <Container></Container>
+    <Type id="43">Mesh</Type>
+    <PathID>4206</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>6612</Size>
+  </Asset>
+  <Asset>
+    <Name>Medicine_bottle02</Name>
+    <Container></Container>
+    <Type id="213">Sprite</Type>
+    <PathID>5747</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>728</Size>
+  </Asset>
+  <Asset>
+    <Name>Pill</Name>
+    <Container></Container>
+    <Type id="213">Sprite</Type>
+    <PathID>6253</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>656</Size>
+  </Asset>
+</Assets>

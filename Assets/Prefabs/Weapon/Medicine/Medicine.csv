@@ -1,0 +1,5 @@
+Name,Weight,MaxStack,HealHP,Durability Cost,Durabilty
+Bandage,0.05,3,5,,
+First Aid Kit (S),0.5,1,12,25,125
+First Aid Kit,0.75,1,20,25,175
+First Aid Kit (L),1.2,1,35,40,400

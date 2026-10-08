@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Assets filename="C:\Users\admin\Desktop\에셋\Medicine\assets.xml" createdAt="2026-10-02T04:11:32">
+  <Asset>
+    <Name>First_aid_Kit_Bandage</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>1754</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87572</Size>
+  </Asset>
+  <Asset>
+    <Name>First_aid_Kit03</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>1925</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87564</Size>
+  </Asset>
+  <Asset>
+    <Name>First_aid_Kit02</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>2282</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87564</Size>
+  </Asset>
+  <Asset>
+    <Name>First_aid_Kit01</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>3549</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87564</Size>
+  </Asset>
+  <Asset>
+    <Name>First_aid_Kit_Bandage</Name>
+    <Container></Container>
+    <Type id="43">Mesh</Type>
+    <PathID>4248</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>4132</Size>
+  </Asset>
+  <Asset>
+    <Name>First_aid_Kit01</Name>
+    <Container></Container>
+    <Type id="43">Mesh</Type>
+    <PathID>4394</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>3260</Size>
+  </Asset>
+  <Asset>
+    <Name>First_aid_Kit03</Name>
+    <Container></Container>
+    <Type id="43">Mesh</Type>
+    <PathID>4403</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>80864</Size>
+  </Asset>
+  <Asset>
+    <Name>First_aid_Kit02</Name>
+    <Container></Container>
+    <Type id="43">Mesh</Type>
+    <PathID>4537</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>4412</Size>
+  </Asset>
+  <Asset>
+    <Name>First_aid_Kit_Bandage</Name>
+    <Container></Container>
+    <Type id="213">Sprite</Type>
+    <PathID>5576</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>732</Size>
+  </Asset>
+  <Asset>
+    <Name>First_aid_Kit03</Name>
+    <Container></Container>
+    <Type id="213">Sprite</Type>
+    <PathID>5653</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>780</Size>
+  </Asset>
+  <Asset>
+    <Name>First_aid_Kit02</Name>
+    <Container></Container>
+    <Type id="213">Sprite</Type>
+    <PathID>5804</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>704</Size>
+  </Asset>
+  <Asset>
+    <Name>First_aid_Kit01</Name>
+    <Container></Container>
+    <Type id="213">Sprite</Type>
+    <PathID>6355</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>644</Size>
+  </Asset>
+</Assets>

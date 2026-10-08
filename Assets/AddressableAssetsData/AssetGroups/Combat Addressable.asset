@@ -20,8 +20,53 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c6a88c266c444140a0cc1759a643fc5
+    m_Address: icons/ammo_shotgun_standard
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2042971d28e1fd3469cd9c3e50e35a43
     m_Address: weapons/ak47
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27455309ba73bf242907b15b0c420299
+    m_Address: icons/meds_aid_kit02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30d75b08629726a45a40d279e6af7916
+    m_Address: icons/meds_aid_kit03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 313791c78c4380345a5991be2e71dc55
+    m_Address: icons/ammo_pistol_ap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33fcf63f8c508c343ae1926b7936ee45
+    m_Address: icons/ammo_pistol_standard
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 352d55b09f66ffd40be666c7203026b2
+    m_Address: data/armor
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37e8fc27e6c39814ea7486d3fa2ba6bf
+    m_Address: icons/ammo_ar_ap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 499319aa2d3d33740b9a71c7ec1fa5a8
+    m_Address: data/medicine
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f2b22d6d0529d7459f8df26558179ca
+    m_Address: icons/ak74
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -45,8 +90,58 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b7426693f79f8846adad3a6bb553d30
+    m_Address: icons/mp-155
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7e93b9eea2380f54fbbded15c7c4a32f
+    m_Address: icons/ammo_shotgun_ap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 846ed2c0d5f04c53a9afd506b1d511a2
     m_Address: data/weapons
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ec0b050a86a00a4c9832d3501e483c3
+    m_Address: icons/ammo_ar_ap_rust
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 925399bbb16cc1e4888b369b539ad2bb
+    m_Address: icons/meds_bandage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a319e0a4358a434182fd87fd366862f
+    m_Address: data/helmet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0a0dbd0fc023d443b43a05149845d9a
+    m_Address: weapons/mp-155
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b908770fb2425c54988e8403e15f770a
+    m_Address: icons/ammo_ar_standard
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc48442a6fcf1854c85588c415305490
+    m_Address: icons/meds_aid_kit01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb9a3850b1f27264f9c3cd47bbbfe798
+    m_Address: icons/ammo_shotgun_rust
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f61f4ce96b59f4742982ef51198aee67
+    m_Address: icons/ammo_pistol_rust
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
