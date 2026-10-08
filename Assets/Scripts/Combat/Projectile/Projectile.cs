@@ -123,6 +123,10 @@ public class Projectile : MonoBehaviour
             if (hit.collider == null)
                 continue;
 
+            // 바닥 아이템의 Trigger는 F키 획득 전용이므로 탄환 충돌 대상으로 취급하지 않는다.
+            if (hit.collider.GetComponent<WorldItemPickup>() != null)
+                continue;
+
             if (attacker != null && hit.collider.transform.IsChildOf(attacker.transform))
                 continue;
             float distance = hit.distance;

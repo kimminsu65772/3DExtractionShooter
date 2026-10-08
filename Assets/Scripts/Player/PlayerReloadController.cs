@@ -15,12 +15,14 @@ public class PlayerReloadController : MonoBehaviour
     private WeaponInstance reloadingWeapon;
     private AmmoDefinition reloadingAmmo;
     private float reloadCompleteTime;
+    private PlayerItemUseController itemUse;
     private IAmmoStorage AmmoStorage => inventory != null ? inventory.AmmoStorage : null;
 
     public bool IsReloading => reloadingWeapon != null;
 
     private void Awake()
     {
+        itemUse = GetComponent<PlayerItemUseController>();
         if (_inputHandler == null) _inputHandler = GetComponent<PlayerInputHandler>();
         if (stateMachine == null) stateMachine = GetComponent<PlayerStateMachine>();
         if (weaponHolder == null) weaponHolder = GetComponent<PlayerWeaponHolder>();
@@ -55,6 +57,7 @@ public class PlayerReloadController : MonoBehaviour
 
     public bool TryStartReload()
     {
+        if (itemUse != null && itemUse.IsUsing) return false;
         if (IsReloading 
             || stateMachine == null 
             || stateMachine.CurrentState != PlayerActionState.Free 
@@ -74,7 +77,7 @@ public class PlayerReloadController : MonoBehaviour
         if (AmmoStorage.GetCount(ammo.ammoId) <= 0 || !stateMachine.TryChangeState(PlayerActionState.Reload))
             return false;
 
-        animationController.SetReloadAnimationSpeed(reloadDuration);
+        animationController?.SetReloadAnimationSpeed(reloadDuration);
 
         reloadingWeapon = weapon;
         reloadingAmmo = ammo;
@@ -90,6 +93,14 @@ public class PlayerReloadController : MonoBehaviour
 
         if (stateMachine != null && stateMachine.CurrentState == PlayerActionState.Reload)
             stateMachine.TryChangeState(PlayerActionState.Free);
+    }
+
+    // 한 발씩 장전하는 총에 탄약이 있다면 공격 요청이 장전을 중단할 수 있게 한다.
+    public bool TryInterruptForFire()
+    {
+        if (!IsReloading || reloadingWeapon.Definition.reloadMode != WeaponReloadMode.SingleRound || !reloadingWeapon.AmmoState.CanFire) return false;
+        CancelReload();
+        return true;
     }
 
     private void HandleDeath(DamageInfo damageInfo)
@@ -112,7 +123,7 @@ public class PlayerReloadController : MonoBehaviour
         var compatibleAmmo = catalog.GetByType(weapon.AmmoState.CompatibleAmmoType);
         int greatestRemainingCount = 0;
 
-        // 현재 PlayerAmmoStorage에는 인벤토리 슬롯 순서가 없으므로 보유량 동률이면 CSV 등록 순서를 유지한다.
+        // IAmmoStorage는 슬롯 순서를 제공하지 않으므로 보유량 동률이면 현재 CSV 등록 순서를 유지한다.
         for (int i = 0; i < compatibleAmmo.Count; i++)
         {
             AmmoDefinition candidate = compatibleAmmo[i];
@@ -129,17 +140,23 @@ public class PlayerReloadController : MonoBehaviour
 
     private void CompleteReload()
     {
+        // 외부에서 회피나 사망 상태로 바뀐 경우 완료 시간이 지나도 탄약을 이동하지 않는다.
+        if (stateMachine == null || stateMachine.CurrentState != PlayerActionState.Reload)
+        {
+            CancelReload();
+            return;
+        }
         WeaponInstance weapon = reloadingWeapon;
         AmmoDefinition ammo = reloadingAmmo;
         IAmmoStorage ammoStorage = AmmoStorage;
-        reloadingWeapon = null;
-        reloadingAmmo = null;
-        reloadCompleteTime = 0f;
+        bool singleRound = weapon != null && weapon.Definition.reloadMode == WeaponReloadMode.SingleRound;
 
         if (weapon != null && weaponHolder != null && weapon == weaponHolder.CurrentWeaponInstance 
             && ammo != null && ammoStorage != null)
         {
             int transferAmount = Mathf.Min(weapon.AmmoState.RemainingCapacity, ammoStorage.GetCount(ammo.ammoId));
+            if (singleRound) transferAmount = Mathf.Min(transferAmount, 1);
+            int committedAmount = 0;
             if (transferAmount > 0)
             {
                 // 탄창이 받아들인 수량만 보관소에서 소비하여 별도의 반환을 없앤다.
@@ -150,10 +167,17 @@ public class PlayerReloadController : MonoBehaviour
                     for (int i = 0; i < loadedAmount; i++)
                         weapon.AmmoState.TryConsumeRound(out _);
                 }
+                else committedAmount = loadedAmount;
+            }
+
+            // 한 발이 실제로 옮겨졌고 여분이 남았으면 다음 한 발의 시간을 새로 시작한다.
+            // 프레임이 길어져도 밀린 시간을 한꺼번에 처리해 즉시 여러 발을 채우지 않는다.
+            if (singleRound && committedAmount > 0 && !weapon.AmmoState.IsFull && ammoStorage.GetCount(ammo.ammoId) > 0)
+            {
+                reloadCompleteTime = Time.time + weapon.Definition.reloadDuration;
+                return;
             }
         }
-
-        if (stateMachine != null && stateMachine.CurrentState == PlayerActionState.Reload)
-            stateMachine.TryChangeState(PlayerActionState.Free);
+        CancelReload();
     }
 }
