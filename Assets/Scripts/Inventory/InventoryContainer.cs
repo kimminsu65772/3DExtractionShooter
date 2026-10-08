@@ -9,6 +9,14 @@ public class InventoryContainer
 
     public bool IsFull => slots.TrueForAll(slot => !slot.IsEmpty);
 
+    // 기존 컨테이너를 유지한다. 탄약 보관소가 참조하는 객체를 교체하면 이후 장전이 옛 가방을 읽게 된다.
+    internal void ApplyResize(IReadOnlyList<IInventoryItem> items)
+    {
+        while (slots.Count < items.Count) slots.Add(new InventorySlot());
+        if (slots.Count > items.Count) slots.RemoveRange(items.Count, slots.Count - items.Count);
+        for (int i = 0; i < items.Count; i++) slots[i].SetItem(items[i]);
+    }
+
     public InventoryContainer(int slotCount)
     {
         if (slotCount <= 0)
@@ -50,6 +58,10 @@ public class InventoryContainer
             {
                 return false;
             }
+
+            // 같은 보호 장비를 다른 래퍼로 감싸도 한 가방에 두 번 보관하지 않는다.
+            if (item is ArmorInventoryItem incoming && slots[i].Item is ArmorInventoryItem existing && ReferenceEquals(incoming.Armor, existing.Armor))
+                return false;
         }
 
         if (firstEmptySlotIndex != -1)
@@ -103,6 +115,10 @@ public class InventoryContainer
             }
             return false;
         }
+        else if (CanMergeItems(fromSlot, toSlot))
+        {
+            return MergeItems(fromSlot, toSlot) > 0;
+        }
         else
         {
             var tempItem = toSlot.Item;
@@ -138,6 +154,15 @@ public class InventoryContainer
 
         bool movedAny = false;
 
+        // 회복 아이템 등 같은 종류와 ID의 스택을 먼저 채운다. 숫자 ID만으로 종류를 섞지 않는다.
+        if (sourceSlot.Item is DefinitionInventoryItem)
+        {
+            for (int i = 0; i < target.SlotCount && !sourceSlot.IsEmpty; i++)
+                movedAmount += MergeItems(sourceSlot, target.GetSlot(i));
+            movedAny = movedAmount > 0;
+            if (sourceSlot.IsEmpty) return movedAny;
+        }
+
         // 같은 종류의 탄약이 있는 슬롯을 찾아 합치기 시도
         if (sourceSlot.Item is AmmoStack source)
         {
@@ -155,7 +180,7 @@ public class InventoryContainer
             return movedAny;
 
         movedAny = true;
-        movedAmount += sourceSlot.Item is AmmoStack ammo ? ammo.GetCurrentCount() : 1;
+        movedAmount += sourceSlot.Item is AmmoStack ammo ? ammo.GetCurrentCount() : sourceSlot.Item is DefinitionInventoryItem definitionItem ? definitionItem.Count : 1;
         sourceSlot.SetItem(null);
         return true;
     }
@@ -184,6 +209,8 @@ public class InventoryContainer
         {
             return false;
         }
+
+        if (CanMergeItems(sourceSlot, targetSlot)) return MergeItems(sourceSlot, targetSlot) > 0;
 
         if (targetSlot.Item is AmmoStack targetAmmo && sourceSlot.Item is AmmoStack sourceAmmo 
             && targetAmmo.ItemId == sourceAmmo.ItemId)
@@ -315,6 +342,58 @@ public class InventoryContainer
 
         // 실제로 인벤토리에 추가한 양 반환
         return amount - remainingToAdd;
+    }
+
+    // 카탈로그의 아이템을 들어갈 수 있는 만큼만 추가하고 실제 추가량을 돌려준다.
+    public int AddItemUpTo(ItemDefinition definition, int amount)
+    {
+        if (definition == null) throw new ArgumentNullException(nameof(definition));
+        if (amount <= 0) throw new ArgumentOutOfRangeException(nameof(amount));
+        if (definition.maxStackCount <= 0) throw new ArgumentOutOfRangeException(nameof(definition.maxStackCount));
+        int remaining = amount;
+        foreach (InventorySlot slot in slots)
+        {
+            if (slot.Item is DefinitionInventoryItem existing && existing is not MedicineInventoryItem && existing is not ArmorInventoryItem && existing.Type == definition.Type && existing.ItemId == definition.itemId)
+                remaining -= existing.AddUpTo(remaining);
+            if (remaining == 0) return amount;
+        }
+        foreach (InventorySlot slot in slots)
+        {
+            if (!slot.IsEmpty) continue;
+            // 키트는 잔여 사용량을 가진 새 객체로 생성하고 붕대는 기존 스택 방식으로 생성한다.
+            bool isKit = definition is MedicineDefinition medicine && medicine.useCostRatio.HasValue;
+            bool isProtection = definition is ProtectionDefinition;
+            int accepted = isKit || isProtection ? 1 : Math.Min(remaining, definition.maxStackCount);
+            // 보호 장비도 각각 새 인스턴스를 만든다. 같은 종류의 장비끼리 내구도를 공유하지 않는다.
+            if (isProtection) slot.SetItem(new ArmorInventoryItem(new ArmorInstance((ProtectionDefinition)definition)));
+            else slot.SetItem(isKit ? new MedicineInventoryItem((MedicineDefinition)definition) : new DefinitionInventoryItem(definition, accepted));
+            remaining -= accepted;
+            if (remaining == 0) break;
+        }
+        return amount - remaining;
+    }
+
+    private static bool CanMergeItems(InventorySlot source, InventorySlot target)
+    {
+        return source.Item is DefinitionInventoryItem a
+            && target.Item is DefinitionInventoryItem b
+            && a is not MedicineInventoryItem && b is not MedicineInventoryItem
+            && a is not ArmorInventoryItem && b is not ArmorInventoryItem
+            && a.Type == b.Type
+            && a.ItemId == b.ItemId
+            && a.Definition.maxStackCount > 1
+            && b.Definition.maxStackCount > 1;
+    }
+
+    private static int MergeItems(InventorySlot source, InventorySlot target)
+    {
+        if (!CanMergeItems(source, target)) return 0;
+        var from = (DefinitionInventoryItem)source.Item;
+        var to = (DefinitionInventoryItem)target.Item;
+        int moved = to.AddUpTo(from.Count);
+        if (moved > 0) from.TakeUpTo(moved);
+        if (from.Count == 0) source.SetItem(null);
+        return moved;
     }
 
     private bool TryFindSameAmmoSlotandMerge(InventoryContainer target, InventorySlot sourceSlot, out int movedAmount)
