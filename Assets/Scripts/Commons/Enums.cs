@@ -84,3 +84,27 @@ public enum EnemyPerceptionLevel
     // 가까운 시야에서 명확하게 발견한 상태
     Confirmed
 }
+
+// 아이템의 종류를 구분하는 용도
+public enum ItemType
+{
+    None,
+    Weapon,
+    Ammo,
+    Armor,
+    Helmet,
+    Consumable,
+    Meds,
+    Buff,
+    Throwables,
+    Other
+}
+
+// 전리품 상자의 사이즈를 구분하는 용도
+public enum LootContainerSize
+{
+    None = 0,
+    Small = 4,
+    Medium = 8,
+    Large = 16,
+}

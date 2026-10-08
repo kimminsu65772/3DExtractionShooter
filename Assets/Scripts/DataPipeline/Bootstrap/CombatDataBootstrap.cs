@@ -43,6 +43,9 @@ namespace ExtractionShooter.DataPipeline
         public DataReport LastReport { get; private set; }
         public WeaponCatalog WeaponCatalog => weaponCatalog;
         public AmmoCatalog AmmoCatalog => ammoCatalog;
+        public ItemDefinitionCatalog<MedicineDefinition> MedicineCatalog { get; } = new();
+        public ItemDefinitionCatalog<ArmorDefinition> ArmorCatalog { get; } = new();
+        public ItemDefinitionCatalog<HelmetDefinition> HelmetCatalog { get; } = new();
         public KeyedPoolService Pools => pools;
         public int AudioEmitterPoolId => audioEmitterPoolId;
 
@@ -136,6 +139,10 @@ namespace ExtractionShooter.DataPipeline
         }
 
         public Task InitializeAsync(string weaponCsvAddress, string ammoCsvAddress, CancellationToken token)
+            => InitializeAsync(weaponCsvAddress, ammoCsvAddress, null, null, null, token);
+
+        // 이전 호출을 유지하면서 새로운 종류의 데이터 주소를 함께 받을 수 있게 한다.
+        public Task InitializeAsync(string weaponCsvAddress, string ammoCsvAddress, string medicineCsvAddress, string armorCsvAddress, string helmetCsvAddress, CancellationToken token)
         {
             if (string.IsNullOrWhiteSpace(weaponCsvAddress))
                 throw new ArgumentException("무기 CSV 주소가 비어있습니다.", nameof(weaponCsvAddress));
@@ -166,12 +173,12 @@ namespace ExtractionShooter.DataPipeline
             initializationCancellation?.Dispose();
             initializationCancellation = CancellationTokenSource.CreateLinkedTokenSource(token);
 
-            initializationTask = InitializationCoreAsync(weaponCsvAddress, ammoCsvAddress, initializationCancellation.Token);
+            initializationTask = InitializationCoreAsync(weaponCsvAddress, ammoCsvAddress, medicineCsvAddress, armorCsvAddress, helmetCsvAddress, initializationCancellation.Token);
 
             return initializationTask;
         }
 
-        private async Task InitializationCoreAsync(string weaponCsvAddress, string ammoCsvAddress, CancellationToken token)
+        private async Task InitializationCoreAsync(string weaponCsvAddress, string ammoCsvAddress, string medicineCsvAddress, string armorCsvAddress, string helmetCsvAddress, CancellationToken token)
         {
             LastReport = new DataReport();
 
@@ -181,6 +188,9 @@ namespace ExtractionShooter.DataPipeline
 
                 IReadOnlyList<WeaponDefinition> definitions = await LoadDefinitionsAsync(weaponCsvAddress, weaponBinding, weaponValidator, weaponTableLoader, LastReport, token);
                 IReadOnlyList<AmmoDefinition> ammoDefinitions = await LoadDefinitionsAsync(ammoCsvAddress, ammoBinding, ammoValidator, ammoTableLoader, LastReport, token);
+                var medicines = await LoadItemDefinitionsAsync(medicineCsvAddress, new GeneratedMedicineBinding(), token);
+                var armors = await LoadItemDefinitionsAsync(armorCsvAddress, new GeneratedArmorBinding(), token);
+                var helmets = await LoadItemDefinitionsAsync(helmetCsvAddress, new GeneratedHelmetBinding(), token);
 
                 token.ThrowIfCancellationRequested();
 
@@ -221,6 +231,9 @@ namespace ExtractionShooter.DataPipeline
 
                 weaponCatalog.Publish(runtimeWeapons, LastReport);
                 ammoCatalog.Publish(ammoDefinitions, LastReport);
+                MedicineCatalog.Publish(medicines, LastReport);
+                ArmorCatalog.Publish(armors, LastReport);
+                HelmetCatalog.Publish(helmets, LastReport);
 
                 ThrowIfReportHasErrors(
                     LastReport,
@@ -234,6 +247,13 @@ namespace ExtractionShooter.DataPipeline
                 state = PipelineState.Failed;
                 throw;
             }
+        }
+
+        // 주소를 생략한 이전 초기화 경로는 빈 목록을 사용한다. 지정된 CSV의 실패는 숨기지 않는다.
+        private Task<IReadOnlyList<T>> LoadItemDefinitionsAsync<T>(string address, ICsvBinding<T> binding, CancellationToken token) where T : ItemDefinition
+        {
+            if (string.IsNullOrWhiteSpace(address)) return Task.FromResult<IReadOnlyList<T>>(Array.Empty<T>());
+            return LoadDefinitionsAsync(address, binding, new ItemDefinitionValidator<T>(), new CsvTableLoader<T>(), LastReport, token);
         }
 
         private async Task<IReadOnlyList<T>> LoadDefinitionsAsync<T>(
@@ -486,6 +506,9 @@ namespace ExtractionShooter.DataPipeline
             // 외부에서 불완전한 무기 데이터를 조회하지 못하도록 먼저 비운다.
             weaponCatalog.Clear();
             ammoCatalog.Clear();
+            MedicineCatalog.Clear();
+            ArmorCatalog.Clear();
+            HelmetCatalog.Clear();
 
             // 풀까지 준비된 이후 실패했다면 모든 인스턴스와 프리팹 lease를 정리한다.
             if (pools.IsReady)
@@ -573,6 +596,9 @@ namespace ExtractionShooter.DataPipeline
 
             weaponCatalog.Clear();
             ammoCatalog.Clear();
+            MedicineCatalog.Clear();
+            ArmorCatalog.Clear();
+            HelmetCatalog.Clear();
 
             try
             {

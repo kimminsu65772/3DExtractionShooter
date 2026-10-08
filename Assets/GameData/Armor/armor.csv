@@ -1,0 +1,4 @@
+itemId,displayName,unitWeight,maxStackCount,iconAddress,armorLevel,backpackCapacityBonus
+4001,Lv.1 Body Armor,2,1,,1,2
+4002,Lv.2 Body Armor,2.47,1,,2,0
+4003,Lv.3 Body Armor,3.57,1,,3,3

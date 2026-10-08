@@ -49,7 +49,7 @@ namespace ExtractionShooter.DataPipeline
             builder.AppendLine();
             builder.AppendLine("namespace ExtractionShooter.DataPipeline");
             builder.AppendLine("{");
-            builder.AppendLine($"    public sealed class {className} : ICsvBinding<{modelTypeName}>");
+            builder.AppendLine($"    public class {className} : ICsvBinding<{modelTypeName}>");
             builder.AppendLine("    {");
             builder.AppendLine("        public IReadOnlyList<string> ExpectedHeaders { get; } =");
             builder.AppendLine("            new string[]");
@@ -84,7 +84,8 @@ namespace ExtractionShooter.DataPipeline
                 bool isOptional = columnAttribute?.Optional ?? false;
 
                 // 타입 변환기에서 처리할 수 있는 타입인지 확인한다. 지원되지 않는 타입이면 예외를 발생시킨다.
-                Type fieldType = field.FieldType;
+                // 빈 값을 허용하는 숫자 필드는 실제 숫자 타입으로 변환하고 null 기본값을 유지한다.
+                Type fieldType = Nullable.GetUnderlyingType(field.FieldType) ?? field.FieldType;
 
                 bool isSupported =
                     fieldType == typeof(int) ||
@@ -399,6 +400,14 @@ namespace ExtractionShooter.DataPipeline
 
         private const string WeaponBindingDestination = "Assets/Scripts/DataPipeline/Csv/GeneratedWeaponBinding.cs";
         private const string AmmoBindingDestination = "Assets/Scripts/DataPipeline/Csv/GeneratedAmmoBinding.cs";
+
+        // 새 테이블까지 한 번에 생성한다. 상속받은 공통 필드도 기존 Generate가 함께 읽는다.
+        [UnityEditor.MenuItem("Tools/CSV/Generate All Item Bindings")]
+        private static void GenerateAllItemBindings()
+        {
+            foreach (Type type in new[] { typeof(WeaponDefinition), typeof(AmmoDefinition), typeof(MedicineDefinition), typeof(ArmorDefinition), typeof(HelmetDefinition) })
+                WriteIfChanged(type, $"Assets/Scripts/DataPipeline/Csv/Generated{type.Name.Replace("Definition", string.Empty)}Binding.cs");
+        }
 
         [UnityEditor.MenuItem("Tools/CSV/Generate Weapon Binding")]
 

@@ -13,6 +13,9 @@ namespace ExtractionShooter.DataPipeline
         [Header("데이터 주소")]
         [SerializeField] private string weaponCsvAddress = "data/weapons";
         [SerializeField] private string ammoCsvAddress = "data/ammo";
+        [SerializeField] private string medicineCsvAddress = "data/medicine";
+        [SerializeField] private string armorCsvAddress = "data/armor";
+        [SerializeField] private string helmetCsvAddress = "data/helmet";
 
         [Header("비활성 풀 보관 위치")]
         [SerializeField] private Transform inactivePoolRoot;
@@ -62,6 +65,9 @@ namespace ExtractionShooter.DataPipeline
 
         public WeaponCatalog WeaponCatalog => bootstrap?.WeaponCatalog;
         public AmmoCatalog AmmoCatalog => bootstrap?.AmmoCatalog;
+        public ItemDefinitionCatalog<MedicineDefinition> MedicineCatalog => bootstrap?.MedicineCatalog;
+        public ItemDefinitionCatalog<ArmorDefinition> ArmorCatalog => bootstrap?.ArmorCatalog;
+        public ItemDefinitionCatalog<HelmetDefinition> HelmetCatalog => bootstrap?.HelmetCatalog;
 
         public KeyedPoolService Pools => bootstrap?.Pools;
 
@@ -125,7 +131,7 @@ namespace ExtractionShooter.DataPipeline
         {
             try
             {
-                await bootstrap.InitializeAsync(weaponCsvAddress, ammoCsvAddress, lifetimeCancellation.Token);
+                await bootstrap.InitializeAsync(weaponCsvAddress, ammoCsvAddress, medicineCsvAddress, armorCsvAddress, helmetCsvAddress, lifetimeCancellation.Token);
 
                 OnInitialized?.Invoke();
 

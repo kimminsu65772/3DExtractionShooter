@@ -2,6 +2,9 @@ using ExtractionShooter.DataPipeline;
 using System;
 using UnityEngine;
 
+// 탄창 전체를 채우는 방식과 한 발씩 넣는 방식을 구분한다.
+public enum WeaponReloadMode { Magazine, SingleRound }
+
 [Serializable]
 public class WeaponDefinition
 {
@@ -10,11 +13,20 @@ public class WeaponDefinition
     public string displayName;
     public WeaponType weaponType;
     public WeaponAnimationStyle animationStyle;
+    // 같은 이름의 총도 각각 독립된 물건이므로 최대 중첩 수량은 1로 유지한다.
+    [CsvColumn(Optional = true)] public int maxStackCount = 1;
+    [CsvColumn(Optional = true)] public float unitWeight;
+    [CsvColumn(Optional = true)] public string iconAddress;
 
     [Header("탄약과 탄창")]
     public AmmoType ammoType;
     public int magazineCapacity;
     public float reloadDuration;
+    // SingleRound에서는 reloadDuration이 한 발을 넣는 시간이다.
+    [CsvColumn(Optional = true)] public WeaponReloadMode reloadMode;
+    [CsvColumn(Optional = true)] public float adsDuration;
+    [CsvColumn(Optional = true)] public float movementSpeedMultiplier = 1f;
+    [CsvColumn(Optional = true)] public float adsMovementSpeedMultiplier = 1f;
 
     [Header("연사 속도")]
     public float fireRate;
@@ -33,6 +45,11 @@ public class WeaponDefinition
     public float spreadRecoverySpeed;
     public float aimSpreadMultiplier;
     public float moveSpreadMultiplier;
+    // 음수 기본값은 이전 CSV가 독립적인 ADS 설정을 제공하지 않았음을 뜻한다.
+    [CsvColumn(Optional = true)] public float adsBaseSpreadAngle = -1f;
+    [CsvColumn(Optional = true)] public float adsMaxSpreadAngle = -1f;
+    [CsvColumn(Optional = true)] public float adsSpreadIncreasePerShot = -1f;
+    [CsvColumn(Optional = true)] public float adsSpreadRecoverySpeed = -1f;
 
     [Header("기본 스펙")]
     public float baseDamage;
@@ -53,6 +70,10 @@ public class WeaponDefinition
     public float projectileRadius;
     public string projectileAddress;
     public int projectilePrewarmSize;
+    // 한 번 발사할 때 생성하는 탄환 수다. 탄약 소비는 여전히 한 발이다.
+    [CsvColumn(Optional = true)] public int bulletsPerShot = 1;
+    // 중심에서 벗어날 수 있는 최대 각도다. 16이면 전체 범위는 32도다.
+    [CsvColumn(Optional = true)] public float singleShotAngle;
 
     [Header("AI 소리 감지")]
     public float shotNoiseRadius;

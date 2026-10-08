@@ -202,6 +202,12 @@ public class PlayerAttackController : MonoBehaviour
         ExecutePendingFire();
     }
 
+    // 애니메이션 이벤트를 기다리던 현재 발사 요청을 취소한다.
+    public void CancelPendingFire()
+    {
+        isFirePending = false;
+    }
+
     private bool CanFire()
     {
         ResolveReferences();

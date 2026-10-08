@@ -1,2 +1,10 @@
 ammoId,displayName,iconAddress,ammoType,armorPenetrationLevel,damageMultiplier,maxStackCount,unitWeight
-2001,Rifle Standard,,Rifle,1,1,99,0.01
+2001,Standard Bullet (AR),icons/ammo_ar_standard,Rifle,1,1,240,0.02
+2002,Rusty Bullet (AR),icons/ammo_ar_ap_rust,Rifle,0,1,240,0.02
+2003,AP Bullet (AR),icons/ammo_ar_ap,Rifle,2,1,240,0.02
+2011,Rusty Bullet (S),icons/ammo_pistol_rust,Pistol,0,1,320,0.01
+2012,Standard Bullet (S),icons/ammo_pistol_standard,Pistol,1,1,320,0.01
+2013,AP Bullet (S),icons/ammo_pistol_ap,Pistol,2,1,320,0.01
+2021,Rusty Shotgun Shell,icons/ammo_shotgun_rust,Shotgun,0,1,100,0.04
+2022,Standard Shotgun Shell,icons/ammo_shotgun_standard,Shotgun,1,1,100,0.04
+2023,AP Shotgun Shell,icons/ammo_shotgun_ap,Shotgun,2,1,100,0.04
