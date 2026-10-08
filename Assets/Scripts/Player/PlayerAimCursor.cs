@@ -17,6 +17,9 @@ public class PlayerAimCursor : MonoBehaviour
     private Vector2 previousRawMousePosition;
     private bool isInitialized;
     private int lastRefreshFrame = -1;
+    private bool isUICursorActive;
+    private bool cursorVisibleBeforeUI;
+    private CursorLockMode cursorLockBeforeUI;
 
     public Vector2 BaseAimScreenPosition => baseAimScreenPosition;
     public Vector2 RecoilScreenOffset => recoilController != null ? recoilController.CurrentScreenRecoilOffset : Vector2.zero;
@@ -30,6 +33,14 @@ public class PlayerAimCursor : MonoBehaviour
 
     private void OnEnable()
     {
+        // UI가 열린 채 다시 활성화되면 게임용 설정으로 커서를 숨기지 않는다.
+        if (isUICursorActive)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            return;
+        }
+
         if (hideSystemCursor)
         {
             Cursor.visible = false;
@@ -57,6 +68,27 @@ public class PlayerAimCursor : MonoBehaviour
     private void Update()
     {
         RefreshCursor();
+    }
+
+    public void SetUICursorActive(bool active)
+    {
+        // 상자 전환처럼 같은 상태를 다시 요청해도 복원할 원래 값을 덮어쓰지 않는다.
+        if (isUICursorActive == active) return;
+        isUICursorActive = active;
+        if (active)
+        {
+            cursorVisibleBeforeUI = Cursor.visible;
+            cursorLockBeforeUI = Cursor.lockState;
+            if (!isActiveAndEnabled) return;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else if (isActiveAndEnabled)
+        {
+            // 플레이어가 꺼진 경우에는 OnDisable이 풀어 둔 커서 상태를 유지한다.
+            Cursor.lockState = cursorLockBeforeUI;
+            Cursor.visible = cursorVisibleBeforeUI;
+        }
     }
 
     public void RefreshCursor()
