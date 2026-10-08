@@ -8,6 +8,7 @@ public class AmmoStack : IInventoryItem
 
     public ItemType Type => ItemType.Ammo;
     public int ItemId => ammo.ammoId;
+    public AmmoDefinition Definition => ammo;
 
     public AmmoStack(AmmoDefinition ammo, int count)
     {
