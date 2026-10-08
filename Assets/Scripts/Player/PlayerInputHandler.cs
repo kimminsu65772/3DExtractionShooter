@@ -12,6 +12,10 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private InputActionReference _aimAction;
     [SerializeField] private InputActionReference _attackAction;
     [SerializeField] private InputActionReference _reloadAction;
+    // 참조를 생략하면 기존 Player 액션 맵의 Interact를 찾아 사용한다.
+    [SerializeField] private InputActionReference _interactAction;
+    private InputAction interactInput;
+    private bool enabledInteractInput;
 
 #if UNITY_EDITOR
     [Header("Input Debug")]
@@ -24,10 +28,25 @@ public class PlayerInputHandler : MonoBehaviour
     public bool IsSprintHeld { get; private set; }
     public bool IsAimHeld { get; private set; }
     public bool IsAttackHeld { get; private set; }
+    public bool IsUIInputBlocked { get; private set; }
+    private bool waitForAttackRelease;
+
+    // UI에 마우스 사용권을 넘긴다. 이동과 회피 입력은 그대로 유지한다.
+    public void SetUIInputBlocked(bool blocked)
+    {
+        if (IsUIInputBlocked == blocked) return;
+        IsUIInputBlocked = blocked;
+        IsAttackHeld = false;
+        IsAimHeld = false;
+        _attackRequested = false;
+        // 창을 닫는 클릭이나 누른 채로 있던 클릭이 곧바로 총을 발사하지 않게 한다.
+        waitForAttackRelease = _attackAction != null && _attackAction.action.IsPressed();
+    }
 
     private bool _dodgeRequested;
     private bool _attackRequested;
     private bool _reloadRequested;
+    private bool _interactRequested;
 
     private void OnEnable()
     {
@@ -61,6 +80,19 @@ public class PlayerInputHandler : MonoBehaviour
         return true;
     }
 
+    // 한 번 누른 상호작용 입력을 한 번만 소비한다. 길게 누르는 동안 반복 실행하지 않는다.
+    public bool ConsumeInteractInput()
+    {
+        if (!_interactRequested) return false;
+        _interactRequested = false;
+        return true;
+    }
+
+    private void OnInteractInput(InputAction.CallbackContext context)
+    {
+        if (context.performed) _interactRequested = true;
+    }
+
     private void OnMoveInput(InputAction.CallbackContext context)
     {
         MoveInput = context.ReadValue<Vector2>();
@@ -82,7 +114,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnAimInput(InputAction.CallbackContext context)
     {
-        IsAimHeld = context.ReadValueAsButton();
+        IsAimHeld = !IsUIInputBlocked && context.ReadValueAsButton();
 
 #if UNITY_EDITOR
         LogButtonInput("Aim", context.phase, IsAimHeld);
@@ -100,9 +132,11 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnAttackInput(InputAction.CallbackContext context)
     {
-        IsAttackHeld = context.ReadValueAsButton();
+        bool pressed = context.ReadValueAsButton();
+        if (!pressed) waitForAttackRelease = false;
+        IsAttackHeld = !IsUIInputBlocked && !waitForAttackRelease && pressed;
 
-        if (context.performed)
+        if (context.performed && IsAttackHeld)
             _attackRequested = true;
 
 #if UNITY_EDITOR
@@ -129,6 +163,7 @@ public class PlayerInputHandler : MonoBehaviour
         _dodgeRequested = false;
         _attackRequested = false;
         _reloadRequested = false;
+        _interactRequested = false;
     }
 
     private void SubscribeInputEvents()
@@ -145,6 +180,15 @@ public class PlayerInputHandler : MonoBehaviour
         _attackAction.action.canceled += OnAttackInput;
         _dodgeAction.action.performed += OnDodgeInput;
         _reloadAction.action.performed += OnReloadInput;
+        // 기존 액션을 공유한다. 씬의 InputActionReference를 새로 연결하지 않아도 같은 맵에서 찾는다.
+        interactInput = _interactAction != null ? _interactAction.action : _moveAction.action.actionMap?.FindAction("Interact", false);
+        if (interactInput != null)
+        {
+            interactInput.performed += OnInteractInput;
+            enabledInteractInput = !interactInput.enabled;
+            if (enabledInteractInput) interactInput.Enable();
+        }
+        else Debug.LogWarning("PlayerInputHandler에 Interact 액션이 없다. Player 액션 맵 또는 참조를 확인한다.", this);
     }
 
     private void UnsubscribeInputEvents()
@@ -161,6 +205,14 @@ public class PlayerInputHandler : MonoBehaviour
         _attackAction.action.canceled -= OnAttackInput;
         _dodgeAction.action.performed -= OnDodgeInput;
         _reloadAction.action.performed -= OnReloadInput;
+        if (interactInput != null)
+        {
+            interactInput.performed -= OnInteractInput;
+            // 다른 입력 컴포넌트가 이미 켠 액션은 이 컴포넌트가 끄지 않는다.
+            if (enabledInteractInput) interactInput.Disable();
+            interactInput = null;
+            enabledInteractInput = false;
+        }
 
     }
 
@@ -175,6 +227,7 @@ public class PlayerInputHandler : MonoBehaviour
         _dodgeRequested = false;
         _attackRequested = false;
         _reloadRequested = false;
+        _interactRequested = false;
     }
 
 #if UNITY_EDITOR
