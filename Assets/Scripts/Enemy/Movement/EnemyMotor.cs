@@ -23,6 +23,9 @@ public class EnemyMotor : MonoBehaviour
 
     public bool IsReady => _agent != null && _agent.isActiveAndEnabled && _agent.isOnNavMesh;
 
+    // 실제 수평 속도를 제공해 경사면의 높이 변화가 달리기 판정에 섞이지 않게 한다.
+    public float HorizontalSpeed => IsReady ? Vector3.ProjectOnPlane(_agent.velocity, Vector3.up).magnitude : 0f;
+
     public bool HasReachedDestination
     {
         get

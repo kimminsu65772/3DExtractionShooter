@@ -69,11 +69,14 @@ public class HitPartProvider : MonoBehaviour, IHitPartProvider
 
     public void InactiveHitBoxes()
     {
-        for (int i = 0; i < hitBoxes.Length; i++)
+        // 히트박스를 본에 붙여도 사망 애니메이션이 유지되도록 오브젝트 대신 충돌체만 끈다.
+        if (hitBoxes != null)
         {
-            if (hitBoxes[i] != null)
+            foreach (HitBox hitBox in hitBoxes)
             {
-                hitBoxes[i].gameObject.SetActive(false);
+                if (hitBox == null) continue;
+                foreach (Collider hitCollider in hitBox.GetComponents<Collider>())
+                    hitCollider.enabled = false;
             }
         }
         hitPartMap.Clear();

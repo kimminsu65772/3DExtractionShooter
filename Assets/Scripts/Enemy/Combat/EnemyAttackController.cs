@@ -36,6 +36,10 @@ public class EnemyAttackController : MonoBehaviour
 
     public bool IsReloading { get; private set; }
 
+    // 애니메이션은 성공한 행동의 알림만 받고 실제 발사나 장전 시점을 결정하지 않는다.
+    public event System.Action OnFired;
+    public event System.Action<float> OnReloadStepStarted;
+
     public bool IsReady =>
         weaponLoadout != null &&
         weaponLoadout.IsReady &&
@@ -120,6 +124,8 @@ public class EnemyAttackController : MonoBehaviour
         remainingBurstShots = 0;
         nextBurstStartTime = 0f;
 
+        OnReloadStepStarted?.Invoke(reloadDuration);
+
         if (showDebugLog)
         {
             Debug.Log(
@@ -133,7 +139,15 @@ public class EnemyAttackController : MonoBehaviour
 
     private void CompleteReload()
     {
-        bool reloadSucceeded = weaponLoadout.TryReloadFull();
+        bool singleRound = weaponLoadout.CurrentWeapon.Definition.reloadMode == WeaponReloadMode.SingleRound;
+        bool reloadSucceeded = singleRound ? weaponLoadout.TryReloadRound() : weaponLoadout.TryReloadFull();
+        // 샷건은 적도 한 발마다 시간을 기다리고, 사망 등으로 취소하면 이미 넣은 탄환을 보존한다.
+        if (singleRound && reloadSucceeded && !weaponLoadout.AmmoState.IsFull)
+        {
+            reloadCompleteTime = Time.time + weaponLoadout.CurrentWeapon.Definition.reloadDuration;
+            OnReloadStepStarted?.Invoke(weaponLoadout.CurrentWeapon.Definition.reloadDuration);
+            return;
+        }
 
         // 재장전 여부와 상관없이 재장전 상태를 초기화한다.
         IsReloading = false;
@@ -222,7 +236,7 @@ public class EnemyAttackController : MonoBehaviour
 
         AmmoDefinition ammo = weaponLoadout.CurrentAmmo;
 
-        bool spawned = projectileSpawnService.TrySpawn(
+        bool spawned = projectileSpawnService.TrySpawnShot(
             weapon,
             ammo,
             muzzle.position,
@@ -254,6 +268,9 @@ public class EnemyAttackController : MonoBehaviour
         }
 
         currentSpreadAngle = WeaponSpreadUtility.IncreaseSpread(currentSpreadAngle, definition);
+
+        // 투사체와 탄약 소비가 모두 성공한 뒤에만 발사 동작을 알린다.
+        OnFired?.Invoke();
 
         SoundStimulusHub.Emit(
             muzzle.position,
