@@ -5,11 +5,14 @@ public class WeaponAmmoState
 {
     private int loadedAmmoId;
     private int loadedAmmoCount;
+    // 빈 탄창 표시용으로 마지막 탄약 ID를 기억한다. 실제 장전 상태와는 구분한다.
+    private int lastLoadedAmmoId;
 
     public AmmoType CompatibleAmmoType { get; }
     public int Capacity { get; }
     public int LoadedAmmoId => loadedAmmoId;
     public int LoadedAmmoCount => loadedAmmoCount;
+    public int LastLoadedAmmoId => lastLoadedAmmoId;
     public int RemainingCapacity => Capacity - loadedAmmoCount;
     public bool IsEmpty => loadedAmmoCount <= 0;
     public bool IsFull => loadedAmmoCount >= Capacity;
@@ -44,6 +47,7 @@ public class WeaponAmmoState
 
         int loadedAmount = Math.Min(amount, RemainingCapacity);
         loadedAmmoId = ammo.ammoId;
+        lastLoadedAmmoId = ammo.ammoId;
         loadedAmmoCount += loadedAmount;
         return loadedAmount;
     }

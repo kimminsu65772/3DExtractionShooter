@@ -14,6 +14,30 @@ public class PlayerAimController : MonoBehaviour
     [SerializeField] private LayerMask aimLayer;
 
     private readonly RaycastHit[] hitBuffer = new RaycastHit[8];
+    private PlayerWeaponHolder weaponHolder;
+    private PlayerStateMachine stateMachine;
+    private readonly WeaponAdsTiming adsTiming = new WeaponAdsTiming();
+
+    // 조준 자세는 즉시 바뀌어도 수치 보정은 무기의 조준 준비 시간이 끝난 뒤에만 적용한다.
+    public bool IsAdsReady
+    {
+        get
+        {
+            return RefreshAds();
+        }
+    }
+
+    private bool RefreshAds()
+    {
+        if (weaponHolder == null) weaponHolder = GetComponent<PlayerWeaponHolder>();
+        if (stateMachine == null) stateMachine = GetComponent<PlayerStateMachine>();
+        WeaponInstance weapon = weaponHolder != null ? weaponHolder.CurrentWeaponInstance : null;
+        bool requested = weapon != null && inputHandler != null && inputHandler.IsAimHeld && !inputHandler.IsUIInputBlocked && stateMachine != null && stateMachine.CurrentState == PlayerActionState.Free;
+        // 조준 해제, 행동 제한, 다른 총 선택은 이전 총의 준비 시간을 이어받지 않는다.
+        return adsTiming.Evaluate(weapon, requested, Time.time);
+    }
+
+    private void OnDisable() { adsTiming.Evaluate(null, false, Time.time); }
 
     public Vector3 AimWorldPosition { get; private set; }
     public Vector3 AimDirection { get; private set; } = Vector3.forward;
@@ -29,6 +53,7 @@ public class PlayerAimController : MonoBehaviour
 
     private void Update()
     {
+        RefreshAds();
         RefreshAim();
     }
 

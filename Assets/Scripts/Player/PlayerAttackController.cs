@@ -26,16 +26,21 @@ public class PlayerAttackController : MonoBehaviour
     private float nextFireTime;
 
     private bool isFirePending;
+    private PlayerItemUseController itemUse;
 
     private void Awake()
     {
+        itemUse = GetComponent<PlayerItemUseController>();
         ResolveReferences();
     }
 
     private void Update()
     {
+        // 공격을 누르면 이미 한 발 이상 넣은 샷건의 장전만 중단한다. 빈 탄창은 계속 장전한다.
+        if (inputHandler != null && !inputHandler.IsUIInputBlocked && inputHandler.IsAttackHeld && stateMachine != null && stateMachine.CurrentState == PlayerActionState.Reload)
+            reloadController?.TryInterruptForFire();
         // 뭔가를 하고 있는 상태에서는 공격을 할 수 없도록 한다.
-        bool canAttack = stateMachine != null && stateMachine.CurrentState == PlayerActionState.Free;
+        bool canAttack = stateMachine != null && stateMachine.CurrentState == PlayerActionState.Free && inputHandler != null && !inputHandler.IsUIInputBlocked && (itemUse == null || !itemUse.IsUsing);
 
         if (recoilController != null && inputHandler != null)
         {
@@ -145,10 +150,10 @@ public class PlayerAttackController : MonoBehaviour
         {
             bool isMoving = inputHandler.MoveInput.sqrMagnitude > 0.01f;
 
-            fireDirection = recoilController.GetFireDirection(fireDirection, definition, inputHandler.IsAimHeld, isMoving);
+            fireDirection = recoilController.GetFireDirection(fireDirection, definition, aimController.IsAdsReady, isMoving);
         }
 
-        bool spawned = projectileSpawnService.TrySpawn(
+        bool spawned = projectileSpawnService.TrySpawnShot(
             runtimeWeapon,
             ammoDefinition,
             muzzle.position,
@@ -194,7 +199,7 @@ public class PlayerAttackController : MonoBehaviour
             Vector2 screenDirection = aimController.GetScreenAimDirection(muzzle.position);
 
             // 다음 발사에 영향을 줄 반동을 미리 계산한다.
-            recoilController.AddRecoil(definition, inputHandler.IsAimHeld, screenDirection);
+            recoilController.AddRecoil(definition, aimController.IsAdsReady, screenDirection);
         }
     }
     public void OnFireFrame()
@@ -211,6 +216,10 @@ public class PlayerAttackController : MonoBehaviour
     private bool CanFire()
     {
         ResolveReferences();
+        if (itemUse != null && itemUse.IsUsing) return false;
+
+        // 창을 연 직후 늦게 도착한 발사 애니메이션 이벤트도 차단한다.
+        if (inputHandler != null && inputHandler.IsUIInputBlocked) return false;
 
         if (stateMachine == null || stateMachine.CurrentState != PlayerActionState.Free)
         {

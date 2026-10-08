@@ -10,6 +10,8 @@ public class PlayerRecoilController : MonoBehaviour
     private Vector2 currentRecoilOffset;
     private float currentSpreadAngle;
     private bool isRecoveryBlocked;
+    private bool currentIsAiming;
+    private PlayerAimController aimController;
 
     public Vector2 CurrentRecoilOffset => currentRecoilOffset;
     public float CurrentSpreadAngle => currentSpreadAngle;
@@ -24,6 +26,7 @@ public class PlayerRecoilController : MonoBehaviour
 
     private void Awake()
     {
+        aimController = GetComponent<PlayerAimController>();
         if (characterStats == null)
         {
             characterStats = GetComponent<CharacterStats>();
@@ -43,7 +46,7 @@ public class PlayerRecoilController : MonoBehaviour
         if (weapon == null)
             return baseDirection.normalized;
 
-        currentWeapon = weapon;
+        SyncSpreadMode(weapon, isAiming);
 
         float effectiveSpreadAngle = GetEffectiveSpreadAngle(weapon, isAiming, isMoving);
 
@@ -56,7 +59,7 @@ public class PlayerRecoilController : MonoBehaviour
         if (weapon == null)
             return;
 
-        currentWeapon = weapon;
+        SyncSpreadMode(weapon, isAiming);
 
         float recoilMultiplier = GetEffectiveRecoilMultiplier(weapon, isAiming) * GetStatMultiplier(StatType.RecoilControlMultiplier);
         float horizontalRecoil = Random.Range(-weapon.horizontalRecoilPerShot, weapon.horizontalRecoilPerShot) * recoilMultiplier;
@@ -68,7 +71,7 @@ public class PlayerRecoilController : MonoBehaviour
 
         currentRecoilOffset += forward * verticalRecoil + right * horizontalRecoil;
 
-        currentSpreadAngle = WeaponSpreadUtility.IncreaseSpread(currentSpreadAngle, weapon);
+        currentSpreadAngle = WeaponSpreadUtility.IncreaseSpread(currentSpreadAngle, weapon, currentIsAiming);
     }
 
     // 마우스 입력이 현재 반동 방향과 반대라면, 실제 조준 커서를 이동시키기 전에 반동 오프셋을 먼저 상쇄한다.
@@ -110,10 +113,29 @@ public class PlayerRecoilController : MonoBehaviour
 
     private void RecoverSpread()
     {
-        if (currentWeapon == null || currentWeapon.spreadRecoverySpeed <= 0f || isRecoveryBlocked)
+        if (currentWeapon == null)
             return;
+        SyncSpreadMode(currentWeapon, aimController != null && aimController.IsAdsReady);
+        if (isRecoveryBlocked) return;
+        currentSpreadAngle = WeaponSpreadUtility.RecoverSpread(currentSpreadAngle, currentWeapon, Time.deltaTime, currentIsAiming);
+    }
 
-        currentSpreadAngle = WeaponSpreadUtility.RecoverSpread(currentSpreadAngle, currentWeapon, Time.deltaTime);
+    // 조준 전환 시 누적 퍼짐을 기존 조준 배율로 환산하여 쌓인 퍼짐이 갑자기 사라지지 않게 한다.
+    private void SyncSpreadMode(WeaponDefinition weapon, bool isAiming)
+    {
+        if (!ReferenceEquals(currentWeapon, weapon))
+        {
+            currentSpreadAngle = 0f;
+            currentIsAiming = false;
+        }
+        bool independentAds = isAiming && weapon.adsBaseSpreadAngle >= 0f;
+        if (currentIsAiming != independentAds)
+        {
+            float ratio = Mathf.Max(0.0001f, weapon.aimSpreadMultiplier);
+            currentSpreadAngle *= independentAds ? ratio : 1f / ratio;
+            currentIsAiming = independentAds;
+        }
+        currentWeapon = weapon;
     }
 
     private float ConsumeScreenRecoilAxis(float screenDelta, ref float recoilOffsetAxis)
@@ -158,7 +180,7 @@ public class PlayerRecoilController : MonoBehaviour
     {
         float spreadMultiplier = 1f;
 
-        if (isAiming)
+        if (isAiming && weapon.adsBaseSpreadAngle < 0f)
             spreadMultiplier *= weapon.aimSpreadMultiplier;
 
         if (isMoving)
@@ -166,7 +188,7 @@ public class PlayerRecoilController : MonoBehaviour
 
         spreadMultiplier *= GetStatMultiplier(StatType.SpreadControlMultiplier);
 
-        return WeaponSpreadUtility.GetEffectiveSpreadAngle(weapon, currentSpreadAngle, spreadMultiplier);
+        return WeaponSpreadUtility.GetEffectiveSpreadAngle(weapon, currentSpreadAngle, spreadMultiplier, currentIsAiming);
     }
 
     private float GetStatMultiplier(StatType statType)
