@@ -1,0 +1,5 @@
+itemId,displayName,unitWeight,maxStackCount,iconAddress,healAmount,useDuration,useCostRatio
+3001,Bandage,0.05,3,icons/meds_bandage,5,2,
+3002,First Aid Kit (S),0.5,1,icons/meds_aid_kit01,12,2,0.25
+3003,First Aid Kit,0.75,1,icons/meds_aid_kit02,20,2,0.25
+3004,First Aid Kit (L),1.2,1,icons/meds_aid_kit03,35,2,0.25

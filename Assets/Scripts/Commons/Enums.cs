@@ -99,3 +99,12 @@ public enum ItemType
     Throwables,
     Other
 }
+
+// 전리품 상자의 사이즈를 구분하는 용도
+public enum LootContainerSize
+{
+    None = 0,
+    Small = 4,
+    Medium = 8,
+    Large = 16,
+}

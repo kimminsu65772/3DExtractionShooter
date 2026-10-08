@@ -1,0 +1,4 @@
+itemId,displayName,unitWeight,maxStackCount,iconAddress,armorLevel
+5001,Motorcycle Helmet,0.45,1,,1
+5002,Steel Helmet,0.9,1,,2
+5003,SWAT Helmet,1.2,1,,3

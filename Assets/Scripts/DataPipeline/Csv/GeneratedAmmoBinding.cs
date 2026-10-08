@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class GeneratedAmmoBinding : ICsvBinding<global::AmmoDefinition>
+    public class GeneratedAmmoBinding : ICsvBinding<global::AmmoDefinition>
     {
         public IReadOnlyList<string> ExpectedHeaders { get; } =
             new string[]

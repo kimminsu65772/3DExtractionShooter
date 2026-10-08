@@ -4,11 +4,17 @@ using System.Collections.Generic;
 
 namespace ExtractionShooter.DataPipeline
 {
-    public sealed class GeneratedWeaponBinding : ICsvBinding<global::WeaponDefinition>
+    public class GeneratedWeaponBinding : ICsvBinding<global::WeaponDefinition>
     {
         public IReadOnlyList<string> ExpectedHeaders { get; } =
             new string[]
             {
+                @"adsBaseSpreadAngle",
+                @"adsDuration",
+                @"adsMaxSpreadAngle",
+                @"adsMovementSpeedMultiplier",
+                @"adsSpreadIncreasePerShot",
+                @"adsSpreadRecoverySpeed",
                 @"aimRecoilMultiplier",
                 @"aimSpreadMultiplier",
                 @"ammoType",
@@ -16,6 +22,7 @@ namespace ExtractionShooter.DataPipeline
                 @"baseDamage",
                 @"baseSpreadAngle",
                 @"bodyMultiplier",
+                @"bulletsPerShot",
                 @"displayName",
                 @"effectiveRange",
                 @"effectiveRangeMultiplier",
@@ -24,12 +31,15 @@ namespace ExtractionShooter.DataPipeline
                 @"headMultiplier",
                 @"hitVfxAddress",
                 @"horizontalRecoilPerShot",
+                @"iconAddress",
                 @"magazineCapacity",
                 @"maxRecoilOffset",
                 @"maxSpreadAngle",
+                @"maxStackCount",
                 @"minDamageMultiplier",
                 @"minDamageRange",
                 @"moveSpreadMultiplier",
+                @"movementSpeedMultiplier",
                 @"muzzleVfxAddress",
                 @"optimalRange",
                 @"optimalRangeMultiplier",
@@ -39,9 +49,12 @@ namespace ExtractionShooter.DataPipeline
                 @"projectileSpeed",
                 @"recoilRecoverySpeed",
                 @"reloadDuration",
+                @"reloadMode",
                 @"shotNoiseRadius",
+                @"singleShotAngle",
                 @"spreadIncreasePerShot",
                 @"spreadRecoverySpeed",
+                @"unitWeight",
                 @"verticalRecoilPerShot",
                 @"weaponId",
                 @"weaponType",
@@ -92,6 +105,282 @@ namespace ExtractionShooter.DataPipeline
             result = null;
             var candidate = new global::WeaponDefinition();
             bool isValid = true;
+            // adsBaseSpreadAngle 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"adsBaseSpreadAngle", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"adsBaseSpreadAngle",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float adsBaseSpreadAngleValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"adsBaseSpreadAngle",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.adsBaseSpreadAngle = adsBaseSpreadAngleValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // adsDuration 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"adsDuration", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"adsDuration",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float adsDurationValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"adsDuration",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.adsDuration = adsDurationValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // adsMaxSpreadAngle 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"adsMaxSpreadAngle", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"adsMaxSpreadAngle",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float adsMaxSpreadAngleValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"adsMaxSpreadAngle",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.adsMaxSpreadAngle = adsMaxSpreadAngleValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // adsMovementSpeedMultiplier 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"adsMovementSpeedMultiplier", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"adsMovementSpeedMultiplier",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float adsMovementSpeedMultiplierValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"adsMovementSpeedMultiplier",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.adsMovementSpeedMultiplier = adsMovementSpeedMultiplierValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // adsSpreadIncreasePerShot 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"adsSpreadIncreasePerShot", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"adsSpreadIncreasePerShot",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float adsSpreadIncreasePerShotValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"adsSpreadIncreasePerShot",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.adsSpreadIncreasePerShot = adsSpreadIncreasePerShotValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // adsSpreadRecoverySpeed 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"adsSpreadRecoverySpeed", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"adsSpreadRecoverySpeed",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float adsSpreadRecoverySpeedValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"adsSpreadRecoverySpeed",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.adsSpreadRecoverySpeed = adsSpreadRecoverySpeedValue;
+                            }
+                        }
+                    }
+                }
+            }
             // aimRecoilMultiplier 필드의 CSV 값을 읽고 변환한다.
             {
                 bool hasColumn = header.TryGetValue(@"aimRecoilMultiplier", out int columnIndex);
@@ -512,6 +801,52 @@ namespace ExtractionShooter.DataPipeline
                     }
                 }
             }
+            // bulletsPerShot 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"bulletsPerShot", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"bulletsPerShot",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryInt(raw, out int bulletsPerShotValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"bulletsPerShot",
+                                    RawValue = raw,
+                                    Message = "값을 int 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.bulletsPerShot = bulletsPerShotValue;
+                            }
+                        }
+                    }
+                }
+            }
             // displayName 필드의 CSV 값을 읽고 변환한다.
             {
                 bool hasColumn = header.TryGetValue(@"displayName", out int columnIndex);
@@ -922,6 +1257,38 @@ namespace ExtractionShooter.DataPipeline
                     }
                 }
             }
+            // iconAddress 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"iconAddress", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"iconAddress",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            candidate.iconAddress = raw;
+                        }
+                    }
+                }
+            }
             // magazineCapacity 필드의 CSV 값을 읽고 변환한다.
             {
                 bool hasColumn = header.TryGetValue(@"magazineCapacity", out int columnIndex);
@@ -1102,6 +1469,52 @@ namespace ExtractionShooter.DataPipeline
                     }
                 }
             }
+            // maxStackCount 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"maxStackCount", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"maxStackCount",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryInt(raw, out int maxStackCountValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"maxStackCount",
+                                    RawValue = raw,
+                                    Message = "값을 int 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.maxStackCount = maxStackCountValue;
+                            }
+                        }
+                    }
+                }
+            }
             // minDamageMultiplier 필드의 CSV 값을 읽고 변환한다.
             {
                 bool hasColumn = header.TryGetValue(@"minDamageMultiplier", out int columnIndex);
@@ -1277,6 +1690,52 @@ namespace ExtractionShooter.DataPipeline
                             else
                             {
                                 candidate.moveSpreadMultiplier = moveSpreadMultiplierValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // movementSpeedMultiplier 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"movementSpeedMultiplier", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"movementSpeedMultiplier",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float movementSpeedMultiplierValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"movementSpeedMultiplier",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.movementSpeedMultiplier = movementSpeedMultiplierValue;
                             }
                         }
                     }
@@ -1780,6 +2239,52 @@ namespace ExtractionShooter.DataPipeline
                     }
                 }
             }
+            // reloadMode 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"reloadMode", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"reloadMode",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryEnum<global::WeaponReloadMode>(raw, out global::WeaponReloadMode reloadModeValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"reloadMode",
+                                    RawValue = raw,
+                                    Message = "값을 WeaponReloadMode 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.reloadMode = reloadModeValue;
+                            }
+                        }
+                    }
+                }
+            }
             // shotNoiseRadius 필드의 CSV 값을 읽고 변환한다.
             {
                 bool hasColumn = header.TryGetValue(@"shotNoiseRadius", out int columnIndex);
@@ -1835,6 +2340,52 @@ namespace ExtractionShooter.DataPipeline
                             else
                             {
                                 candidate.shotNoiseRadius = shotNoiseRadiusValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // singleShotAngle 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"singleShotAngle", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"singleShotAngle",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float singleShotAngleValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"singleShotAngle",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.singleShotAngle = singleShotAngleValue;
                             }
                         }
                     }
@@ -1955,6 +2506,52 @@ namespace ExtractionShooter.DataPipeline
                             else
                             {
                                 candidate.spreadRecoverySpeed = spreadRecoverySpeedValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // unitWeight 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"unitWeight", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"unitWeight",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float unitWeightValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"unitWeight",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.unitWeight = unitWeightValue;
                             }
                         }
                     }

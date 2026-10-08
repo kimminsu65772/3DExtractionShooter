@@ -28,6 +28,13 @@ namespace ExtractionShooter.DataPipeline
                 record,
                 report);
 
+            ValidateNonNegativeFloat(row.unitWeight, nameof(row.unitWeight), record, report);
+            if (row.maxStackCount != 1) AddIssue(record, nameof(row.maxStackCount), row.maxStackCount.ToString(), "무기는 한 칸에 한 자루만 보관한다.", report);
+            ValidatePositiveFloat(row.movementSpeedMultiplier, nameof(row.movementSpeedMultiplier), record, report);
+            ValidatePositiveFloat(row.adsMovementSpeedMultiplier, nameof(row.adsMovementSpeedMultiplier), record, report);
+            ValidateNonNegativeFloat(row.adsDuration, nameof(row.adsDuration), record, report);
+            if (!Enum.IsDefined(typeof(WeaponReloadMode), row.reloadMode)) AddIssue(record, nameof(row.reloadMode), row.reloadMode.ToString(), "알 수 없는 장전 방식이다.", report);
+
             if (row.weaponType == WeaponType.None)
             {
                 AddIssue(
@@ -80,6 +87,20 @@ namespace ExtractionShooter.DataPipeline
 
             ValidatePositiveInt(row.magazineCapacity, nameof(row.magazineCapacity), record, report);
             ValidatePositiveFloat(row.reloadDuration, nameof(row.reloadDuration), record, report);
+            ValidatePositiveInt(row.bulletsPerShot, nameof(row.bulletsPerShot), record, report);
+            if (row.bulletsPerShot > 128) AddIssue(record, nameof(row.bulletsPerShot), row.bulletsPerShot.ToString(), "한 번에 발사할 탄환 수는 128을 초과할 수 없다.", report);
+            ValidateNonNegativeFloat(row.singleShotAngle, nameof(row.singleShotAngle), record, report);
+            if (row.singleShotAngle > 89f) AddIssue(record, nameof(row.singleShotAngle), row.singleShotAngle.ToString(), "중심에서 벗어나는 각도는 89도 이하여야 한다.", report);
+            // 이전 CSV의 생략은 네 값이 모두 -1인 경우에만 허용한다. 일부만 정의된 ADS는 오류로 보고한다.
+            bool hasAdsSettings = row.adsBaseSpreadAngle != -1f || row.adsMaxSpreadAngle != -1f || row.adsSpreadIncreasePerShot != -1f || row.adsSpreadRecoverySpeed != -1f;
+            if (hasAdsSettings)
+            {
+                ValidateNonNegativeFloat(row.adsBaseSpreadAngle, nameof(row.adsBaseSpreadAngle), record, report);
+                ValidateNonNegativeFloat(row.adsMaxSpreadAngle, nameof(row.adsMaxSpreadAngle), record, report);
+                ValidateNonNegativeFloat(row.adsSpreadIncreasePerShot, nameof(row.adsSpreadIncreasePerShot), record, report);
+                ValidateNonNegativeFloat(row.adsSpreadRecoverySpeed, nameof(row.adsSpreadRecoverySpeed), record, report);
+                if (row.adsMaxSpreadAngle < row.adsBaseSpreadAngle) AddIssue(record, nameof(row.adsMaxSpreadAngle), row.adsMaxSpreadAngle.ToString(), "조준 최대 탄퍼짐은 기본 탄퍼짐 이상이어야 한다.", report);
+            }
 
             ValidateNonNegativeFloat(
                 row.verticalRecoilPerShot,
