@@ -10,11 +10,14 @@ public class PlayerController : MonoBehaviour
     [Header("참조 설정")]
     [SerializeField] private PlayerInputHandler _inputHandler;
     [SerializeField] private PlayerAimController aimController;
+    [SerializeField] private PlayerWeaponHolder weaponHolder;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private PlayerReloadController reloadController;
     [SerializeField] private CharacterStats characterStats;
     [SerializeField] private HealthComponent healthComponent;
     [SerializeField] private StaminaComponent staminaComponent;
+    [SerializeField] private PlayerCarryWeight carryWeight;
+    private float carryMovementMultiplier = 1f;
     [SerializeField] private PlayerStateMachine stateMachine;
     [SerializeField] private Transform cameraTransform;
 
@@ -96,6 +99,11 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        // 씬의 참조가 비어 있어도 같은 플레이어에 붙은 스태미너를 찾아 행동 소비에 사용한다.
+        if (staminaComponent == null) staminaComponent = GetComponent<StaminaComponent>();
+        // 손에 든 무기의 이동 보정을 읽을 참조를 한 번만 찾는다.
+        if (weaponHolder == null) weaponHolder = GetComponent<PlayerWeaponHolder>();
+        if (carryWeight == null) carryWeight = GetComponent<PlayerCarryWeight>();
         if (_inputHandler == null)
         {
             Debug.LogError("인풋 핸들러의 참조 설정이 완료되지 않았습니다.");
@@ -161,6 +169,8 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        // 회피 경로에는 적용하지 않는다. 일반 이동에만 소지 무게의 최종 배율을 적용한다.
+        carryMovementMultiplier = carryWeight != null ? carryWeight.MovementMultiplier : 1f;
         UpdateLocomotionState();
         MoveCharacter();
     }
@@ -170,7 +180,7 @@ public class PlayerController : MonoBehaviour
         bool hasMoveInput = _inputHandler.MoveInput.sqrMagnitude > MoveInputThreshold * MoveInputThreshold;
 
         // 먼저 이동 입력이 없는 경우를 처리한다. 이동 입력이 없으면 Idle 상태로 전환한다.
-        if (!hasMoveInput)
+        if (!hasMoveInput || carryMovementMultiplier <= 0f)
         {
             // idle 상태에서 조준 중이면 AimIdle 상태로 전환한다.
             if (IsAimActive)
@@ -192,7 +202,7 @@ public class PlayerController : MonoBehaviour
             }
             // 이동 입력이 있는 경우, 스프린트 입력이 있고 스태미너가 충분하면 Sprint 상태로 전환한다.
             if (_inputHandler.IsSprintHeld &&
-                staminaComponent.CanSprint &&
+                staminaComponent != null && staminaComponent.CanSprint &&
                 staminaComponent.TryConsumeSprintStamina(sprintStaminaCostPerSecond * Time.deltaTime))
             {
                 playerLocomotionState = PlayerLocomotionState.Sprint;
@@ -226,6 +236,8 @@ public class PlayerController : MonoBehaviour
 
     private float GetCurrentMoveSpeed()
     {
+        WeaponDefinition heldWeapon = weaponHolder != null ? weaponHolder.CurrentWeapon?.Definition : null;
+        float weaponMultiplier = heldWeapon != null ? heldWeapon.movementSpeedMultiplier : 1f;
         switch (playerLocomotionState)
         {
             case PlayerLocomotionState.Idle:
@@ -233,13 +245,17 @@ public class PlayerController : MonoBehaviour
                 return 0f;
 
             case PlayerLocomotionState.Move:
-                return GetStatValue(StatType.WalkSpeed, DefaultWalkSpeed);
+                return GetStatValue(StatType.WalkSpeed, DefaultWalkSpeed) * weaponMultiplier;
 
             case PlayerLocomotionState.Sprint:
-                return GetStatValue(StatType.SprintSpeed, DefaultSprintSpeed);
+                return GetStatValue(StatType.SprintSpeed, DefaultSprintSpeed) * weaponMultiplier;
 
             case PlayerLocomotionState.AimMove:
-                return GetStatValue(StatType.WalkSpeed, DefaultWalkSpeed) * GetStatValue(StatType.AimMoveSpeedMultiplier, DefaultAimMoveSpeedMultiplier);
+                // 빈손에서는 기존의 조심스러운 걸음을 유지한다. 총은 ADS 준비 완료 뒤에만 조준 이동 보정을 받는다.
+                float aimMultiplier = GetStatValue(StatType.AimMoveSpeedMultiplier, DefaultAimMoveSpeedMultiplier);
+                if (heldWeapon != null)
+                    aimMultiplier = aimController != null && aimController.IsAdsReady ? heldWeapon.adsMovementSpeedMultiplier * aimMultiplier / DefaultAimMoveSpeedMultiplier : 1f;
+                return GetStatValue(StatType.WalkSpeed, DefaultWalkSpeed) * weaponMultiplier * aimMultiplier;
 
             default:
                 return 0f;
@@ -253,8 +269,8 @@ public class PlayerController : MonoBehaviour
 
     private void MoveCharacter()
     {
-        Vector3 moveDirection = CalculateMoveDirection();
-        currentMoveSpeed = GetCurrentMoveSpeed();
+        Vector3 moveDirection = carryMovementMultiplier > 0f ? CalculateMoveDirection() : Vector3.zero;
+        currentMoveSpeed = GetCurrentMoveSpeed() * carryMovementMultiplier;
 
         RefreshGroundProbe(moveDirection);
 
