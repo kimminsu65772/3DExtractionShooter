@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Assets filename="C:\Users\admin\Desktop\에셋\Medicine\_AED_Candidates\assets.xml" createdAt="2026-10-02T04:36:48">
+  <Asset>
+    <Name>T_AED_C</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>1931</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>349700</Size>
+  </Asset>
+  <Asset>
+    <Name>AED</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>2299</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>65680</Size>
+  </Asset>
+  <Asset>
+    <Name>T_AED_N</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>2783</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>349700</Size>
+  </Asset>
+  <Asset>
+    <Name>T_AED_MMOR</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>3651</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>349704</Size>
+  </Asset>
+  <Asset>
+    <Name>AED</Name>
+    <Container></Container>
+    <Type id="213">Sprite</Type>
+    <PathID>5811</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>1000</Size>
+  </Asset>
+</Assets>

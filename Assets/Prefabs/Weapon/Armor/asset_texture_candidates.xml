@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Assets filename="C:\Users\admin\Desktop\에셋\.tools\ArmorMaps\assets.xml" createdAt="2026-10-02T05:10:19">
+  <Asset>
+    <Name>T_Clothes_LV1_C</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>1130</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87564</Size>
+  </Asset>
+  <Asset>
+    <Name>T_Clothes_LV3_3_C</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>1133</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>349712</Size>
+  </Asset>
+  <Asset>
+    <Name>T_Clothes_LV1_M</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>1370</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87564</Size>
+  </Asset>
+  <Asset>
+    <Name>T_Clothes_LV3_N</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>1554</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87564</Size>
+  </Asset>
+  <Asset>
+    <Name>T_Clothes_LV3_M</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>1827</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87564</Size>
+  </Asset>
+  <Asset>
+    <Name>T_Clothes_LV2_M</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>2141</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87564</Size>
+  </Asset>
+  <Asset>
+    <Name>T_Clothes_LV1_N</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>2290</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87564</Size>
+  </Asset>
+  <Asset>
+    <Name>T_Clothes_LV3_3_N</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>2676</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>349712</Size>
+  </Asset>
+  <Asset>
+    <Name>T_Clothes_LV3_C</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>2854</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87564</Size>
+  </Asset>
+  <Asset>
+    <Name>T_Clothes_LV2_N</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>3199</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87564</Size>
+  </Asset>
+  <Asset>
+    <Name>T_Clothes_LV3_3_MMOR</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>3456</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>349712</Size>
+  </Asset>
+  <Asset>
+    <Name>T_Clothes_LV2_C</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>3463</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87564</Size>
+  </Asset>
+  <Asset>
+    <Name>T_Clothes_LV2_C 1</Name>
+    <Container></Container>
+    <Type id="28">Texture2D</Type>
+    <PathID>3496</PathID>
+    <Source>C:\Program Files (x86)\Steam\steamapps\common\Escape from Duckov\Duckov_Data\resources.assets</Source>
+    <TreeNode></TreeNode>
+    <Size>87568</Size>
+  </Asset>
+</Assets>
