@@ -1,0 +1,195 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DuckArms
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 0
+  - m_Path: Armature
+    m_Weight: 0
+  - m_Path: Armature/Root
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/Duck_Beak
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/Duck_Eye.L
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/Duck_Eye.R
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/HeadTip
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/HeadTip/HeadTip_end
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/HelmatSocket
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/FaceMaskSocket
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/HairSocket
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/HairSocket/Preview_hairPart
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/HairSocket/Preview_hairPart/Mouth
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/HairSocket/Preview_hairPart/Mouth/Crest_II.001
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/HairSocket/Preview_hairPart/Mouth/Crest_II.001_1
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/MouthSocket
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/MouthSocket/Preview_mouthPart
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/MouthSocket/Preview_mouthPart/Center
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/MouthSocket/Preview_mouthPart/Center/Decal
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/MouthSocket/Preview_mouthPart/Center/Mouth
+      decal preview surface
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/Particle
+      System
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/SodaPointLight
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/Preview_eyePart
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/Preview_eyePart/LeftEye
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/Preview_eyePart/LeftEye/LeftEye
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/Preview_eyePart/RightEye
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/Preview_eyePart/RightEye/RightEye
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/Preview_eyebrowPart
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/Head/DuckHeadHitBox
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.L
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.L/Elbow.L
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.L/Elbow.L/ForeArm.L
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.L/Elbow.L/ForeArm.L/Hand.L
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.L/Elbow.L/ForeArm.L/Hand.L/Hand.Soket.L
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.L/Elbow.L/ForeArm.L/Hand.L/Hand.Soket.L/Hand.Soket.L_end
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.L/Elbow.L/ForeArm.L/Hand.L/Hand.Soket.L/LeftHandSocket
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.L/Elbow.L/ForeArm.L/Hand.L/HandObj.L
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.L/Wings.L
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.L/Wings.L/Preview_wingLPart
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.L/Wings.L/Preview_wingLPart/Root
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.L/Wings.L/Preview_wingLPart/Root/Wings.L_1
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Elbow.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Elbow.R/ForeArm.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Elbow.R/ForeArm.R/Hand.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Elbow.R/ForeArm.R/Hand.R/Hand.Soket.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Elbow.R/ForeArm.R/Hand.R/Hand.Soket.R/Hand.Soket.R_end
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Elbow.R/ForeArm.R/Hand.R/Hand.Soket.R/RightHandSocket
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Elbow.R/ForeArm.R/Hand.R/Hand.Soket.R/TestBowSocket
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Elbow.R/ForeArm.R/Hand.R/Hand.Soket.R/MeleeWeaponSocket
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Elbow.R/ForeArm.R/Hand.R/Hand.Soket.R/MeleeWeaponSocket/MeleeWeaponSocketFixed
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Elbow.R/ForeArm.R/Hand.R/HandObj.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Wings.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Wings.R/Preview_wingRPart
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Wings.R/Preview_wingRPart/Root
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Wings.R/Preview_wingRPart/Root/Wings.L_1
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/UpperArm.R/Wings.R/WeaponMount
+    m_Weight: 1
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/ArmorSocket
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/Spine.003/Spine.004/BackpackSocket
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Spine.001/Spine.002/DuckBodyHitBox
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Tail
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Tail/Tail.001
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Tail/Tail.001/Tail.001_end
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.L
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.L/Foot.L
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.L/Foot.L/Duck_Foot_L
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.L/Foot.L/Foot.L_end
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.L/Foot.L/Sphere (1)
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.L/Foot.L/FootLSocket
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.L/Foot.L/FootLSocket/Preview_footLPart
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.L/Foot.L/FootLSocket/Preview_footLPart/ScaleRoot
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.L/Foot.L/FootLSocket/Preview_footLPart/ScaleRoot/DuckFoot
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.R
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.R/Foot.R
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.R/Foot.R/Duck_Foot_R
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.R/Foot.R/Foot.R_end
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.R/Foot.R/Sphere
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.R/Foot.R/FootRSocket
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.R/Foot.R/FootRSocket/Preview_footRPart
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.R/Foot.R/FootRSocket/Preview_footRPart/ScaleRoot
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/Thigh.R/Foot.R/FootRSocket/Preview_footRPart/ScaleRoot/DuckFoot
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/TailSocket
+    m_Weight: 0
+  - m_Path: Armature/Root/Pelvis/TailSocket/Preview_tailPart
+    m_Weight: 0
+  - m_Path: DuckBody
+    m_Weight: 0
+  - m_Path: Arms
+    m_Weight: 0

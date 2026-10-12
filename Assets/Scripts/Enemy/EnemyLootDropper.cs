@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyEquipmentLoadout))]
 public class EnemyLootDropper : MonoBehaviour
 {
-    // 적이 실제로 사용하던 무기와 탄약을 읽는다.
-    [SerializeField] private EnemyWeaponLoadout loadout;
+    // 개별 장비 구조를 모르고 통합 장비 담당자에게 전리품을 요청한다.
+    [SerializeField] private EnemyEquipmentLoadout equipmentLoadout;
 
     // 사망 위치에 생성할 전리품 상자의 원본을 지정한다.
     [SerializeField] private LootContainer lootPrefab;
@@ -26,34 +27,17 @@ public class EnemyLootDropper : MonoBehaviour
 
     private void Awake()
     {
-        if (loadout == null) loadout = GetComponent<EnemyWeaponLoadout>();
-        if (loadout == null) 
-            Debug.LogError("EnemyLootDropper requires an EnemyWeaponLoadout component.");
+        if (equipmentLoadout == null) equipmentLoadout = GetComponent<EnemyEquipmentLoadout>();
+        if (equipmentLoadout == null)
+            Debug.LogError("EnemyLootDropper에 EnemyEquipmentLoadout이 필요하다.", this);
     }
 
     public bool TryDropLoot()
     {
         // 이미 전리품을 생성했거나, 필요한 참조가 없으면 실패한다.
         if (hasDropped) return false;
-        if (loadout == null || lootPrefab == null) return false;
-        if (loadout.CurrentWeapon == null || loadout.CurrentAmmo == null) return false;
-
-        List<IInventoryItem> lootItems = new List<IInventoryItem>();
-        WeaponInventoryItem lootWeapon = loadout.CurrentWeaponInstance != null ? new WeaponInventoryItem(loadout.CurrentWeaponInstance) : null;
-
-        if (lootWeapon != null)
-        {
-            lootItems.Add(lootWeapon);
-        }
-
-        int maxDropCount = Mathf.Min(19, loadout.CurrentAmmo.maxStackCount);
-        int randomAmmoCount = Random.Range(0, maxDropCount + 1);
-
-        if (randomAmmoCount > 0)
-        {
-            AmmoStack ammo = new AmmoStack(loadout.CurrentAmmo, randomAmmoCount);
-            lootItems.Add(ammo);
-        }
+        if (equipmentLoadout == null || lootPrefab == null) return false;
+        if (!equipmentLoadout.TryCollectLoot(out IReadOnlyList<IInventoryItem> lootItems)) return false;
 
         GameObject lootBox = Instantiate(lootPrefab.gameObject, transform.position, Quaternion.identity);
         lootBox.transform.SetParent(null);
