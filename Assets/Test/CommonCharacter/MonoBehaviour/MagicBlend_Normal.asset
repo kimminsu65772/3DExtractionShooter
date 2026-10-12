@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e41ef00e6ec436477f6fed2e993ea1a, type: 3}
+  m_Name: MagicBlend_Normal
+  m_EditorClassIdentifier:
+  rigAsset: {fileID: 11400000, guid: eb9bdae8d3660a246ac3edb32b0594fe, type: 2}
+  blendTime: 0.2
+  blendCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  basePose: {fileID: 7400000, guid: 687656e924a51aa43bd9d8c908123b45, type: 2}
+  overlayPose: {fileID: 7400000, guid: 805117bd4fa096341a94651b73ae3b9e, type: 2}
+  isAnimation: 0
+  layeredBlends:
+  - layer:
+      chainName: LowerBody
+      elementChain:
+      - name: Pelvis
+        index: 0
+        isVirtual: 0
+      - name: Thigh.L
+        index: 35
+        isVirtual: 0
+      - name: Foot.L
+        index: 36
+        isVirtual: 0
+      - name: Thigh.R
+        index: 40
+        isVirtual: 0
+      - name: Foot.R
+        index: 41
+        isVirtual: 0
+      isStandalone: 0
+    baseWeight: 0
+    additiveWeight: 0
+    localWeight: 0
+  - layer:
+      chainName: Spine
+      elementChain:
+      - name: Spine.001
+        index: 1
+        isVirtual: 0
+      - name: Spine.002
+        index: 2
+        isVirtual: 0
+      - name: Spine.003
+        index: 3
+        isVirtual: 0
+      - name: Spine.004
+        index: 4
+        isVirtual: 0
+      - name: ArmorSocket
+        index: 34
+        isVirtual: 0
+      - name: BackpackSocket
+        index: 35
+        isVirtual: 0
+      isStandalone: 0
+    baseWeight: 0
+    additiveWeight: 0
+    localWeight: 0
+  - layer:
+      chainName: Head
+      elementChain:
+      - name: Head
+        index: 5
+        isVirtual: 0
+      isStandalone: 0
+    baseWeight: 0
+    additiveWeight: 0
+    localWeight: 0
+  - layer:
+      chainName: LeftArm
+      elementChain:
+      - name: UpperArm.L
+        index: 13
+        isVirtual: 0
+      - name: Elbow.L
+        index: 14
+        isVirtual: 0
+      - name: ForeArm.L
+        index: 15
+        isVirtual: 0
+      - name: Hand.L
+        index: 16
+        isVirtual: 0
+      - name: Hand.Soket.L
+        index: 17
+        isVirtual: 0
+      isStandalone: 0
+    baseWeight: 0
+    additiveWeight: 0
+    localWeight: 0
+  - layer:
+      chainName: RightArm
+      elementChain:
+      - name: UpperArm.R
+        index: 20
+        isVirtual: 0
+      - name: Elbow.R
+        index: 21
+        isVirtual: 0
+      - name: ForeArm.R
+        index: 22
+        isVirtual: 0
+      - name: Hand.R
+        index: 23
+        isVirtual: 0
+      - name: Hand.Soket.R
+        index: 24
+        isVirtual: 0
+      - name: RightHandSocket
+        index: 26
+        isVirtual: 0
+      - name: MeleeWeaponSocket
+        index: 27
+        isVirtual: 0
+      isStandalone: 0
+    baseWeight: 1
+    additiveWeight: 0
+    localWeight: 0
+  globalWeight: 1
