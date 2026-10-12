@@ -5902,6 +5902,8 @@ GameObject:
   - component: {fileID: 1702241361}
   - component: {fileID: 1702241363}
   - component: {fileID: 1702241364}
+  - component: {fileID: 1702241366}
+  - component: {fileID: 1702241365}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -6152,7 +6154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 399e0ac7b6fcd6749a9e1a5b1637ee8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyLootDropper
-  loadout: {fileID: 1702241361}
+  equipmentLoadout: {fileID: 1702241365}
   lootPrefab: {fileID: 4445853694405313791, guid: 2ef6bc644b7086942a920af468c50ee4, type: 3}
   groundMask:
     serializedVersion: 2
@@ -6160,6 +6162,35 @@ MonoBehaviour:
   groundProbeHeight: 2
   groundProbeDistance: 10
   groundClearance: 0.01
+--- !u!114 &1702241365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702241350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4034d62ac3290784384c3a323b0d0c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyEquipmentLoadout
+  weaponLoadout: {fileID: 1702241361}
+  protectionLoadout: {fileID: 1702241366}
+--- !u!114 &1702241366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702241350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdf16ac308f950e4088b48e13977432c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyProtectionLoadout
+  dataRoot: {fileID: 0}
+  initialArmorId: 0
+  initialHelmetId: 0
 --- !u!1 &1714601839
 GameObject:
   m_ObjectHideFlags: 0

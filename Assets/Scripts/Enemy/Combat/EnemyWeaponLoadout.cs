@@ -26,6 +26,7 @@ public class EnemyWeaponLoadout : MonoBehaviour
     private readonly List<Collider> deathDisabledWeaponColliders = new();
 
     public WeaponInstance CurrentWeaponInstance => currentWeaponInstance;
+    public CombatDataCompositionRoot DataRoot => dataRoot;
     public RuntimeWeapon CurrentWeapon => currentWeaponInstance?.RuntimeWeapon;
     public WeaponAmmoState AmmoState => currentWeaponInstance?.AmmoState;
     public AmmoDefinition CurrentAmmo => currentAmmo;
