@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using ExtractionShooter.DataPipeline;
 
@@ -22,8 +23,10 @@ public class EnemyWeaponLoadout : MonoBehaviour
     private WeaponView currentWeaponView;
     private PoolLease currentWeaponViewLease;
     private bool hasWeaponViewLease;
+    private readonly List<Collider> deathDisabledWeaponColliders = new();
 
     public WeaponInstance CurrentWeaponInstance => currentWeaponInstance;
+    public CombatDataCompositionRoot DataRoot => dataRoot;
     public RuntimeWeapon CurrentWeapon => currentWeaponInstance?.RuntimeWeapon;
     public WeaponAmmoState AmmoState => currentWeaponInstance?.AmmoState;
     public AmmoDefinition CurrentAmmo => currentAmmo;
@@ -163,9 +166,14 @@ public class EnemyWeaponLoadout : MonoBehaviour
             return false;
         }
 
-        viewInstance.transform.SetParent(weaponMount, false);
-        viewInstance.transform.localPosition = Vector3.zero;
-        viewInstance.transform.localRotation = Quaternion.identity;
+        // 같은 풀의 무기를 사용하는 적도 동일한 크기 보정을 적용한다.
+        if (!weaponView.TryAttachTo(weaponMount))
+        {
+            dataRoot.Pools.TryReturn(lease);
+            weaponView = null;
+            lease = default;
+            return false;
+        }
 
         dataRoot.Pools.Activate(lease);
         return true;
@@ -173,6 +181,11 @@ public class EnemyWeaponLoadout : MonoBehaviour
 
     private void Unequip()
     {
+        // 사망 연출 중 끈 충돌체를 반환 전에 복구해 다음 대여자에게 죽은 적의 설정을 넘기지 않는다.
+        foreach (Collider weaponCollider in deathDisabledWeaponColliders)
+            if (weaponCollider != null) weaponCollider.enabled = true;
+        deathDisabledWeaponColliders.Clear();
+
         if (hasWeaponViewLease && dataRoot?.Pools != null)
             dataRoot.Pools.TryReturn(currentWeaponViewLease);
 
@@ -206,5 +219,23 @@ public class EnemyWeaponLoadout : MonoBehaviour
         int loadedAmmoCount = ammoState.Load(currentAmmo, ammoState.RemainingCapacity);
 
         return loadedAmmoCount > 0;
+    }
+
+    public void DisableWeaponCollisionForDeath()
+    {
+        if (!hasWeaponViewLease || currentWeaponViewLease.Instance == null) return;
+        // 원래 켜져 있던 충돌체만 기억한다. 이미 꺼져 있던 충돌체는 반환할 때도 켜지 않는다.
+        foreach (Collider weaponCollider in currentWeaponViewLease.Instance.GetComponentsInChildren<Collider>(true))
+        {
+            if (!weaponCollider.enabled) continue;
+            deathDisabledWeaponColliders.Add(weaponCollider);
+            weaponCollider.enabled = false;
+        }
+    }
+
+    // 예비 탄약이 무한한 적도 샷건의 한 발 장전 규칙은 동일하게 적용한다.
+    public bool TryReloadRound()
+    {
+        return IsReady && currentWeaponInstance.AmmoState.Load(currentAmmo, 1) == 1;
     }
 }
