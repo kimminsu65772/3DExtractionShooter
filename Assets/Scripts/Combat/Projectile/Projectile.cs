@@ -129,6 +129,16 @@ public class Projectile : MonoBehaviour
 
             if (attacker != null && hit.collider.transform.IsChildOf(attacker.transform))
                 continue;
+
+            // 발사자가 엄폐 중인 오브젝트의 Trigger는 탄환 충돌 대상으로 취급하지 않는다.
+            ICover cover = hit.collider.GetComponentInParent<ICover>();
+            if (cover != null
+                && hit.collider == cover.CoverCollider
+                && cover.IsCovering(attacker))
+            {
+                continue;
+            }
+
             float distance = hit.distance;
             if (distance < closestDistance)
             {
