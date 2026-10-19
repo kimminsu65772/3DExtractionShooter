@@ -1,0 +1,80 @@
+{
+  "missingScripts": 0,
+  "buttons": [
+    {
+      "name": "BtnConfirm",
+      "callbacks": 0,
+      "targetGraphic": true,
+      "size": "(281.82, 80.00)"
+    },
+    {
+      "name": "BtnCancel",
+      "callbacks": 0,
+      "targetGraphic": true,
+      "size": "(261.81, 80.00)"
+    }
+  ],
+  "graphics": [
+    {
+      "name": "OverwriteConfirm_Reference",
+      "size": "(1280.00, 720.00)",
+      "raycastTarget": true,
+      "sprite": ""
+    },
+    {
+      "name": "Layout",
+      "size": "(623.63, 250.82)",
+      "raycastTarget": false,
+      "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/Rounded40.png"
+    },
+    {
+      "name": "Title",
+      "size": "(559.63, 26.82)",
+      "raycastTarget": false,
+      "sprite": "font"
+    },
+    {
+      "name": "Warning",
+      "size": "(559.63, 80.00)",
+      "raycastTarget": false,
+      "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/Rounded40.png"
+    },
+    {
+      "name": "Image",
+      "size": "(30.00, 30.00)",
+      "raycastTarget": false,
+      "sprite": "Assets/Art/UI/DuckovReference/Layouts/Dependencies/Sprites/priority_high_64dp_FFFFFF_FILL1_wght400_GRAD0_opsz48_b09f9d2c.asset"
+    },
+    {
+      "name": "Text (TMP)_1",
+      "size": "(481.07, 27.93)",
+      "raycastTarget": false,
+      "sprite": "font"
+    },
+    {
+      "name": "BtnConfirm",
+      "size": "(281.82, 80.00)",
+      "raycastTarget": true,
+      "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/Rounded40.png"
+    },
+    {
+      "name": "Text",
+      "size": "(158.67, 44.69)",
+      "raycastTarget": false,
+      "sprite": "font"
+    },
+    {
+      "name": "BtnCancel",
+      "size": "(261.81, 80.00)",
+      "raycastTarget": true,
+      "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/Rounded40.png"
+    },
+    {
+      "name": "Text",
+      "size": "(138.66, 44.69)",
+      "raycastTarget": false,
+      "sprite": "font"
+    }
+  ],
+  "fontStatus": "TMP default font; user will assign font and Korean captions."
+}

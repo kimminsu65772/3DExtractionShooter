@@ -1,0 +1,139 @@
+{
+  "references": [
+    {
+      "name": "PlayerHealth",
+      "missingScripts": 0,
+      "graphics": 8,
+      "grids": [],
+      "buttonsWithGameCallbacks": 0
+    },
+    {
+      "name": "PlayerStamina",
+      "missingScripts": 0,
+      "graphics": 4,
+      "grids": [],
+      "buttonsWithGameCallbacks": 0
+    },
+    {
+      "name": "Inventory",
+      "missingScripts": 0,
+      "graphics": 1543,
+      "grids": [
+        {
+          "name": "GridLayout",
+          "parent": "ItemSlotsDisplay",
+          "children": 5,
+          "inDetails": false
+        },
+        {
+          "name": "Layout",
+          "parent": "Container",
+          "children": 21,
+          "inDetails": false
+        },
+        {
+          "name": "GridLayout",
+          "parent": "ItemSlotsDisplay",
+          "children": 5,
+          "inDetails": true
+        }
+      ],
+      "buttonsWithGameCallbacks": 0
+    },
+    {
+      "name": "QuickSlots",
+      "missingScripts": 0,
+      "graphics": 306,
+      "grids": [],
+      "buttonsWithGameCallbacks": 0
+    },
+    {
+      "name": "ReloadProgress",
+      "missingScripts": 0,
+      "graphics": 6,
+      "grids": [],
+      "buttonsWithGameCallbacks": 0
+    },
+    {
+      "name": "InteractionProgress",
+      "missingScripts": 0,
+      "graphics": 9,
+      "grids": [],
+      "buttonsWithGameCallbacks": 0
+    },
+    {
+      "name": "InteractionPrompt",
+      "missingScripts": 0,
+      "graphics": 23,
+      "grids": [],
+      "buttonsWithGameCallbacks": 0
+    },
+    {
+      "name": "UnitHealthBar",
+      "missingScripts": 0,
+      "graphics": 14,
+      "grids": [],
+      "buttonsWithGameCallbacks": 0
+    },
+    {
+      "name": "InventorySlot",
+      "missingScripts": 0,
+      "graphics": 44,
+      "grids": [],
+      "buttonsWithGameCallbacks": 0
+    },
+    {
+      "name": "Warehouse",
+      "missingScripts": 0,
+      "graphics": 4475,
+      "grids": [
+        {
+          "name": "GridLayout",
+          "parent": "ItemSlotsDisplay",
+          "children": 5,
+          "inDetails": false
+        },
+        {
+          "name": "Layout",
+          "parent": "Container",
+          "children": 21,
+          "inDetails": false
+        },
+        {
+          "name": "Layout",
+          "parent": "Container",
+          "children": 0,
+          "inDetails": false
+        },
+        {
+          "name": "Layout",
+          "parent": "Container",
+          "children": 65,
+          "inDetails": false
+        },
+        {
+          "name": "PagesControl",
+          "parent": "Content",
+          "children": 2,
+          "inDetails": false
+        },
+        {
+          "name": "GridLayout",
+          "parent": "ItemSlotsDisplay",
+          "children": 5,
+          "inDetails": true
+        }
+      ],
+      "buttonsWithGameCallbacks": 0
+    },
+    {
+      "name": "WeaponSlots",
+      "missingScripts": 0,
+      "graphics": 36,
+      "grids": [],
+      "buttonsWithGameCallbacks": 0
+    }
+  ],
+  "scene": "Assets/Test/UIReference/Duckov_UIReference.unity",
+  "scope": "Static visual references only; no gameplay integration."
+}

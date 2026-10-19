@@ -1,0 +1,124 @@
+[
+  {
+    "name": "GridLayout",
+    "parents": [
+      {
+        "name": "GridLayout",
+        "width": 562.0,
+        "height": 140.0,
+        "position": "(-506.00, 221.18, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "ItemSlotsDisplay",
+        "width": 562.0,
+        "height": 140.0,
+        "position": "(-506.00, 221.18, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Content",
+        "width": 562.0,
+        "height": 1034.82007,
+        "position": "(-787.00, 338.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Viewport",
+        "width": 562.0,
+        "height": 540.0,
+        "position": "(-787.00, 338.00, -9.00)",
+        "mask": true,
+        "rectMask": false
+      },
+      {
+        "name": "Scroll View",
+        "width": 562.0,
+        "height": 540.0,
+        "position": "(-506.00, 68.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Content",
+        "width": 578.0,
+        "height": 556.0,
+        "position": "(-795.00, 346.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "EquipmentAndInventory",
+        "width": 588.0,
+        "height": 770.0,
+        "position": "(-800.00, 45.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "parents": [
+      {
+        "name": "Layout",
+        "width": 562.0,
+        "height": 648.0,
+        "position": "(-506.00, -252.82, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Container",
+        "width": 562.0,
+        "height": 768.0,
+        "position": "(-506.00, -312.82, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "InventoryDisplay",
+        "width": 562.0,
+        "height": 848.0,
+        "position": "(-506.00, -272.82, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Content",
+        "width": 562.0,
+        "height": 1034.82007,
+        "position": "(-787.00, 338.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Viewport",
+        "width": 562.0,
+        "height": 540.0,
+        "position": "(-787.00, 338.00, -9.00)",
+        "mask": true,
+        "rectMask": false
+      },
+      {
+        "name": "Scroll View",
+        "width": 562.0,
+        "height": 540.0,
+        "position": "(-506.00, 68.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Content",
+        "width": 578.0,
+        "height": 556.0,
+        "position": "(-795.00, 346.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      }
+    ]
+  }
+]

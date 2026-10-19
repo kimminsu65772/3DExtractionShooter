@@ -1,0 +1,19 @@
+{
+  "kind": "offline serialized-reference validation only",
+  "unityMcpAvailable": false,
+  "unityImportAndRenderingVerified": false,
+  "playTested": false,
+  "gameCodeChanged": false,
+  "objects": 48,
+  "canvases": 1,
+  "buttons": 7,
+  "persistentMethods": 0,
+  "invalidLocal": [],
+  "missingGuids": [],
+  "duplicateGuids": [],
+  "originalGameAssemblyReferences": false,
+  "sourceSha256Unchanged": true,
+  "componentOwnershipErrors": [],
+  "buttonsWithValidTargetGraphic": 7,
+  "copiedSourceAndMetaMatch": true
+}

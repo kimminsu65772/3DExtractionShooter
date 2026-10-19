@@ -1,0 +1,238 @@
+[
+  {
+    "name": "GridLayout",
+    "parents": [
+      {
+        "name": "GridLayout",
+        "width": 624.0,
+        "height": 140.0,
+        "position": "(-475.00, 239.73, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "ItemSlotsDisplay",
+        "width": 624.0,
+        "height": 140.0,
+        "position": "(-475.00, 239.73, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Content",
+        "width": 640.0,
+        "height": 686.0,
+        "position": "(-795.00, -340.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "EquipmentAndInventory",
+        "width": 640.0,
+        "height": 770.0,
+        "position": "(-800.00, 45.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Main",
+        "width": 1600.0,
+        "height": 770.0,
+        "position": "(0.00, 45.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Warehouse_Reference",
+        "width": 1760.0,
+        "height": 920.0,
+        "position": "(0.00, 0.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Reference Canvas",
+        "width": 1920.0,
+        "height": 1080.0,
+        "position": "(0.00, 0.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "parents": [
+      {
+        "name": "Layout",
+        "width": 624.0,
+        "height": 648.0,
+        "position": "(-475.00, -244.27, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Container",
+        "width": 624.0,
+        "height": 768.0,
+        "position": "(-475.00, -304.27, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "InventoryDisplay",
+        "width": 624.0,
+        "height": 848.0,
+        "position": "(-475.00, -264.27, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Content",
+        "width": 624.0,
+        "height": 858.0,
+        "position": "(-787.00, 169.73, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Viewport",
+        "width": 624.0,
+        "height": 501.732727,
+        "position": "(-787.00, 169.73, -9.00)",
+        "mask": true,
+        "rectMask": false
+      },
+      {
+        "name": "Scroll View",
+        "width": 624.0,
+        "height": 501.732727,
+        "position": "(-475.00, -81.13, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Content",
+        "width": 640.0,
+        "height": 686.0,
+        "position": "(-795.00, -340.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "parents": [
+      {
+        "name": "Layout",
+        "width": 624.0,
+        "height": 2056.0,
+        "position": "(475.00, -852.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Container",
+        "width": 624.0,
+        "height": 2176.0,
+        "position": "(475.00, -912.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "InventoryDisplay",
+        "width": 624.0,
+        "height": 2256.0,
+        "position": "(475.00, -872.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Content",
+        "width": 624.0,
+        "height": 2266.0,
+        "position": "(163.00, 266.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Viewport",
+        "width": 624.0,
+        "height": 540.0,
+        "position": "(163.00, 266.00, -9.00)",
+        "mask": true,
+        "rectMask": false
+      },
+      {
+        "name": "Scroll View",
+        "width": 624.0,
+        "height": 540.0,
+        "position": "(163.00, 266.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Content",
+        "width": 640.0,
+        "height": 628.0,
+        "position": "(795.00, 346.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      }
+    ]
+  },
+  {
+    "name": "PagesControl",
+    "parents": [
+      {
+        "name": "PagesControl",
+        "width": 48.0,
+        "height": 888.0,
+        "position": "(151.00, 266.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Content",
+        "width": 640.0,
+        "height": 628.0,
+        "position": "(795.00, 346.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "LootTarget",
+        "width": 640.0,
+        "height": 770.0,
+        "position": "(800.00, 45.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Main",
+        "width": 1600.0,
+        "height": 770.0,
+        "position": "(0.00, 45.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Warehouse_Reference",
+        "width": 1760.0,
+        "height": 920.0,
+        "position": "(0.00, 0.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      },
+      {
+        "name": "Reference Canvas",
+        "width": 1920.0,
+        "height": 1080.0,
+        "position": "(0.00, 0.00, -9.00)",
+        "mask": false,
+        "rectMask": false
+      }
+    ]
+  }
+]

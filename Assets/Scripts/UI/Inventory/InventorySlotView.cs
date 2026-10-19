@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public enum InventoryUIArea { Bag, Equipment, Loot, WeaponQuickslot, ItemQuickslot }
 
@@ -12,6 +13,12 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler, IPointerEn
     [SerializeField] private Text itemName;
     [SerializeField] private Text countText;
     [SerializeField] private Text keyText;
+    [SerializeField] private TMP_Text referenceName;
+    [SerializeField] private TMP_Text referenceCount;
+    [SerializeField] private TMP_Text referenceKey;
+    [SerializeField] private GameObject referenceSelection;
+    [SerializeField] private bool useReferenceStyle;
+    [SerializeField] private Color referenceBackground;
     private InventoryUIController owner;
     private IInventoryItem shownItem;
     private int shownCount = -1;
@@ -21,6 +28,11 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler, IPointerEn
     private Sprite shownIcon;
     private bool shownSelected;
     private bool initialized;
+    private UnityEngine.UI.Outline rarityFrame;
+    private Color defaultFrameColor;
+    private bool defaultFrameEnabled;
+    private bool defaultFrameUsesGraphicAlpha;
+    private int shownRarity;
 
     public InventoryUIArea Area { get; private set; }
     public int Index { get; private set; }
@@ -40,8 +52,27 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler, IPointerEn
         Area = area;
         Index = index;
         initialized = false;
+        CacheRarityFrame();
         // 배열의 위치 대신 해당 칸에 대응하는 키 번호를 표시한다.
-        keyText.text = area == InventoryUIArea.WeaponQuickslot ? (index + 1).ToString() : area == InventoryUIArea.ItemQuickslot ? (index + 3).ToString() : string.Empty;
+        SetLabel(keyText, referenceKey, area == InventoryUIArea.WeaponQuickslot ? (index + 1).ToString() : area == InventoryUIArea.ItemQuickslot ? (index + 3).ToString() : string.Empty);
+    }
+
+    public void ConfigureReference(Image panel, Image itemIcon, TMP_Text label, TMP_Text count, TMP_Text key, GameObject selection)
+    {
+        background = panel;
+        icon = itemIcon;
+        referenceName = label;
+        referenceCount = count;
+        referenceKey = key;
+        referenceSelection = selection;
+        useReferenceStyle = true;
+        referenceBackground = panel.color;
+    }
+
+    private static void SetLabel(Text legacy, TMP_Text reference, string value)
+    {
+        if (reference != null) reference.text = value;
+        else if (legacy != null) legacy.text = value;
     }
 
     public void Refresh()
@@ -55,10 +86,11 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler, IPointerEn
         int ammoId = magazine != null ? owner.GetDisplayAmmoId(magazine) : 0;
         int reserve = Area == InventoryUIArea.WeaponQuickslot ? owner.GetReserve(ammoId) : 0;
         Sprite sprite = owner.GetIcon(item);
+        int rarity = GetRarity(item);
         bool selected = (Area == InventoryUIArea.Equipment || Area == InventoryUIArea.WeaponQuickslot) && owner.SelectedWeaponIndex == Index;
         if (Area == InventoryUIArea.ItemQuickslot) selected = owner.SelectedItemIndex == Index;
         // 참조와 숫자만 비교한다. 변화가 없는 프레임에는 문자열과 UI를 다시 만들지 않는다.
-        if (initialized && ReferenceEquals(item, shownItem) && count == shownCount && useRatio == shownUseRatio && ammoId == shownAmmoId && reserve == shownReserve && sprite == shownIcon && selected == shownSelected) return;
+        if (initialized && ReferenceEquals(item, shownItem) && count == shownCount && useRatio == shownUseRatio && ammoId == shownAmmoId && reserve == shownReserve && sprite == shownIcon && selected == shownSelected && rarity == shownRarity) return;
         initialized = true;
         shownItem = item;
         shownCount = count;
@@ -67,20 +99,82 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler, IPointerEn
         shownReserve = reserve;
         shownIcon = sprite;
         shownSelected = selected;
-        itemName.text = owner.GetItemName(item);
+        shownRarity = rarity;
+        RefreshRarityFrame(rarity);
+        string displayName = owner.GetItemName(item);
         if (item == null && Area == InventoryUIArea.Equipment)
-            itemName.text = Index == 2 ? "방어구" : Index == 3 ? "헬멧" : "무기";
+            displayName = Index == 2 ? "방어구" : Index == 3 ? "헬멧" : "무기";
+        SetLabel(itemName, referenceName, displayName);
         icon.sprite = sprite;
         icon.enabled = sprite != null;
         // 가방·장비·전리품의 무기에는 탄창 숫자를 표시하지 않고 일반 아이템의 수량은 유지한다.
-        if (item == null || (item is WeaponInventoryItem && Area != InventoryUIArea.WeaponQuickslot)) countText.text = string.Empty;
-        else if (magazine != null) countText.text = $"{count} / {reserve}";
+        string countLabel;
+        if (item == null || (item is WeaponInventoryItem && Area != InventoryUIArea.WeaponQuickslot)) countLabel = string.Empty;
+        else if (magazine != null) countLabel = $"{count} / {reserve}";
         // 키트는 물건 개수 대신 해당 키트에 남은 사용량을 표시한다.
-        else if (item is MedicineInventoryItem) countText.text = $"{useRatio * 100f:0.##}%";
+        else if (item is MedicineInventoryItem) countLabel = $"{useRatio * 100f:0.##}%";
         // 보호 장비는 개수 대신 해당 객체의 남은 내구도를 표시한다.
-        else if (item is ArmorInventoryItem) countText.text = $"{useRatio * 100f:0.##}%";
-        else countText.text = count.ToString();
-        background.color = selected ? new Color(0.2f, 0.48f, 0.5f, 0.95f) : new Color(0.12f, 0.2f, 0.26f, 0.94f);
+        else if (item is ArmorInventoryItem) countLabel = $"{useRatio * 100f:0.##}%";
+        else countLabel = count.ToString();
+        SetLabel(countText, referenceCount, countLabel);
+        if (useReferenceStyle)
+        {
+            background.color = referenceBackground;
+            if (referenceSelection != null) referenceSelection.SetActive(selected);
+        }
+        else background.color = selected ? new Color(0.2f, 0.48f, 0.5f, 0.95f) : new Color(0.12f, 0.2f, 0.26f, 0.94f);
+    }
+
+    private void CacheRarityFrame()
+    {
+        if (rarityFrame != null || background == null) return;
+        // 기본 슬롯의 Outline을 재사용한다. 별도 Graphic이 없어 입력을 가로채지 않는다.
+        rarityFrame = background.GetComponent<UnityEngine.UI.Outline>();
+        if (rarityFrame == null)
+        {
+            // 외형 컴포넌트는 슬롯 프리팹에 준비한다.
+            return;
+        }
+        defaultFrameColor = rarityFrame.effectColor;
+        defaultFrameEnabled = rarityFrame.enabled;
+        defaultFrameUsesGraphicAlpha = rarityFrame.useGraphicAlpha;
+    }
+
+    private static int GetRarity(IInventoryItem item)
+    {
+        // quality/내구도와 구분하고, 희귀도가 정의된 장비만 읽는다.
+        if (item is WeaponInventoryItem weapon) return weapon.GetWeapon().Definition.rarity;
+        if (item is DefinitionInventoryItem defined)
+        {
+            if (defined.Definition is ArmorDefinition armor) return armor.rarity;
+            if (defined.Definition is HelmetDefinition helmet) return helmet.rarity;
+        }
+        return 0;
+    }
+
+    private void RefreshRarityFrame(int rarity)
+    {
+        if (rarityFrame == null) return;
+        Color color;
+        switch (rarity)
+        {
+            case 1: color = new Color32(255, 255, 255, 255); break;
+            case 2: color = new Color32(139, 233, 19, 255); break;
+            case 3: color = new Color32(17, 184, 241, 255); break;
+            case 4: color = new Color32(153, 15, 245, 255); break;
+            case 5: color = new Color32(255, 125, 37, 255); break;
+            case 6: color = new Color32(255, 47, 47, 255); break;
+            default:
+                // 빈 슬롯·미지원 종류·범위 밖 값도 이전 장비의 색을 남기지 않는다.
+                rarityFrame.effectColor = defaultFrameColor;
+                rarityFrame.useGraphicAlpha = defaultFrameUsesGraphicAlpha;
+                rarityFrame.enabled = defaultFrameEnabled;
+                return;
+        }
+        rarityFrame.effectColor = color;
+        // 선택 배경의 알파에 희귀도 색이 영향받지 않게 한다.
+        rarityFrame.useGraphicAlpha = false;
+        rarityFrame.enabled = true;
     }
 
     public void OnPointerClick(PointerEventData eventData)

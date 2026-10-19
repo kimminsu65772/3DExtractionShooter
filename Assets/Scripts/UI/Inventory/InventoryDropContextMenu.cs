@@ -3,43 +3,51 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// 작은 우클릭 메뉴만 생성한다. 인벤토리 전체 레이아웃이나 게임 규칙은 변경하지 않는다.
 public class InventoryDropContextMenu : MonoBehaviour, IPointerClickHandler
 {
-    private RectTransform panel;
+    [SerializeField] private RectTransform panel;
+    [SerializeField] private Button dropButton;
+    [SerializeField] private Button unloadButton;
     private UnityAction dismiss;
 
-    public static InventoryDropContextMenu Create(Canvas canvas, Font font, UnityAction drop, UnityAction close)
+    public void Initialize(UnityAction drop, UnityAction close, UnityAction unload = null)
     {
-        GameObject overlay = new GameObject("Item Drop Context Menu", typeof(RectTransform), typeof(Image), typeof(InventoryDropContextMenu));
-        RectTransform rect = (RectTransform)overlay.transform;
-        rect.SetParent(canvas.transform, false);
-        rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one; rect.offsetMin = rect.offsetMax = Vector2.zero;
-        overlay.GetComponent<Image>().color = Color.clear;
-        InventoryDropContextMenu menu = overlay.GetComponent<InventoryDropContextMenu>();
-        menu.dismiss = close;
-        GameObject action = new GameObject("Drop", typeof(RectTransform), typeof(Image), typeof(Button));
-        menu.panel = (RectTransform)action.transform;
-        menu.panel.SetParent(rect, false);
-        menu.panel.anchorMin = menu.panel.anchorMax = new Vector2(0.5f, 0.5f);
-        menu.panel.pivot = new Vector2(0f, 1f);
-        menu.panel.sizeDelta = new Vector2(170f, 44f);
-        action.GetComponent<Image>().color = new Color(0.08f, 0.13f, 0.18f, 0.98f);
-        action.GetComponent<Button>().onClick.AddListener(drop);
-        GameObject label = new GameObject("Label", typeof(RectTransform), typeof(Text));
-        RectTransform labelRect = (RectTransform)label.transform;
-        labelRect.SetParent(menu.panel, false); labelRect.anchorMin = Vector2.zero; labelRect.anchorMax = Vector2.one; labelRect.offsetMin = labelRect.offsetMax = Vector2.zero;
-        Text text = label.GetComponent<Text>(); text.font = font; text.text = "버리기 (X)"; text.fontSize = 18; text.color = Color.white; text.alignment = TextAnchor.MiddleCenter; text.raycastTarget = false;
-        overlay.SetActive(false);
-        return menu;
+        dismiss = close;
+        if (dropButton == null) return;
+        dropButton.onClick.RemoveListener(HandleDrop);
+        dropAction = drop;
+        dropButton.onClick.AddListener(HandleDrop);
+        unloadAction = unload;
+        if (unloadButton != null)
+        {
+            unloadButton.onClick.RemoveListener(HandleUnload);
+            unloadButton.onClick.AddListener(HandleUnload);
+        }
+    }
+
+    private UnityAction dropAction;
+    private UnityAction unloadAction;
+    private void HandleDrop() => dropAction?.Invoke();
+    private void HandleUnload() => unloadAction?.Invoke();
+
+    public void SetWeaponActions(bool isWeapon, bool canUnload)
+    {
+        if (unloadButton == null) return;
+        unloadButton.gameObject.SetActive(isWeapon);
+        unloadButton.interactable = canUnload;
     }
 
     public void Show(Vector2 screenPosition, Camera eventCamera)
     {
         gameObject.SetActive(true);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(panel);
+        // 요소를 항상 최상위로 이동시켜 다른 UI 요소 위에 표시되도록 함.
         transform.SetAsLastSibling();
         RectTransform bounds = (RectTransform)transform;
+        // 마우스 위치를 UI 로컬 좌표로 변환한다.
         RectTransformUtility.ScreenPointToLocalPointInRectangle(bounds, screenPosition, eventCamera, out Vector2 local);
+
+        // 툴팁 팝업이 화면 밖으로 나가지 않도록 위치를 조정한다.
         local.x = Mathf.Clamp(local.x, bounds.rect.xMin, bounds.rect.xMax - panel.rect.width);
         local.y = Mathf.Clamp(local.y, bounds.rect.yMin + panel.rect.height, bounds.rect.yMax);
         panel.anchoredPosition = local;

@@ -3,6 +3,12 @@ using ExtractionShooter.DataPipeline;
 // HUD가 읽을 값을 계산한다. 탄창이나 가방의 수량은 변경하지 않는다.
 public static class InventoryHUDReadModel
 {
+    public static bool CanShowAmmoHint(WeaponInventoryItem selectedSlot, WeaponInstance heldWeapon, bool consumableSelected)
+    {
+        return !consumableSelected && heldWeapon != null && !heldWeapon.AmmoState.IsEmpty && selectedSlot != null &&
+            ReferenceEquals(selectedSlot.GetWeapon(), heldWeapon);
+    }
+
     // 실제 탄종과 마지막 탄종을 우선하고, 장전 이력이 없을 때만 보유한 후보를 찾는다.
     public static int GetDisplayAmmoId(WeaponAmmoState magazine, InventoryContainer bag = null, AmmoCatalog catalog = null)
     {

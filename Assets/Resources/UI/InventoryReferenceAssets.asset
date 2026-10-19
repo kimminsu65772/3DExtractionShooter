@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7101e6c357b4da0df91ca11b170c1a0a, type: 3}
+  m_Name: InventoryReferenceAssets
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 1880969609912730, guid: 2c8330eca382c404abf4917c18575210, type: 3}
+  warehouse: {fileID: 1370222726513266, guid: 27c165d026e0f3f459bebce345ffe02a, type: 3}
+  slot: {fileID: 1709254077376921, guid: 985545f26e3de2945becc095ba9fc693, type: 3}
+  weaponSlots: {fileID: 1374079133849384, guid: 4a3bee9a50d117648a354c9ed6ec9780, type: 3}
+  itemSlots: {fileID: 1110327921347812, guid: 51d129eedf5d7074fa4277d6fc71072f, type: 3}
+  font: {fileID: 11400000, guid: 50a393316d1df0349a38f00af762a365, type: 2}

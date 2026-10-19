@@ -1,0 +1,107 @@
+[
+  {
+    "prefab": "Assets/Art/UI/DuckovReference/TitleButtons/Prefabs/NewGameButton_Reference.prefab",
+    "missingScripts": 0,
+    "persistentCalls": 0,
+    "targetGraphic": true,
+    "text": "새 게임",
+    "graphics": [
+      {
+        "name": "NewGameButton_Reference",
+        "visible": true,
+        "size": "(540.00, 128.00)",
+        "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/Rounded40.png"
+      },
+      {
+        "name": "Hovering",
+        "visible": false,
+        "size": "(540.00, 128.00)",
+        "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/Rounded40.png"
+      },
+      {
+        "name": "Image",
+        "visible": true,
+        "size": "(80.00, 68.00)",
+        "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/play_arrow_48dp_FFFFFF_FILL1_wght400_GRAD0_opsz48.asset"
+      },
+      {
+        "name": "Text (TMP)",
+        "visible": true,
+        "size": "(190.21, 64.01)",
+        "sprite": "font"
+      }
+    ]
+  },
+  {
+    "prefab": "Assets/Art/UI/DuckovReference/TitleButtons/Prefabs/ContinueButton_Reference.prefab",
+    "missingScripts": 0,
+    "persistentCalls": 0,
+    "targetGraphic": true,
+    "text": "이어하기",
+    "graphics": [
+      {
+        "name": "ContinueButton_Reference",
+        "visible": true,
+        "size": "(540.00, 128.00)",
+        "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/Rounded40.png"
+      },
+      {
+        "name": "Hovering",
+        "visible": false,
+        "size": "(540.00, 128.00)",
+        "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/Rounded40.png"
+      },
+      {
+        "name": "Image",
+        "visible": true,
+        "size": "(80.00, 68.00)",
+        "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/play_arrow_48dp_FFFFFF_FILL1_wght400_GRAD0_opsz48.asset"
+      },
+      {
+        "name": "Text (TMP)",
+        "visible": true,
+        "size": "(221.83, 64.01)",
+        "sprite": "font"
+      }
+    ]
+  },
+  {
+    "prefab": "Assets/Art/UI/DuckovReference/TitleButtons/Prefabs/QuitButton_Reference.prefab",
+    "missingScripts": 0,
+    "persistentCalls": 0,
+    "targetGraphic": true,
+    "text": "종료",
+    "graphics": [
+      {
+        "name": "QuitButton_Reference",
+        "visible": true,
+        "size": "(329.45, 90.00)",
+        "sprite": ""
+      },
+      {
+        "name": "Image",
+        "visible": true,
+        "size": "(329.45, 90.00)",
+        "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/Rounded40.png"
+      },
+      {
+        "name": "Hovering",
+        "visible": false,
+        "size": "(329.45, 90.00)",
+        "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/Rounded40.png"
+      },
+      {
+        "name": "Image",
+        "visible": true,
+        "size": "(70.00, 70.00)",
+        "sprite": "Assets/Art/UI/DuckovReference/TitleButtons/Dependencies/logout_48dp_FFFFFF_FILL1_wght400_GRAD0_opsz48.asset"
+      },
+      {
+        "name": "Text (TMP)",
+        "visible": true,
+        "size": "(74.03, 45.01)",
+        "sprite": "font"
+      }
+    ]
+  }
+]
