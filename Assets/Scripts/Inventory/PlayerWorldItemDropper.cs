@@ -14,6 +14,11 @@ public class PlayerWorldItemDropper : MonoBehaviour
     [SerializeField, Min(0.01f)] private float groundProbeDistance = 10f;
     [SerializeField, Min(0f)] private float groundClearance = 0.01f;
 
+    public void SetDataRoot(CombatDataCompositionRoot dataRoot)
+    {
+        this.dataRoot = dataRoot;
+    }
+
     public bool TryPrepare(IReadOnlyList<IInventoryItem> items, out PreparedDrop prepared)
     {
         prepared = null;

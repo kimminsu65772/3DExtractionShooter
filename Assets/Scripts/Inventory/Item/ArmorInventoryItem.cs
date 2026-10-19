@@ -5,6 +5,8 @@ public class ArmorInventoryItem : DefinitionInventoryItem
 {
     public ArmorInstance Armor { get; }
 
+    public float CurrentDurability => Armor.CurrentDurability;
+
     public ArmorInventoryItem(ArmorInstance armor) : base(armor?.Definition ?? throw new ArgumentNullException(nameof(armor)), 1)
     {
         Armor = armor;

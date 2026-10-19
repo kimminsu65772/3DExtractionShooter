@@ -9,6 +9,12 @@ public class PlayerItemQuickslots : MonoBehaviour
     // UI에서 접근할 수 있도록 Quickslots 프로퍼티 제공
     public ItemQuickslots Quickslots => quickslots;
 
+    public void ClearForDeath()
+    {
+        for (int i = 0; i < quickslots.SlotCount; i++)
+            quickslots.SetItem(i, null);
+    }
+
     private void Awake()
     {
         if (inventory == null)
@@ -69,6 +75,8 @@ public class PlayerItemQuickslots : MonoBehaviour
             return false;
 
         quickslots.SetItem(slotIndex, item);
+        // [DATA-01 변경] 등록 변경도 가방 변경과 같은 저장 통지 경계로 전달한다.
+        inventory.NotifyOwnedItemsChanged();
         return true;
     }
 
@@ -98,6 +106,7 @@ public class PlayerItemQuickslots : MonoBehaviour
         if (firstEmptySlot != -1)
         {
             quickslots.SetItem(firstEmptySlot, item);
+            inventory.NotifyOwnedItemsChanged();
             return true;
         }
 
@@ -117,11 +126,13 @@ public class PlayerItemQuickslots : MonoBehaviour
             return false;
         }
         quickslots.SetItem(slotIndex, null);
+        inventory.NotifyOwnedItemsChanged();
         return true;
     }
 
     public void RemoveInvalidRegistrations()
     {
+        bool changed = false;
         for (int i = 0; i < quickslots.SlotCount; i++)
         {
             IInventoryItem item = quickslots.GetItem(i);
@@ -131,7 +142,41 @@ public class PlayerItemQuickslots : MonoBehaviour
 
             // 가방에서 빠졌거나 수량을 모두 사용한 아이템의 등록을 해제한다.
             if (!CanRegister(item) || (item is DefinitionInventoryItem definitionItem && definitionItem.Count <= 0))
+            {
                 quickslots.SetItem(i, null);
+                changed = true;
+            }
         }
+        if (changed) inventory.NotifyOwnedItemsChanged();
+    }
+
+    public bool TryApplyRestoredQuickslots(ItemQuickslots restoredQuickslots)
+    {
+        if (inventory == null || inventory.InventoryContainer == null)
+            return false;
+
+        if (restoredQuickslots == null)
+        {
+            Debug.LogWarning("Restored quickslots is null.");
+            return false;
+        }
+
+        if (restoredQuickslots.SlotCount != quickslots.SlotCount)
+            return false;
+
+        for (int i = 0; i < restoredQuickslots.SlotCount; i++)
+        {
+            IInventoryItem item = restoredQuickslots.GetItem(i);
+            if (item != null && !CanRegister(item))
+            {
+                Debug.LogWarning($"Cannot restore item {item.ItemId} to slot {i}.");
+                return false;
+            }
+        }
+        for (int i = 0; i < restoredQuickslots.SlotCount; i++)
+        {
+            quickslots.SetItem(i, restoredQuickslots.GetItem(i));
+        }
+        return true;
     }
 }

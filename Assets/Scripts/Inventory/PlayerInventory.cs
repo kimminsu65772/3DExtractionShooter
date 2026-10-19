@@ -15,6 +15,15 @@ public class PlayerInventory : MonoBehaviour
     public InventoryContainer InventoryContainer => inventoryContainer;
     public InventoryAmmoStorage AmmoStorage => ammoStorage;
     public event System.Action OnCapacityChanged;
+    // [DATA-01 변경] 저장 담당자는 변경 통지만 받고, 한 행동의 처리가 끝난 뒤 DTO를 캡처한다.
+    public event System.Action OnOwnedItemsChanged;
+    internal void NotifyOwnedItemsChanged() => OnOwnedItemsChanged?.Invoke();
+
+    // OnEnable에서 초기화 이벤트를 구독하므로 최초 활성화 전에 연결한다.
+    public void SetDataRoot(CombatDataCompositionRoot dataRoot)
+    {
+        this.dataRoot = dataRoot;
+    }
 
     private void Awake()
     {
@@ -34,6 +43,51 @@ public class PlayerInventory : MonoBehaviour
         return dataRoot != null && dataRoot.AmmoCatalog != null && dataRoot.AmmoCatalog.TryGet(ammoId, out AmmoDefinition ammo) ? ammo : null;
     }
 
+    public bool OwnsWeapon(WeaponInstance weapon)
+    {
+        if (weapon == null || inventoryContainer == null) return false;
+        for (int i = 0; i < inventoryContainer.SlotCount; i++)
+            if (inventoryContainer.GetSlot(i).Item is WeaponInventoryItem item && ReferenceEquals(item.GetWeapon(), weapon)) return true;
+        WeaponEquipment equipment = GetComponent<PlayerEquipment>()?.WeaponEquipment;
+        if (equipment != null)
+            for (int i = 0; i < equipment.SlotCount; i++)
+                if (ReferenceEquals(equipment.GetItem(i)?.GetWeapon(), weapon)) return true;
+        return false;
+    }
+
+    // 가방에 실제 수용된 만큼만 클릭한 동일 총에서 뺀다. 무게는 수용 조건이 아니다.
+    public bool TryUnloadWeapon(WeaponInstance weapon, out int unloadedCount)
+    {
+        unloadedCount = 0;
+        if (!OwnsWeapon(weapon) || ammoStorage == null || weapon.AmmoState.IsEmpty) return false;
+        // UI가 먼저 해당 총의 장전을 취소해야 한다. 직접 API 호출도 진행 중인 장전과 겹치지 않는다.
+        if (GetComponent<PlayerReloadController>()?.IsReloadingWeapon(weapon) == true) return false;
+        WeaponAmmoState magazine = weapon.AmmoState;
+        if (!ammoStorage.TryAdd(magazine.LoadedAmmoId, magazine.LoadedAmmoCount, out unloadedCount)) return false;
+        for (int i = 0; i < unloadedCount; i++) magazine.TryConsumeRound(out _);
+        RefreshOwnedItemReferences();
+        return true;
+    }
+
+    // 장전 완료 시 호출한다. 새 탄약 소비 후 반환 공간을 계산하고 초과분은 기존 월드 드롭으로 넘긴다.
+    public bool TryCompleteAmmoExchange(WeaponInstance weapon, int selectedAmmoId, out int loadedCount)
+    {
+        loadedCount = 0;
+        if (!OwnsWeapon(weapon) || dataRoot == null ||
+            !AmmoReloadPlan.TryCreate(inventoryContainer, weapon, dataRoot.AmmoCatalog, selectedAmmoId, out AmmoReloadPlan plan)) return false;
+        PlayerWorldItemDropper.PreparedDrop drop = null;
+        if (plan.Overflow.Count > 0 && (worldItemDropper == null || !worldItemDropper.TryPrepare(plan.Overflow, out drop))) return false;
+        if (!OwnsWeapon(weapon) || !ReferenceEquals(GetComponent<PlayerWeaponHolder>()?.CurrentWeaponInstance, weapon) || !plan.TryCommit())
+        {
+            drop?.Cancel();
+            return false;
+        }
+        drop?.Commit();
+        loadedCount = plan.LoadedCount;
+        RefreshOwnedItemReferences();
+        return true;
+    }
+
     // 가방 아이템 시스템이 추가되면 그 장비 담당자가 제공하는 칸 수를 이 경계로 전달한다.
     public bool TrySetAdditionalBagCapacity(int capacity)
     {
@@ -45,14 +99,34 @@ public class PlayerInventory : MonoBehaviour
 
     public bool TryRefreshCapacity() => TryResizeForEquipment(additionalBagCapacity);
 
-    private bool TryResizeForEquipment(int bagBonus)
+    public void ClearForDeath()
     {
+        // 슬롯을 먼저 비워 외부 UI가 보관한 슬롯 참조에도 아이템이 남지 않게 한다.
+        for (int i = 0; i < inventoryContainer.SlotCount; i++)
+            inventoryContainer.GetSlot(i).SetItem(null);
+
+        additionalBagCapacity = 0;
+        // 사망 소멸은 일반 칸 감소와 달리 넘치는 아이템을 바닥에 드롭하지 않는다.
+        inventoryContainer.ApplyResize(new IInventoryItem[Mathf.Max(1, baseCapacity)]);
+        OnCapacityChanged?.Invoke();
+    }
+
+    // 보너스 칸 수를 포함한 최종 용량을 계산한다. int 범위를 넘어가면 false를 반환한다.
+    private bool TryCalculateCapacity(int bagBonus, out int capacity)
+    {
+        capacity = 0;
         PlayerEquipment equipment = GetComponent<PlayerEquipment>();
         int armorBonus = equipment?.ProtectionEquipment.Armor?.Definition is ArmorDefinition armor ? armor.backpackCapacityBonus : 0;
         long requestedCapacity = (long)baseCapacity + bagBonus + Mathf.Max(0, armorBonus);
         if (requestedCapacity > int.MaxValue) return false;
-        int capacity = Mathf.Max(1, (int)requestedCapacity);
-        if (inventoryContainer == null) return false;
+        capacity = Mathf.Max(1, (int)requestedCapacity);
+        return true;
+    }
+
+    private bool TryResizeForEquipment(int bagBonus)
+    {
+        // [DATA-01 변경] 기존의 용량 계산을 공통 메서드로 옮겼다. 아래 실제 정리·드롭 흐름은 그대로 사용한다.
+        if (inventoryContainer == null || !TryCalculateCapacity(bagBonus, out int capacity)) return false;
         if (inventoryContainer.SlotCount == capacity) return true;
         InventoryResizePlan plan = new InventoryResizePlan(inventoryContainer, capacity);
         PlayerWorldItemDropper.PreparedDrop drop = null;
@@ -110,6 +184,17 @@ public class PlayerInventory : MonoBehaviour
         return true;
     }
 
+    public bool TryApplyRestoredSlots(IInventoryItem[] restoredSlots)
+    {
+        if (restoredSlots == null || inventoryContainer == null) return false;
+
+        if (!TryCalculateCapacity(additionalBagCapacity, out int capacity) || restoredSlots.Length != capacity) return false;
+
+        inventoryContainer.ApplyResize(restoredSlots);
+
+        return true;
+    }
+
     // 소유 공간을 떠난 아이템만 등록에서 제거한다. 프레임마다 등록 전체를 검사하지 않는다.
     internal void RefreshOwnedItemReferences()
     {
@@ -121,6 +206,7 @@ public class PlayerInventory : MonoBehaviour
             int index = held.SelectedItemSlotIndex;
             if (index < 0 || index >= quickslots.Quickslots.SlotCount || !ReferenceEquals(held.SelectedItem, quickslots.Quickslots.GetItem(index))) held.ClearItemSelection();
         }
+        NotifyOwnedItemsChanged();
     }
 
     private void OnEnable()
@@ -159,6 +245,62 @@ public class PlayerInventory : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+
+    [ContextMenu("검증/총과 탄약 지급 (AK-47)")]
+    private void GrantFirearmAndAmmoForTesting()
+    {
+        if (!Application.isPlaying || inventoryContainer == null || ammoStorage == null || dataRoot == null || !dataRoot.isReady)
+        {
+            Debug.LogWarning("플레이 중이고 플레이어의 전투 데이터와 인벤토리가 준비되어야 한다.", this);
+            return;
+        }
+
+        const int weaponId = 1001;
+        const int ammoId = 2001;
+        const int reserveAmmoCount = 90;
+
+        AmmoDefinition ammo = FindAmmoDefinition(ammoId);
+        if (!dataRoot.WeaponCatalog.TryGet(weaponId, out RuntimeWeapon runtimeWeapon) ||
+            ammo == null || runtimeWeapon.Definition.ammoType != ammo.ammoType)
+        {
+            Debug.LogWarning("AK-47(ID 1001)과 호환 소총탄(ID 2001)의 정의가 필요하다.", this);
+            return;
+        }
+
+        // 새로 지급하는 총만 장전한다. 이미 소유한 총의 잔탄은 변경하지 않는다.
+        var weapon = new WeaponInstance(runtimeWeapon);
+        weapon.AmmoState.Load(ammo, weapon.AmmoState.Capacity);
+
+        // 임시 지급함에서 실제 획득 경로로 이동해 장비·가방·무게 계산에 동일 객체를 등록한다.
+        var source = new InventoryContainer(1);
+        source.GetSlot(0).SetItem(new WeaponInventoryItem(weapon));
+        if (!TryAcquireFrom(source, 0))
+        {
+            Debug.LogWarning("총을 지급하지 못했다. 장비 슬롯 또는 가방의 빈 공간과 무기 외형 설정을 확인해야 한다.", this);
+            return;
+        }
+
+        bool selected = false;
+        PlayerEquipment equipment = GetComponent<PlayerEquipment>();
+        if (equipment != null && equipment.WeaponEquipment != null)
+        {
+            for (int i = 0; i < equipment.WeaponEquipment.SlotCount; i++)
+            {
+                if (!ReferenceEquals(equipment.WeaponEquipment.GetItem(i)?.GetWeapon(), weapon))
+                    continue;
+
+                selected = equipment.TrySelectWeaponSlot(i);
+                break;
+            }
+        }
+
+        ammoStorage.TryAdd(ammoId, reserveAmmoCount, out int addedCount);
+        string placement = selected ? "손에 장착 완료" : "장비 또는 가방에 보관됨. 사격하려면 무기 슬롯에서 선택해야 한다";
+        Debug.Log($"{runtimeWeapon.Definition.displayName} 지급: 탄창 {weapon.AmmoState.LoadedAmmoCount}발, 예비 탄약 {addedCount}/{reserveAmmoCount}발 추가. {placement}.", this);
+
+        if (addedCount < reserveAmmoCount)
+            Debug.LogWarning("가방 공간이 부족해 예비 탄약은 들어갈 수 있는 수량만 지급했다.", this);
+    }
 
     [ContextMenu("검증/가방 빈 칸 모두 채우기")]
     private void FillEmptyBagSlotsForTesting()

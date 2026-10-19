@@ -26,4 +26,14 @@ public class MedicineInventoryItem : DefinitionInventoryItem
         RemainingUseRatio = missingHealth >= availableHeal && RemainingUseRatio <= cost ? 0f : Math.Max(0f, RemainingUseRatio - consumed);
         return actualHeal;
     }
+
+    public bool TryRestoreRemainingUseRatio(float ratio)
+    {
+        if (float.IsNaN(ratio) || float.IsInfinity(ratio) || ratio <= 0f || ratio > 1) 
+            return false;
+
+        RemainingUseRatio = ratio;
+
+        return true;
+    }
 }

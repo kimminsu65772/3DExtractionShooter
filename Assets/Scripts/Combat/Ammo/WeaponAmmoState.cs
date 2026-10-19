@@ -69,4 +69,28 @@ public class WeaponAmmoState
 
         return true;
     }
+
+    public bool TryRestore(int ammoId, int ammoCount, int lastAmmoId)
+    {
+        if (ammoCount < 0 || ammoCount > Capacity)
+            return false;
+        if (ammoCount == 0)
+        {
+            if (ammoId != 0)
+                return false;
+        }
+        else
+        {
+            if (ammoId <= 0 || ammoId != lastAmmoId)
+                return false;
+        }
+
+        if (lastAmmoId < 0)
+            return false;
+
+        loadedAmmoId = ammoId;
+        loadedAmmoCount = ammoCount;
+        lastLoadedAmmoId = lastAmmoId;
+        return true;
+    }
 }

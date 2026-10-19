@@ -9,7 +9,7 @@ public class PlayerEquipment : MonoBehaviour, IProtectionProvider
     [SerializeField] private PlayerStateMachine stateMachine;
     [SerializeField] private PlayerInventory inventory;
 
-    private WeaponEquipment weaponEquipment;
+    private readonly WeaponEquipment weaponEquipment = new();
     private readonly ProtectionEquipment protectionEquipment = new();
     private int selectedWeaponSlotIndex = 0;
 
@@ -19,9 +19,27 @@ public class PlayerEquipment : MonoBehaviour, IProtectionProvider
     public ProtectionEquipment ProtectionEquipment => protectionEquipment;
     public int SelectedWeaponSlotIndex => selectedWeaponSlotIndex;
 
+    // INV-02: 소유권 변경이 확정된 뒤에만 외형에 알린다. 내구도 변경과는 별개다.
+    public event System.Action OnProtectionChanged;
+
+    public void ClearForDeath()
+    {
+        // 일반 장비 이동 API는 Dead에서 거부되므로 소멸 전용 경로에서 정리한다.
+        reloadController.CancelReload();
+        attackController.CancelPendingFire();
+        // 풀에서 빌린 외형을 플레이어와 함께 파괴하지 않고 먼저 반환한다.
+        weaponHolder.Unequip();
+        for (int i = 0; i < weaponEquipment.SlotCount; i++)
+            weaponEquipment.SetItem(i, null);
+
+        protectionEquipment.SetItem(ItemType.Armor, null);
+        protectionEquipment.SetItem(ItemType.Helmet, null);
+        selectedWeaponSlotIndex = 0;
+        OnProtectionChanged?.Invoke();
+    }
+
     private void Awake()
     {
-        weaponEquipment = new WeaponEquipment();
         ResolveReferences();
         AlertReferencesError();
     }
@@ -54,6 +72,7 @@ public class PlayerEquipment : MonoBehaviour, IProtectionProvider
             if (weaponHolder.CurrentWeaponInstance == null)
             {
                 selectedWeaponSlotIndex = slotIndex;
+                inventory.NotifyOwnedItemsChanged(); // [DATA-01 변경] 빈 칸 선택도 복원할 선택 상태다.
                 return true;
             }
 
@@ -67,6 +86,7 @@ public class PlayerEquipment : MonoBehaviour, IProtectionProvider
             if (ReferenceEquals(weapon, weaponHolder.CurrentWeaponInstance))
             {
                 selectedWeaponSlotIndex = slotIndex;
+                inventory.NotifyOwnedItemsChanged();
                 return true;
             }
 
@@ -87,6 +107,7 @@ public class PlayerEquipment : MonoBehaviour, IProtectionProvider
         reloadController.CancelReload();
         attackController.CancelPendingFire();
         selectedWeaponSlotIndex = slotIndex;
+        inventory.NotifyOwnedItemsChanged();
 
         return true;
     }
@@ -136,6 +157,8 @@ public class PlayerEquipment : MonoBehaviour, IProtectionProvider
             }
         }
 
+        // [DATA-01 변경] 외형 선택·되돌리기까지 성공한 소유 상태를 통지한다.
+        inventory.RefreshOwnedItemReferences();
         return true;
     }
 
@@ -175,6 +198,7 @@ public class PlayerEquipment : MonoBehaviour, IProtectionProvider
                 return false;
             }
         }
+        inventory.RefreshOwnedItemReferences();
         return true;
     }
 
@@ -192,7 +216,12 @@ public class PlayerEquipment : MonoBehaviour, IProtectionProvider
         IInventoryItem incoming = slot.Item;
         ArmorInventoryItem previous = protectionEquipment.GetItem(type);
         if (!equipmentTransferService.TryMoveOrSwapToEquipment(source, sourceIndex, protectionEquipment, type)) return false;
-        if (inventory != null && inventory.TryRefreshCapacity()) return true;
+        if (inventory != null && inventory.TryRefreshCapacity())
+        {
+            inventory.RefreshOwnedItemReferences();
+            OnProtectionChanged?.Invoke();
+            return true;
+        }
         // 칸 감소에 필요한 드롭이 준비되지 않으면 양쪽 장비 이동도 되돌린다.
         slot.SetItem(incoming);
         protectionEquipment.SetItem(type, previous);
@@ -208,7 +237,12 @@ public class PlayerEquipment : MonoBehaviour, IProtectionProvider
         IInventoryItem previousBag = slot.Item;
         ArmorInventoryItem previousEquipment = protectionEquipment.GetItem(type);
         if (!equipmentTransferService.TryMoveToInventory(protectionEquipment, type, bag, inventoryIndex)) return false;
-        if (inventory.TryRefreshCapacity()) return true;
+        if (inventory.TryRefreshCapacity())
+        {
+            inventory.RefreshOwnedItemReferences();
+            OnProtectionChanged?.Invoke();
+            return true;
+        }
         slot.SetItem(previousBag);
         protectionEquipment.SetItem(type, previousEquipment);
         return false;
@@ -246,6 +280,29 @@ public class PlayerEquipment : MonoBehaviour, IProtectionProvider
             return false;
         }
         drop.Commit();
+        inventory.RefreshOwnedItemReferences();
+        OnProtectionChanged?.Invoke();
+        return true;
+    }
+
+    public bool TryApplyRestoredEquipment(WeaponEquipment restoredWeapons, ProtectionEquipment restoredProtection)
+    {
+        if (restoredWeapons == null || restoredProtection == null)
+            return false;
+
+        if (restoredWeapons.SlotCount != weaponEquipment.SlotCount || restoredProtection.SlotCount != protectionEquipment.SlotCount)
+        {
+            Debug.LogWarning("복원된 장비 슬롯 수가 현재 장비 슬롯 수와 일치하지 않습니다.", this);
+            return false;
+        }
+
+        for (int i = 0; i < weaponEquipment.SlotCount; i++)
+            weaponEquipment.SetItem(i, restoredWeapons.GetItem(i));
+
+        for (int i = 0; i < protectionEquipment.SlotCount; i++)
+            protectionEquipment.SetItem(i, restoredProtection.GetItem(i));
+
+        OnProtectionChanged?.Invoke();
         return true;
     }
 
