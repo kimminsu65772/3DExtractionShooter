@@ -1,0 +1,285 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ead783b6d33006f4f8fd6e64c2682b54, type: 3}
+  m_Name: LootBox_WeaponEquip_2_3_a6f60d02de5d
+  m_EditorClassIdentifier: Assembly-CSharp::LootTable
+  activeChance: 1
+  inventorySize: 5
+  minRolls: 2
+  maxRolls: 4
+  entries:
+  - itemType: 3
+    itemId: 4003
+    weight: 0.004202521
+    minCount: 1
+    maxCount: 1
+  - itemType: 3
+    itemId: 4001
+    weight: 0.026265755
+    minCount: 1
+    maxCount: 1
+  - itemType: 3
+    itemId: 4002
+    weight: 0.006061328
+    minCount: 1
+    maxCount: 1
+  - itemType: 3
+    itemId: 4004
+    weight: 0.0015759453
+    minCount: 1
+    maxCount: 1
+  - itemType: 3
+    itemId: 4005
+    weight: 0.0006566439
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5001
+    weight: 0.026265755
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5002
+    weight: 0.006061328
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5003
+    weight: 0.004202521
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5004
+    weight: 0.0015759453
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5005
+    weight: 0.0006566439
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5006
+    weight: 0.006061328
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5007
+    weight: 0.006061328
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5008
+    weight: 0.006061328
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5010
+    weight: 0.004202521
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1006
+    weight: 0.009005401
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1001
+    weight: 0.015281893
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1004
+    weight: 0.015281893
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1005
+    weight: 0.08755252
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1003
+    weight: 0.04502701
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1007
+    weight: 0.04502701
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1002
+    weight: 0.04502701
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1011
+    weight: 0.015281893
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1012
+    weight: 0.04502701
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1008
+    weight: 0.04502701
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1009
+    weight: 0.015281893
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1014
+    weight: 0.08755252
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1010
+    weight: 0.009005401
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1013
+    weight: 0.015281893
+    minCount: 1
+    maxCount: 1
+  - itemType: 1
+    itemId: 1016
+    weight: 0.08755252
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5011
+    weight: 0.006061328
+    minCount: 1
+    maxCount: 1
+  - itemType: 3
+    itemId: 4006
+    weight: 0.004202521
+    minCount: 1
+    maxCount: 1
+  - itemType: 3
+    itemId: 4007
+    weight: 0.0015759453
+    minCount: 1
+    maxCount: 1
+  - itemType: 3
+    itemId: 4008
+    weight: 0.0006566439
+    minCount: 1
+    maxCount: 1
+  - itemType: 3
+    itemId: 4009
+    weight: 0.004202521
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5012
+    weight: 0.026265755
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5013
+    weight: 0.006061328
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5014
+    weight: 0.004202521
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5015
+    weight: 0.004202521
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5016
+    weight: 0.0015759453
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5017
+    weight: 0.0006566439
+    minCount: 1
+    maxCount: 1
+  - itemType: 4
+    itemId: 5018
+    weight: 0.006061328
+    minCount: 1
+    maxCount: 1
+  - itemType: 2
+    itemId: 2001
+    weight: 0.026265755
+    minCount: 30
+    maxCount: 30
+  - itemType: 2
+    itemId: 2002
+    weight: 0.04377626
+    minCount: 30
+    maxCount: 30
+  - itemType: 2
+    itemId: 2003
+    weight: 0.014008403
+    minCount: 30
+    maxCount: 30
+  - itemType: 2
+    itemId: 2011
+    weight: 0.04377626
+    minCount: 30
+    maxCount: 30
+  - itemType: 2
+    itemId: 2012
+    weight: 0.026265755
+    minCount: 30
+    maxCount: 30
+  - itemType: 2
+    itemId: 2013
+    weight: 0.014008403
+    minCount: 30
+    maxCount: 30
+  - itemType: 2
+    itemId: 2021
+    weight: 0.04377626
+    minCount: 20
+    maxCount: 20
+  - itemType: 2
+    itemId: 2022
+    weight: 0.026265755
+    minCount: 20
+    maxCount: 20
+  - itemType: 2
+    itemId: 2023
+    weight: 0.014008403
+    minCount: 20
+    maxCount: 20
+  fixedItemSpawnChance: 0.3
+  fixedItems: []
+  sourceNote: "GroundZero \uC6D0\uBCF8 \uC0C1\uC790/\uD0DC\uADF8/\uB808\uC5B4\uB3C4
+    \uAC00\uC911\uCE58\uB97C \uACC4\uC0B0\uD55C \uD6C4 \uC9C0\uC6D0 \uC544\uC774\uD15C\uB9CC
+    \uC7AC\uC815\uADDC\uD654. \uC6D0\uBCF8 \uD6C4\uBCF4 \uC9C8\uB7C9: 0.227487975695433\n\uD0DC\uADF8:
+    [\r\n  {\r\n    \"guid\": \"79a82cd9b85b43c49a742c4d4cb3a94d\",\r\n    \"name\":
+    \"Equipment\",\r\n    \"weight\": 2\r\n  },\r\n  {\r\n    \"guid\": \"b8ee9ee0860c17e489593702d404c32e\",\r\n   
+    \"name\": \"Gun\",\r\n    \"weight\": 8\r\n  },\r\n  {\r\n    \"guid\": \"d7ad05f68ff2a86479819ddd1a4771b7\",\r\n   
+    \"name\": \"Bullet\",\r\n    \"weight\": 4\r\n  },\r\n  {\r\n    \"guid\": \"e8850e898d8facd47bf7f53e71969a20\",\r\n   
+    \"name\": \"Explosive\",\r\n    \"weight\": 3\r\n  },\r\n  {\r\n    \"guid\":
+    \"4b97ae8ce9ab07c4e8046d26eb1ee455\",\r\n    \"name\": \"Accessory\",\r\n   
+    \"weight\": 15\r\n  }\r\n]\n\uB808\uC5B4\uB3C4: [\r\n  {\r\n    \"value\": 1,\r\n   
+    \"weight\": 250\r\n  },\r\n  {\r\n    \"value\": 2,\r\n    \"weight\": 150\r\n 
+    },\r\n  {\r\n    \"value\": 3,\r\n    \"weight\": 80\r\n  },\r\n  {\r\n    \"value\":
+    4,\r\n    \"weight\": 30\r\n  },\r\n  {\r\n    \"value\": 5,\r\n    \"weight\":
+    10\r\n  },\r\n  {\r\n    \"value\": 6,\r\n    \"weight\": 3\r\n  }\r\n]\nhttps://escapefromduckov.net/ko/items/bandage"

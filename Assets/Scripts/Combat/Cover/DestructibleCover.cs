@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Collections;
 
 public class DestructibleCover : MonoBehaviour, ICover
 {
     [Header("엄폐물 설정")]
     [SerializeField] private HealthComponent healthComponent;
     [SerializeField] private Collider coverCollider;
+    [SerializeField] private ParticleSystem coverDestroyedEffect;
+    [SerializeField, Min(0f)] private float debrisRevealDelay = 0.2f;
 
     [Header("엄폐 대상 마스크")]
     [SerializeField] private LayerMask coverTargetMask;
@@ -16,6 +19,7 @@ public class DestructibleCover : MonoBehaviour, ICover
     [SerializeField] private GameObject deadVisuals;
 
     private PlayerController coveredPlayer;
+    private Coroutine currentCoroutine;
 
     private readonly HashSet<Collider> registeredTargets = new();
 
@@ -51,8 +55,7 @@ public class DestructibleCover : MonoBehaviour, ICover
     private void Destroyed(DamageInfo damageInfo)
     {
         ClearTargets();
-        defaultVisuals.SetActive(false);
-        deadVisuals.SetActive(true);
+        currentCoroutine = StartCoroutine(ShowDestructedCover());
     }
 
     public void RegisterTarget(Collider other)
@@ -96,9 +99,26 @@ public class DestructibleCover : MonoBehaviour, ICover
 
         registeredTargets.Clear();
         coveredPlayer = null;
+        currentCoroutine = null;
 
         // 파괴·비활성화가 연이어 발생해도 종료 알림은 한 번만 보낸다.
         if (wasCovering)
             OnCoverStateChanged?.Invoke(false);
+    }
+
+    private IEnumerator ShowDestructedCover()
+    {
+        defaultVisuals.SetActive(false);
+        if (coverDestroyedEffect != null)
+        {
+            Vector3 effectPosition = transform.position + Vector3.up * 0.5f;
+            ParticleSystem effect = Instantiate(coverDestroyedEffect, effectPosition, Quaternion.identity);
+            effect.Play();
+
+            yield return new WaitForSeconds(debrisRevealDelay);
+            deadVisuals.SetActive(true);
+
+            deadVisuals.SetActive(true);
+        }
     }
 }

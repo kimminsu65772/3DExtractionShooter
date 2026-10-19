@@ -6,51 +6,46 @@ public class LootContainer : MonoBehaviour
 {
     [SerializeField] private LootContainerSize containerSize = LootContainerSize.Small;
     [SerializeField] private LootSeedEntry[] initialItems;
+    [SerializeField] private LootTable randomTable;
 
     private InventoryContainer inventoryContainer;
     private bool isInitialized;
 
     public InventoryContainer InventoryContainer => inventoryContainer;
+    public LootTable RandomTable => randomTable;
+    public bool IsInitialized => isInitialized;
 
-    // 처음 열 때만 목록을 구성한다. 잘못된 항목이 있으면 미완성 목록을 공개하지 않는다.
+    internal void InitializePreparedContents(InventoryContainer contents)
+    {
+        inventoryContainer = contents;
+        isInitialized = true;
+    }
+
+    // 이미 로딩에서 준비한 상자는 그대로 반환하고, 이전 고정 상자의 열기 초기화도 지원한다.
     public bool TryInitializeContents(CombatDataCompositionRoot dataRoot)
     {
         if (isInitialized) return true;
-        if (inventoryContainer == null) return false;
+        // 무작위 상자는 탐험 로딩에서 준비한다. 열기를 반복해 재추첨하지 않는다.
+        if (randomTable != null) return false;
+        if (!TryPrepareFixedContents(dataRoot, out InventoryContainer candidate)) return false;
+        InitializePreparedContents(candidate);
+        return true;
+    }
+
+    internal bool TryPrepareFixedContents(CombatDataCompositionRoot dataRoot, out InventoryContainer candidate)
+    {
+        candidate = null;
+        int slotCount = inventoryContainer != null ? inventoryContainer.SlotCount : (int)containerSize;
+        if (slotCount <= 0) return false;
+        candidate = new InventoryContainer(slotCount);
         if (initialItems == null || initialItems.Length == 0)
-        {
-            isInitialized = true;
             return true;
-        }
         if (dataRoot == null || !dataRoot.isReady) return false;
-        InventoryContainer candidate = new InventoryContainer(inventoryContainer.SlotCount);
         foreach (LootSeedEntry seed in initialItems)
         {
             if (seed == null || seed.Count <= 0) return ReportInvalidSeed();
-            if (seed.ItemType == ItemType.Ammo)
-            {
-                if (dataRoot.AmmoCatalog == null || !dataRoot.AmmoCatalog.TryGet(seed.ItemId, out AmmoDefinition ammo)) return ReportInvalidSeed();
-                if (candidate.AddAmmoUpTo(ammo, seed.Count) != seed.Count) return ReportInvalidSeed();
-            }
-            else if (seed.ItemType == ItemType.Weapon)
-            {
-                if (seed.Count > candidate.SlotCount || dataRoot.WeaponCatalog == null || !dataRoot.WeaponCatalog.TryGet(seed.ItemId, out RuntimeWeapon weapon) || weapon.Definition.weaponType != WeaponType.Ranged) return ReportInvalidSeed();
-                // 같은 종류의 총 여러 자루는 각각 별개의 탄창 상태를 갖는다.
-                for (int i = 0; i < seed.Count; i++)
-                    if (!candidate.TryPlaceInEmptySlot(new WeaponInventoryItem(new WeaponInstance(weapon)), out _)) return ReportInvalidSeed();
-            }
-            else
-            {
-                ItemDefinition definition = null;
-                if (seed.ItemType == ItemType.Meds && dataRoot.MedicineCatalog != null && dataRoot.MedicineCatalog.TryGet(seed.ItemId, out MedicineDefinition medicine)) definition = medicine;
-                if (seed.ItemType == ItemType.Armor && dataRoot.ArmorCatalog != null && dataRoot.ArmorCatalog.TryGet(seed.ItemId, out ArmorDefinition armor)) definition = armor;
-                if (seed.ItemType == ItemType.Helmet && dataRoot.HelmetCatalog != null && dataRoot.HelmetCatalog.TryGet(seed.ItemId, out HelmetDefinition helmet)) definition = helmet;
-                // 일부만 채워진 슬롯이 생기지 않도록, 시드가 완료되지 않은 경우에는 아예 지급하지 않는다.
-                if (definition == null || candidate.AddItemUpTo(definition, seed.Count) != seed.Count) return ReportInvalidSeed();
-            }
+            if (!LootItemFactory.TryAdd(candidate, dataRoot, seed.ItemType, seed.ItemId, seed.Count)) return ReportInvalidSeed();
         }
-        inventoryContainer = candidate;
-        isInitialized = true;
         return true;
     }
 
@@ -80,6 +75,26 @@ public class LootContainer : MonoBehaviour
         // 임시 후보를 실제 상자 컨테이너로 승격시킨다.
         inventoryContainer = candidate;
         isInitialized = true;
+        return true;
+    }
+
+    public bool TryApplyRestoredSlots(IInventoryItem[] restoredSlots)
+    {
+        if (restoredSlots == null || inventoryContainer == null)
+            return false;
+
+        // 이미 초기화된 상자는 슬롯을 덮어쓰지 않도록 한다
+        if (isInitialized)
+            return false; 
+
+        //슬롯 수 일치 여부를 확인한다.
+        if (restoredSlots.Length != inventoryContainer.SlotCount)
+            return false;
+
+        inventoryContainer.ApplyResize(restoredSlots);
+
+        isInitialized = true;
+
         return true;
     }
 

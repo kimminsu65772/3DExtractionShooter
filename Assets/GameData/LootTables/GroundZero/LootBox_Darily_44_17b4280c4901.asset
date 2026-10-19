@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ead783b6d33006f4f8fd6e64c2682b54, type: 3}
+  m_Name: LootBox_Darily_44_17b4280c4901
+  m_EditorClassIdentifier: Assembly-CSharp::LootTable
+  activeChance: 0.75
+  inventorySize: 10
+  minRolls: 1
+  maxRolls: 5
+  emptyRollChance: 0.98024154
+  entries:
+  - itemType: 4
+    itemId: 5006
+    weight: 1
+    minCount: 1
+    maxCount: 1
+  fixedItemSpawnChance: 1
+  fixedItems: []
+  sourceNote: "GroundZero \uC6D0\uBCF8 \uC0C1\uC790/\uD0DC\uADF8/\uB808\uC5B4\uB3C4
+    \uAC00\uC911\uCE58\uB97C \uACC4\uC0B0\uD55C \uD6C4 \uC9C0\uC6D0 \uC544\uC774\uD15C\uB9CC
+    \uC7AC\uC815\uADDC\uD654. \uC6D0\uBCF8 \uD6C4\uBCF4 \uC9C8\uB7C9: 0.0197584529131369\n\uD0DC\uADF8:
+    [\r\n  {\r\n    \"guid\": \"62a2a7a06394c044db5c6daf2bb17d7e\",\r\n    \"name\":
+    \"Daily\",\r\n    \"weight\": 12\r\n  },\r\n  {\r\n    \"guid\": \"d45f54d8e8c2f89458b010d1126a5e99\",\r\n   
+    \"name\": \"Tool\",\r\n    \"weight\": 2\r\n  },\r\n  {\r\n    \"guid\": \"1716683a80bdc0b4ea399b3054fad4a1\",\r\n   
+    \"name\": \"Continer\",\r\n    \"weight\": 2\r\n  },\r\n  {\r\n    \"guid\":
+    \"d05690e88afbc734fba976687b555eae\",\r\n    \"name\": \"Electric\",\r\n    \"weight\":
+    1\r\n  },\r\n  {\r\n    \"guid\": \"c24bb972aa4b3e948a5dba906a9e40f6\",\r\n   
+    \"name\": \"Food\",\r\n    \"weight\": 2\r\n  }\r\n]\n\uB808\uC5B4\uB3C4: [\r\n 
+    {\r\n    \"value\": 1,\r\n    \"weight\": 1600\r\n  },\r\n  {\r\n    \"value\":
+    2,\r\n    \"weight\": 400\r\n  },\r\n  {\r\n    \"value\": 3,\r\n    \"weight\":
+    100\r\n  },\r\n  {\r\n    \"value\": 4,\r\n    \"weight\": 25\r\n  },\r\n  {\r\n   
+    \"value\": 5,\r\n    \"weight\": 5\r\n  },\r\n  {\r\n    \"value\": 6,\r\n   
+    \"weight\": 1\r\n  }\r\n]\nhttps://escapefromduckov.net/ko/items/bandage\n2026-10-18:
+    \uB0C4\uBE44\uB9CC \uB0A8\uC740 \uD45C\uB294 \uC81C\uC678 \uD6C4\uBCF4\uC758
+    \uD655\uB960\uC744 \uBE48 \uACB0\uACFC\uB85C \uC720\uC9C0\uD55C\uB2E4. \uBE48
+    \uACB0\uACFC\uB294 \uC7AC\uCD94\uCCA8\uD558\uC9C0 \uC54A\uB294\uB2E4."

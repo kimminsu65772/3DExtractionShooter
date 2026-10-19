@@ -14,7 +14,7 @@ public class PlayerInteractionController : MonoBehaviour
     [SerializeField] private Vector3 originOffset = new Vector3(0f, 0.6f, 0f);
     [SerializeField, Min(0.1f)] private float interactionDistance = 1.5f;
     // 전체 허용 각도를 나타낸다. 90도라면 앞쪽 좌우 45도까지만 후보로 인정한다.
-    [SerializeField, Range(1f, 180f)] private float forwardAngle = 90f;
+    [SerializeField, Range(1f, 180f)] private float forwardAngle = 180f;
     // 처음에는 모든 레이어를 검사한다. 물체가 많아지면 상호작용 전용 레이어만 지정한다.
     [SerializeField] private LayerMask interactionMask = ~0;
     // 현재 프로젝트의 Ground와 Obstacle 레이어를 벽 가림 검사에 사용한다.
@@ -26,9 +26,16 @@ public class PlayerInteractionController : MonoBehaviour
     private const int MaximumQueryCapacity = 512;
     private bool hasReportedSaturation;
     private IInteractable currentTarget;
+    private IInteractable timedTarget;
+    private Collider[] timedTargetColliders;
+    private Action completeTimedInteraction;
+    private float interactionStartedAt;
+    private float interactionDuration;
 
     public IInteractable CurrentTarget => currentTarget;
     public Vector3 InteractionOrigin => transform.TransformPoint(originOffset);
+    public bool IsInteracting => timedTarget != null;
+    public float InteractionProgress { get; private set; }
 
     // 열린 창의 거리만 확인한다. 바라보는 방향을 바꿨다는 이유로 창을 닫지 않는다.
     public bool IsWithinInteractionDistance(Collider target)
@@ -41,6 +48,8 @@ public class PlayerInteractionController : MonoBehaviour
     // 안내 UI는 대상이 바뀔 때만 갱신하고, 동작 결과는 성공했을 때만 받도록 한다.
     public event Action<IInteractable> OnTargetChanged;
     public event Action<IInteractable> OnInteracted;
+    public event Action<bool> OnInteractionStateChanged;
+    public event Action<float> OnInteractionProgressChanged;
 
     private void Awake()
     {
@@ -53,11 +62,13 @@ public class PlayerInteractionController : MonoBehaviour
         // 이동과 회전이 끝난 뒤 현재 위치로 감지한다. 이동과 회피 자체를 제한하지 않는다.
         RefreshTarget();
         if (inputHandler != null && inputHandler.ConsumeInteractInput()) TryInteract();
+        UpdateTimedInteraction();
     }
 
     private void OnDisable()
     {
         // 플레이어나 컴포넌트가 꺼지면 이전 대상 안내를 남기지 않는다.
+        CancelInteraction();
         SetTarget(null);
     }
 
@@ -91,26 +102,31 @@ public class PlayerInteractionController : MonoBehaviour
             // 중심점 대신 실제 표면까지의 거리로 비교해 큰 상자도 가까운 쪽에서 사용할 수 있게 한다.
             Vector3 closestPoint = candidateCollider.ClosestPoint(origin);
             Vector3 offset = closestPoint - origin;
+
+            bool isInTrigger = candidateCollider.isTrigger && offset.sqrMagnitude < 0.0001f;
+
             float distanceSquared = offset.sqrMagnitude;
             if (distanceSquared > nearestDistanceSquared) continue;
 
             Vector3 flatDirection = offset;
             flatDirection.y = 0f;
-            // 큰 Trigger 안에서는 가장 가까운 점이 감지 시작점과 같다. 이때는 Collider 중심으로 방향을 확인한다.
-            if (flatDirection.sqrMagnitude < 0.0001f)
-            {
-                flatDirection = candidateCollider.bounds.center - origin;
-                flatDirection.y = 0f;
-            }
-            // 방향을 구할 수 없는 완전 겹침은 전방 대상이라고 추측하지 않고 제외한다.
-            if (flatDirection.sqrMagnitude < 0.0001f || Vector3.Dot(forward, flatDirection.normalized) < minimumDot) continue;
+
+            // 트리거 범위 바깥이고 방향 검사가 가능한 경우, 설정한 각도 내에 들어왔는지 체크한다. 완전히 겹쳐서 방향 검사를 불가능한 경우는 상호작용이 가능하다고 판단한다.
+            if (!isInTrigger && flatDirection.sqrMagnitude >= 0.0001f && Vector3.Dot(forward, flatDirection.normalized) < minimumDot)
+                continue;
             // Trigger 안에서도 벽 검사를 생략하지 않도록 완전히 겹친 경우에는 중심까지 검사한다.
             Vector3 visibilityPoint = offset.sqrMagnitude < 0.0001f ? candidateCollider.bounds.center : closestPoint;
-            if (!candidate.CanInteract(this) || IsObstructed(origin, visibilityPoint, component)) continue;
+            if (!candidate.CanInteract(this)) 
+                continue;
+
+            // 트리거 바깥이면서 플레이어와 상호작용 대상 사이에 벽이 있으면 후보에서 제외한다. 트리거 안에서는 벽을 무시한다.
+            if (!isInTrigger && IsObstructed(origin, visibilityPoint, component)) 
+                continue;
 
             // 동일 거리에서는 인스턴스 번호로 결정해 물리 검색 결과 순서가 바뀌어도 대상이 흔들리지 않게 한다.
             int instanceId = component.GetInstanceID();
-            if (distanceSquared == nearestDistanceSquared && instanceId >= nearestInstanceId) continue;
+            if (distanceSquared == nearestDistanceSquared && instanceId >= nearestInstanceId) 
+                continue;
             nearestDistanceSquared = distanceSquared;
             nearestInstanceId = instanceId;
             nearest = candidate;
@@ -121,6 +137,13 @@ public class PlayerInteractionController : MonoBehaviour
 
     public bool TryInteract()
     {
+        // 진행 중인 작업의 취소를 우선한다. 다른 물체를 바라봐도 같은 키로 취소할 수 있다.
+        if (IsInteracting)
+        {
+            CancelInteraction();
+            return true;
+        }
+
         // 키 입력 직전에 다시 검사해 멀어진 대상이나 방금 파괴된 대상을 사용하지 않는다.
         RefreshTarget();
         IInteractable target = currentTarget;
@@ -129,6 +152,82 @@ public class PlayerInteractionController : MonoBehaviour
         // 획득으로 물체가 사라지거나 사용 불가가 됐을 때 안내를 즉시 갱신한다.
         RefreshTarget();
         return true;
+    }
+
+    public bool TryStartTimedInteraction(IInteractable target, float duration, Action onCompleted)
+    {
+        if (IsInteracting || duration <= 0f || onCompleted == null || !isActiveAndEnabled ||
+            (healthComponent != null && healthComponent.IsDead) ||
+            (inputHandler != null && inputHandler.IsGameplayInputBlocked) ||
+            !IsAvailable(target, out Component component) || !target.CanInteract(this))
+            return false;
+
+        // 최초 등록 때만 콜라이더를 모으고, 진행 중에는 같은 배열로 거리만 검사한다.
+        timedTargetColliders = component.GetComponentsInChildren<Collider>();
+        timedTarget = target;
+        if (!IsTimedTargetInRange())
+        {
+            timedTarget = null;
+            timedTargetColliders = null;
+            return false;
+        }
+
+        interactionStartedAt = Time.time;
+        interactionDuration = duration;
+        completeTimedInteraction = onCompleted;
+        InteractionProgress = 0f;
+        OnInteractionStateChanged?.Invoke(true);
+        OnInteractionProgressChanged?.Invoke(0f);
+        return true;
+    }
+
+    public void CancelInteraction()
+    {
+        if (!IsInteracting) return;
+        ClearTimedInteraction();
+    }
+
+    private void UpdateTimedInteraction()
+    {
+        if (!IsInteracting) return;
+        if (!IsAvailable(timedTarget, out _) ||
+            (healthComponent != null && healthComponent.IsDead) ||
+            (inputHandler != null && inputHandler.IsGameplayInputBlocked) ||
+            !timedTarget.CanInteract(this) || !IsTimedTargetInRange())
+        {
+            CancelInteraction();
+            return;
+        }
+
+        InteractionProgress = Mathf.Clamp01((Time.time - interactionStartedAt) / interactionDuration);
+        OnInteractionProgressChanged?.Invoke(InteractionProgress);
+        if (InteractionProgress < 1f) return;
+
+        // 씬 이동으로 소유자가 파괴돼도 완료 작업이 중복 실행되지 않도록 먼저 비운다.
+        Action completed = completeTimedInteraction;
+        ClearTimedInteraction();
+        completed.Invoke();
+    }
+
+    private bool IsTimedTargetInRange()
+    {
+        foreach (Collider candidate in timedTargetColliders)
+        {
+            if (candidate == null || !candidate.enabled || !candidate.gameObject.activeInHierarchy) continue;
+            // 자식에 별도의 상호작용 물체가 있으면 그 콜라이더를 부모의 범위로 쓰지 않는다.
+            if (!ReferenceEquals(candidate.GetComponentInParent<IInteractable>(), timedTarget)) continue;
+            if (IsWithinInteractionDistance(candidate)) return true;
+        }
+        return false;
+    }
+
+    private void ClearTimedInteraction()
+    {
+        timedTarget = null;
+        timedTargetColliders = null;
+        completeTimedInteraction = null;
+        InteractionProgress = 0f;
+        OnInteractionStateChanged?.Invoke(false);
     }
 
     private int QueryNearbyColliders(Vector3 origin)
