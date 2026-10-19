@@ -19,9 +19,9 @@ public class PlayerStateMachine : MonoBehaviour
 
     public bool TryChangeState(PlayerActionState nextState)
     {
-        if (CurrentState == nextState)
+        if (CurrentState == PlayerActionState.Dead || CurrentState == nextState)
         {
-            return false; // 이미 같은 상태라면 변경하지 않음
+            return false; // 사망 후 동작 종료 알림이 Free로 되돌리는 것도 막는다.
         }
         
         PlayerActionState playerActionState = CurrentState;

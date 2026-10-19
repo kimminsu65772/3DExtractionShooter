@@ -1,11 +1,12 @@
 using System;
+using Cysharp.Threading.Tasks;
 using ExtractionShooter.DataPipeline;
 
 // 플레이어나 적이 실제로 소유한 무기 한 자루의 변경 가능한 상태다.
 public class WeaponInstance
 {
-    public RuntimeWeapon RuntimeWeapon { get; }
-    public WeaponAmmoState AmmoState { get; }
+    public RuntimeWeapon RuntimeWeapon { get; private set; }
+    public WeaponAmmoState AmmoState { get; private set; }
     public WeaponDefinition Definition => RuntimeWeapon.Definition;
     public int WeaponId => RuntimeWeapon.WeaponId;
 

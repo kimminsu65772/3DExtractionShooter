@@ -38,12 +38,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dodgeStaminaCost = 20f;
 
     [Header("플레이어 회피 설정")]
-    [SerializeField] private float dodgeDistance = 3f;
-    [SerializeField] private float dodgeDuration = 0.55f;
-    [SerializeField] private float dodgeCooldown = 0.2f;
+    [SerializeField, Min(0.01f)] private float dodgeSpeed = 10f;
+    [SerializeField, Min(0.01f)] private float dodgeDuration = 0.5f;
+    [SerializeField, Min(0f)] private float dodgeCooldown = 0.5f;
+    [SerializeField] private AnimationCurve dodgeSpeedCurve = DodgeMotion.CreateOriginalSpeedCurve();
+    [SerializeField, Min(0.01f)] private float dodgeExitAcceleration = 50f;
 
     [Header("플레이어 회전 설정")]
     [SerializeField] private float rotationSpeed = 12f;
+
+    [Header("플레이어 이동 소음 설정")]
+    [SerializeField] private float walkNoiseRadius = 3f;
+    [SerializeField] private float sprintNoiseRadius = 7f;
+    [SerializeField] private float aimMoveNoiseRadius = 2f;
+    [SerializeField] private float dodgeNoiseRadius = 5f;
 
     [Header("플레이어 상태 변화 확인")]
     [SerializeField] private float currentMoveSpeed;
@@ -59,6 +67,10 @@ public class PlayerController : MonoBehaviour
 
     // 회피가 끝난 후 다음 회피를 시작할 수 있는 시간
     private float nextDodgeTime;
+
+    // 구르기 직후에만 일반 이동으로 속도를 이어 주며 평소 이동에는 관성을 추가하지 않는다.
+    private Vector3 dodgeExitVelocity;
+    private bool hasDodgeExitVelocity;
 
     private float forwardProbeDistance;
     private readonly RaycastHit[] _groundProbeHits = new RaycastHit[8];
@@ -79,6 +91,12 @@ public class PlayerController : MonoBehaviour
     public Vector3 CurrentMoveDirection { get; private set; }
 
     public float CurrentMoveSpeed => currentMoveSpeed;
+    public float DodgeDuration => Mathf.Max(0.01f, dodgeDuration);
+
+    public void SetCamera(Transform cameraTransform)
+    {
+        this.cameraTransform = cameraTransform;
+    }
 
     private bool IsAimActive => stateMachine != null && stateMachine.CurrentState == PlayerActionState.Free && _inputHandler.IsAimHeld;
     private bool IsAttackActive => stateMachine != null && stateMachine.CurrentState == PlayerActionState.Free && _inputHandler.IsAttackHeld;
@@ -279,11 +297,32 @@ public class PlayerController : MonoBehaviour
             moveDirection = Vector3.ProjectOnPlane(moveDirection, slopeProbe.groundNormal.normalized);
         }
 
+        Vector3 planarVelocity = moveDirection * currentMoveSpeed;
+        if (hasDodgeExitVelocity)
+        {
+            if (stateMachine.CurrentState != PlayerActionState.Free || carryMovementMultiplier <= 0f)
+            {
+                hasDodgeExitVelocity = false;
+                dodgeExitVelocity = Vector3.zero;
+            }
+            else
+            {
+                // 과적 배율은 잔여 속도에도 한 번만 적용한다. 이동 불가 상태에는 잔여 이동도 없다.
+                Vector3 targetVelocity = moveDirection * GetCurrentMoveSpeed();
+                dodgeExitVelocity = Vector3.MoveTowards(dodgeExitVelocity, targetVelocity, dodgeExitAcceleration * Time.deltaTime);
+                planarVelocity = dodgeExitVelocity * carryMovementMultiplier;
+                currentMoveSpeed = planarVelocity.magnitude;
+                moveDirection = currentMoveSpeed > 0.001f ? planarVelocity / currentMoveSpeed : Vector3.zero;
+                if ((dodgeExitVelocity - targetVelocity).sqrMagnitude < 0.0001f)
+                    hasDodgeExitVelocity = false;
+            }
+        }
+
         CurrentMoveDirection = moveDirection;
 
         UpdateVerticalVelocity();
 
-        Vector3 velocity = moveDirection * currentMoveSpeed + Vector3.up * _verticalVelocity;
+        Vector3 velocity = planarVelocity + Vector3.up * _verticalVelocity;
         characterController.Move(velocity * Time.deltaTime);
         RotateCharacter(moveDirection);
     }
@@ -482,6 +521,8 @@ public class PlayerController : MonoBehaviour
         dodgeDirection = requestedDirection.normalized;
 
         dodgeElapsedTime = 0f;
+        hasDodgeExitVelocity = false;
+        dodgeExitVelocity = Vector3.zero;
 
         Vector3 lookDirection = dodgeDirection;
 
@@ -510,10 +551,8 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateDodge()
     {
-        // 회피 속도를 계산한다.
+        // 기본 회피 속도에 진행률별 배율을 곱한다. 일반 이동·장비·과적 배율은 사용하지 않는다.
         float safeDodgeDuration = Mathf.Max(dodgeDuration, 0.01f);
-
-        float dodgeSpeed = dodgeDistance / safeDodgeDuration;
 
         // 마지막 프레임에 회피 시간을 초과해서 이동하지 않도록 나머지 회피 시간을 계산한다.
         float remainingDodgeTime = Mathf.Max(safeDodgeDuration - dodgeElapsedTime, 0f);
@@ -532,7 +571,7 @@ public class PlayerController : MonoBehaviour
 
         CurrentMoveDirection = moveDirection;
 
-        currentMoveSpeed = dodgeSpeed;
+        currentMoveSpeed = DodgeMotion.EvaluateSpeed(dodgeSpeed, dodgeSpeedCurve, dodgeElapsedTime / safeDodgeDuration);
 
         // 회피 중에도 중력 법칙을 유지한다.
         UpdateVerticalVelocity();
@@ -552,9 +591,14 @@ public class PlayerController : MonoBehaviour
 
     private void EndDodge()
     {
+        // 원본처럼 달리기 속도를 넘긴 뒤 다음 일반 이동에서 현재 입력 속도에 합류시킨다.
+        WeaponDefinition heldWeapon = weaponHolder != null ? weaponHolder.CurrentWeapon?.Definition : null;
+        float runSpeed = GetStatValue(StatType.SprintSpeed, DefaultSprintSpeed) * (heldWeapon != null ? heldWeapon.movementSpeedMultiplier : 1f);
+        dodgeExitVelocity = dodgeDirection * runSpeed;
+        hasDodgeExitVelocity = true;
         dodgeElapsedTime = 0f;
         dodgeDirection = Vector3.zero;
-        currentMoveSpeed = 0f;
+        currentMoveSpeed = runSpeed * (carryWeight != null ? carryWeight.MovementMultiplier : 1f);
 
         nextDodgeTime = Time.time + dodgeCooldown;
 
@@ -564,7 +608,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
+        hasDodgeExitVelocity = false;
+        dodgeExitVelocity = Vector3.zero;
         healthComponent?.SetInvulnerable(false);
+    }
+
+    private void OnValidate()
+    {
+        dodgeSpeed = Mathf.Max(0.01f, dodgeSpeed);
+        dodgeDuration = Mathf.Max(0.01f, dodgeDuration);
+        dodgeCooldown = Mathf.Max(0f, dodgeCooldown);
+        dodgeExitAcceleration = Mathf.Max(0.01f, dodgeExitAcceleration);
+        if (dodgeSpeedCurve == null || dodgeSpeedCurve.length == 0)
+            dodgeSpeedCurve = DodgeMotion.CreateOriginalSpeedCurve();
     }
 
     private void ResolveAimController()

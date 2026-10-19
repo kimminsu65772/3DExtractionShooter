@@ -42,8 +42,15 @@ public class PlayerAimController : MonoBehaviour
     public Vector3 AimWorldPosition { get; private set; }
     public Vector3 AimDirection { get; private set; } = Vector3.forward;
     public float AimDistance { get; private set; }
+
+    public bool HasAimTarget { get; private set; }
     public bool HasValidAimDirection { get; private set; }
     public Vector2 EffectiveAimScreenPosition { get; private set; }
+
+    public void SetCamera(Camera camera)
+    {
+        mainCamera = camera;
+    }
 
     private void Awake()
     {
@@ -100,6 +107,7 @@ public class PlayerAimController : MonoBehaviour
         if (AimTargetHelper.TryGetMouseWorldHit(mainCamera, aimScreenPosition, hitBuffer, aimLayer, out RaycastHit closestHit))
         {
             AimWorldPosition = closestHit.point;
+            HasAimTarget = true;
         }
         else
         {
@@ -110,6 +118,8 @@ public class PlayerAimController : MonoBehaviour
                 aimScreenPosition,
                 planePoint
             );
+
+            HasAimTarget = false;
         }
 
         Vector3 horizontalVector = AimTargetHelper.GetHorizontalDistance(transform.position, AimWorldPosition);

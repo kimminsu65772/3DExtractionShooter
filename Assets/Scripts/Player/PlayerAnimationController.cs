@@ -8,6 +8,7 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerInputHandler inputHandler;
     [SerializeField] private PlayerStateMachine stateMachine;
+    [SerializeField] private PlayerWeaponHolder weaponHolder;
 
     [Header("애니메이션 클립")]
     [SerializeField] private AnimationClip reloadClip;
@@ -43,6 +44,10 @@ public class PlayerAnimationController : MonoBehaviour
     private static readonly int ReloadSpeedHash =
         Animator.StringToHash("ReloadSpeed");
 
+    private static readonly int DodgeSpeedHash = Animator.StringToHash("DodgeSpeed");
+    private bool hasDodgeSpeedParameter;
+    private AnimationClip dodgeClip;
+
     private void Awake()
     {
         if (playerController == null)
@@ -60,6 +65,11 @@ public class PlayerAnimationController : MonoBehaviour
             stateMachine = GetComponent<PlayerStateMachine>();
         }
 
+        if (weaponHolder == null)
+        {
+            weaponHolder = GetComponent<PlayerWeaponHolder>();
+        }
+
         if (animator == null)
         {
             animator = GetComponentInChildren<Animator>(true);
@@ -74,6 +84,7 @@ public class PlayerAnimationController : MonoBehaviour
         }
 
         ConfigureAnimationEventRelay();
+        CacheDodgeAnimation();
     }
 
     private void OnEnable()
@@ -84,6 +95,7 @@ public class PlayerAnimationController : MonoBehaviour
         stateMachine.OnStateChanged += HandleActionStateChanged;
 
         animator.SetInteger(ActionStateHash, (int)stateMachine.CurrentState);
+        UpdateDodgeAnimationSpeed();
     }
 
     private void OnDisable()
@@ -102,9 +114,11 @@ public class PlayerAnimationController : MonoBehaviour
         // 플레이어 컨트롤러에서 확정한 이동 방향을 애니메이터에 전달한다.
         UpdateMovementParameters();
 
-        // 조준 버튼을 누르는 동안에는 조준 애니메이션이 재생되도록 한다.
-        bool canAim = stateMachine.CurrentState == PlayerActionState.Free;
-        animator.SetBool(IsAimingHash, canAim && inputHandler.IsAimHeld);
+        // 총을 손에 든 동안 기본 상체 자세를 유지한다. 실제 ADS 입력·수치와는 별개다.
+        // 장전·회피·피격·사망 동작이 끝나 Free로 돌아오면 다시 총을 드는 자세를 사용한다.
+        bool holdGunPose = stateMachine.CurrentState == PlayerActionState.Free
+            && weaponHolder != null && weaponHolder.CurrentWeaponInstance != null;
+        animator.SetBool(IsAimingHash, holdGunPose);
 
         bool canPlayFireAnimation = stateMachine.CurrentState == PlayerActionState.Free;
         animator.SetBool(IsFiringHash, inputHandler.IsAttackHeld && canPlayFireAnimation);
@@ -136,6 +150,8 @@ public class PlayerAnimationController : MonoBehaviour
     {
         // 새로 확정된 행동 상태를 정수 매개변수로 전달한다.
         animator.SetInteger(ActionStateHash, (int)currentState);
+        if (currentState == PlayerActionState.Dodge)
+            UpdateDodgeAnimationSpeed();
 
         if (currentState != PlayerActionState.Free)
         {
@@ -170,6 +186,29 @@ public class PlayerAnimationController : MonoBehaviour
 
         float animationSpeed = reloadClip.length / reloadDuration;
         animator.SetFloat(ReloadSpeedHash, animationSpeed);
+    }
+
+    private void CacheDodgeAnimation()
+    {
+        // 기존 Controller는 새 파라미터를 강제하지 않는다. 지원하는 오리 Controller만 배속을 맞춘다.
+        foreach (AnimatorControllerParameter parameter in animator.parameters)
+            if (parameter.nameHash == DodgeSpeedHash && parameter.type == AnimatorControllerParameterType.Float)
+                hasDodgeSpeedParameter = true;
+
+        if (!hasDodgeSpeedParameter || animator.runtimeAnimatorController == null)
+            return;
+        foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
+            if (clip.name == "Roll")
+            {
+                dodgeClip = clip;
+                break;
+            }
+    }
+
+    private void UpdateDodgeAnimationSpeed()
+    {
+        if (hasDodgeSpeedParameter && dodgeClip != null && playerController != null)
+            animator.SetFloat(DodgeSpeedHash, dodgeClip.length / playerController.DodgeDuration);
     }
 
     private void ConfigureAnimationEventRelay()

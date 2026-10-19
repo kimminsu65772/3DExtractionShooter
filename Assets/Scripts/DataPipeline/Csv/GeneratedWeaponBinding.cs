@@ -47,7 +47,14 @@ namespace ExtractionShooter.DataPipeline
                 @"projectilePrewarmSize",
                 @"projectileRadius",
                 @"projectileSpeed",
+                @"rarity",
+                @"recoilDuration",
+                @"recoilHorizontalMax",
+                @"recoilHorizontalMin",
+                @"recoilRecoveryDelay",
                 @"recoilRecoverySpeed",
+                @"recoilVerticalMax",
+                @"recoilVerticalMin",
                 @"reloadDuration",
                 @"reloadMode",
                 @"shotNoiseRadius",
@@ -2119,6 +2126,236 @@ namespace ExtractionShooter.DataPipeline
                     }
                 }
             }
+            // rarity 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"rarity", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"rarity",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryInt(raw, out int rarityValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"rarity",
+                                    RawValue = raw,
+                                    Message = "값을 int 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.rarity = rarityValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // recoilDuration 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"recoilDuration", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"recoilDuration",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float recoilDurationValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"recoilDuration",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.recoilDuration = recoilDurationValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // recoilHorizontalMax 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"recoilHorizontalMax", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"recoilHorizontalMax",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float recoilHorizontalMaxValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"recoilHorizontalMax",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.recoilHorizontalMax = recoilHorizontalMaxValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // recoilHorizontalMin 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"recoilHorizontalMin", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"recoilHorizontalMin",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float recoilHorizontalMinValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"recoilHorizontalMin",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.recoilHorizontalMin = recoilHorizontalMinValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // recoilRecoveryDelay 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"recoilRecoveryDelay", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"recoilRecoveryDelay",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float recoilRecoveryDelayValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"recoilRecoveryDelay",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.recoilRecoveryDelay = recoilRecoveryDelayValue;
+                            }
+                        }
+                    }
+                }
+            }
             // recoilRecoverySpeed 필드의 CSV 값을 읽고 변환한다.
             {
                 bool hasColumn = header.TryGetValue(@"recoilRecoverySpeed", out int columnIndex);
@@ -2174,6 +2411,98 @@ namespace ExtractionShooter.DataPipeline
                             else
                             {
                                 candidate.recoilRecoverySpeed = recoilRecoverySpeedValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // recoilVerticalMax 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"recoilVerticalMax", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"recoilVerticalMax",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float recoilVerticalMaxValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"recoilVerticalMax",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.recoilVerticalMax = recoilVerticalMaxValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // recoilVerticalMin 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"recoilVerticalMin", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"recoilVerticalMin",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryFloat(raw, out float recoilVerticalMinValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"recoilVerticalMin",
+                                    RawValue = raw,
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.recoilVerticalMin = recoilVerticalMinValue;
                             }
                         }
                     }

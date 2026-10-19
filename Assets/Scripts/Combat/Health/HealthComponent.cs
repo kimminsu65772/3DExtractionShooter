@@ -15,6 +15,8 @@ public class HealthComponent : MonoBehaviour, IDamageable
     private float currentHealth;
     private bool isInvulnerable;
 
+    private bool isEnemy;
+
     public float MaxHealth => maxHealth;
     public float CurrentHealth => currentHealth;
     public bool IsDead => currentHealth <= 0f;  
@@ -28,6 +30,9 @@ public class HealthComponent : MonoBehaviour, IDamageable
     public event Action<DamageInfo> OnDamageTaken;
     public event Action<DamageInfo> OnDeath;
 
+    // 사망 후 복구하는 더미와 실제 제거를 구분하는 생명주기 알림이다.
+    public event Action<HealthComponent> OnDestroyed;
+
     private void Awake()
     {
         if (characterStats == null)
@@ -38,6 +43,9 @@ public class HealthComponent : MonoBehaviour, IDamageable
         // 플레이어의 장비 구조 대신 보호 장비 제공 계약만 참조한다.
         protectionProvider = GetComponent<IProtectionProvider>();
         Initialize(GetConfiguredMaxHealth());
+
+        if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            isEnemy = true;
     }
 
     private void OnEnable()
@@ -56,6 +64,12 @@ public class HealthComponent : MonoBehaviour, IDamageable
         }
 
         isInvulnerable = false;
+    }
+
+    private void OnDestroy()
+    {
+        OnDestroyed?.Invoke(this);
+        OnDestroyed = null;
     }
 
     public void Initialize(float newMaxHealth)
@@ -77,7 +91,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
         ArmorInstance protection = protectionProvider?.GetProtection(damageInfo.hitPart);
         // 장비 제공자가 있는 캐릭터는 빈 장비 칸에서 스탯 방어 등급으로 되돌아가지 않는다.
         // 아직 장비 모델을 사용하지 않는 적은 기존 스탯 기반 보호를 사용한다.
-        int armorLevel = protectionProvider != null ? protection?.Definition.armorLevel ?? 0 : GetArmorLevel(damageInfo.hitPart);
+        float armorLevel = protectionProvider != null ? protection?.Definition.armorLevel ?? 0f : GetArmorLevel(damageInfo.hitPart);
         float protectionFactor = protection != null ? protection.ProtectionFactor : 1f;
         float armorMultiplier = ArmorDamageCalculator.GetDamageMultiplier(damageInfo.armorPenetrationLevel, armorLevel, protectionFactor);
         float appliedDamage = ArmorDamageCalculator.CalculateDamage(damageInfo.incomingDamage, damageInfo.armorPenetrationLevel, armorLevel, protectionFactor);
@@ -95,6 +109,18 @@ public class HealthComponent : MonoBehaviour, IDamageable
         damageInfo.appliedDamage = appliedDamage;
         damageInfo.armorLevel = armorLevel;
         damageInfo.armorMultiplier = armorMultiplier;
+
+        // 텍스트 디스플레이를 요청할 객체의 레이어를 확인한다. 만약에 적 레이어가 아니라면, UI에 표시하지 않는다.
+        if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            DamageTextDisplay.Instance?.ShowDamage(damageInfo.appliedDamage, damageInfo.hitPoint);
+        }
+
+        if(isEnemy)
+        {
+            // 피해 계산이 끝난 결과를 표시 담당 공개 메서드로 직접 전달한다.
+            DamageTextDisplay.Instance?.ShowDamage(damageInfo.appliedDamage, damageInfo.hitPoint);
+        }
 
         OnDamageTaken?.Invoke(damageInfo);
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
@@ -123,13 +149,13 @@ public class HealthComponent : MonoBehaviour, IDamageable
         isInvulnerable = value;
     }
 
-    private int GetArmorLevel(HitPart hitPart)
+    private float GetArmorLevel(HitPart hitPart)
     {
         if (characterStats == null)
             return 0;
 
         StatType armorStat = hitPart == HitPart.Head ? StatType.HeadArmorLevel : StatType.BodyArmorLevel;
-        return Mathf.Max(0, Mathf.RoundToInt(characterStats.GetValue(armorStat)));
+        return Mathf.Max(0f, characterStats.GetValue(armorStat));
     }
 
     private float GetConfiguredMaxHealth()

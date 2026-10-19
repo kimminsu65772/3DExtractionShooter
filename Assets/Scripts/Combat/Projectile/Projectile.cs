@@ -6,8 +6,6 @@ public class Projectile : MonoBehaviour
     private WeaponDefinition weapon;
     private AmmoDefinition ammo;
     private Vector3 direction;
-    // 발사 위치와 발사 시점의 마우스 커서 위치 사이의 거리
-    private float aimDistance;
     private float traveledDistance;
     private float maxTravelDistance;
     private GameObject attacker;
@@ -31,7 +29,6 @@ public class Projectile : MonoBehaviour
         this.weapon = weapon;
         this.ammo = ammo;
         this.direction = fireDirection.normalized;
-        this.aimDistance = aimDistance;
         this.traveledDistance = 0f;
         this.maxTravelDistance = Mathf.Max(aimDistance, weapon.minDamageRange);
         this.attacker = attacker;
@@ -47,7 +44,6 @@ public class Projectile : MonoBehaviour
         weapon = null;
         ammo = null;
         direction = Vector3.zero;
-        aimDistance = 0f;
         traveledDistance = 0f;
         maxTravelDistance = 0f;
         attacker = null;
@@ -206,7 +202,9 @@ public class Projectile : MonoBehaviour
 
     private DamageInfo BuildDamageInfo(RaycastHit hit, HitPart hitPart)
     {
-        float rangeMultiplier = weapon.GetRangeMultiplier(aimDistance);
+        // 이전 프레임까지 이동한 거리에 이번 SphereCast의 충돌 거리까지 더한다.
+        float hitDistance = traveledDistance + hit.distance;
+        float rangeMultiplier = weapon.GetRangeMultiplier(hitDistance);
         float characterHitPartMultiplier = hitPart == HitPart.Head ? damageStats.HeadshotDamageMultiplier : 1f;
         float hitPartMultiplier = weapon.GetHitPartMultiplier(hitPart) * characterHitPartMultiplier;
         float ammoDamageMultiplier = ammo?.damageMultiplier ?? 1f;
@@ -219,7 +217,8 @@ public class Projectile : MonoBehaviour
             armorPenetrationLevel = ammo?.armorPenetrationLevel ?? 0,
             ammoDamageMultiplier = ammoDamageMultiplier,
             incomingDamage = incomingDamage,
-            aimDistance = aimDistance,
+            // 기존 필드명은 유지하되 피해 계산에 사용한 실제 비행 거리를 전달한다.
+            aimDistance = hitDistance,
             hitPoint = hit.point,
             hitDirection = direction,
             hitPart = hitPart,

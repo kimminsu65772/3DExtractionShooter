@@ -37,6 +37,12 @@ public class PlayerWeaponHolder : MonoBehaviour
         currentWeaponView != null &&
         currentWeaponView.HasMuzzle;
 
+    // 최초 활성화와 무기 장착 전에 사용할 데이터 루트를 연결한다.
+    public void SetDataRoot(CombatDataCompositionRoot dataRoot)
+    {
+        this.dataRoot = dataRoot;
+    }
+
     private void OnDisable()
     {
         Unequip();

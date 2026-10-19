@@ -2,20 +2,20 @@ using UnityEngine;
 
 public static class ArmorDamageCalculator
 {
-    // 내구도 효과는 막아 주던 피해량에 곱한다. 등급 자체를 변경하지 않는다.
-    public static float GetDamageMultiplier(int armorPenetrationLevel, int armorLevel, float protectionFactor = 1f)
+    // 방어와 관통의 차이로 피해 비율을 구한다. 내구도는 방어 수치가 아닌 보호 효과에 적용한다.
+    public static float GetDamageMultiplier(int armorPenetrationLevel, float armorLevel, float protectionFactor = 1f)
     {
         int safePenetrationLevel = Mathf.Max(armorPenetrationLevel, 0);
-        int safeArmorLevel = Mathf.Max(armorLevel, 0);
-        int levelDifference = safeArmorLevel - safePenetrationLevel;
+        float safeArmorLevel = Mathf.Max(armorLevel, 0f);
+        float levelDifference = Mathf.Max(safeArmorLevel - safePenetrationLevel, 0f);
 
-        if (safeArmorLevel == 0) return 1f;
-        float normalMultiplier = levelDifference > 0 ? 2f / (levelDifference + 2f) : levelDifference == 0 ? 0.9f : levelDifference == -1 ? 0.95f : 0.975f;
+        // 관통이 방어 이상이면 차이는 0이므로 원래 피해가 그대로 적용된다.
+        float normalMultiplier = 2f / (levelDifference + 2f);
         float safeFactor = float.IsNaN(protectionFactor) || float.IsInfinity(protectionFactor) ? 0f : Mathf.Clamp01(protectionFactor);
         return 1f - (1f - normalMultiplier) * safeFactor;
     }
 
-    public static float CalculateDamage(float incomingDamage, int armorPenetrationLevel, int armorLevel, float protectionFactor = 1f)
+    public static float CalculateDamage(float incomingDamage, int armorPenetrationLevel, float armorLevel, float protectionFactor = 1f)
     {
         if (incomingDamage <= 0f || float.IsNaN(incomingDamage) || float.IsInfinity(incomingDamage))
             return 0f;

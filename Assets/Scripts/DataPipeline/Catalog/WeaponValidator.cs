@@ -29,6 +29,7 @@ namespace ExtractionShooter.DataPipeline
                 report);
 
             ValidateNonNegativeFloat(row.unitWeight, nameof(row.unitWeight), record, report);
+            if (row.rarity < 0) AddIssue(record, nameof(row.rarity), row.rarity.ToString(), "레어도는 0 이상의 정수여야 한다.", report);
             if (row.maxStackCount != 1) AddIssue(record, nameof(row.maxStackCount), row.maxStackCount.ToString(), "무기는 한 칸에 한 자루만 보관한다.", report);
             ValidatePositiveFloat(row.movementSpeedMultiplier, nameof(row.movementSpeedMultiplier), record, report);
             ValidatePositiveFloat(row.adsMovementSpeedMultiplier, nameof(row.adsMovementSpeedMultiplier), record, report);
@@ -131,6 +132,23 @@ namespace ExtractionShooter.DataPipeline
                 nameof(row.aimRecoilMultiplier),
                 record,
                 report);
+
+            // 적용 시간이 0이면 즉시 적용하고, 양수이면 시간에 나누어 적용한다.
+            ValidateNonNegativeFloat(row.recoilDuration, nameof(row.recoilDuration), record, report);
+            // 회복 지연은 마지막 실제 발사 이후의 시간이므로 음수일 수 없다.
+            ValidateNonNegativeFloat(row.recoilRecoveryDelay, nameof(row.recoilRecoveryDelay), record, report);
+            // 수직 반동 범위는 조준점이 앞으로 밀리는 배율을 나타낸다.
+            ValidateNonNegativeFloat(row.recoilVerticalMin, nameof(row.recoilVerticalMin), record, report);
+            // 수직 상한도 유한한 양수 또는 0이어야 한다.
+            ValidateNonNegativeFloat(row.recoilVerticalMax, nameof(row.recoilVerticalMax), record, report);
+            // 뒤집힌 무작위 범위를 CSV를 읽는 단계에서 거절한다.
+            if (row.recoilVerticalMin > row.recoilVerticalMax)
+                // 문제가 있는 열과 원래 값을 데이터 보고서에 남긴다.
+                AddIssue(record, nameof(row.recoilVerticalMax), row.recoilVerticalMax.ToString(CultureInfo.InvariantCulture), "수직 반동 상한은 하한 이상이어야 한다.", report);
+            // 수평 반동은 음수가 가능하지만 NaN, 무한대, 뒤집힌 범위는 허용하지 않는다.
+            if (!IsFinite(row.recoilHorizontalMin) || !IsFinite(row.recoilHorizontalMax) || row.recoilHorizontalMin > row.recoilHorizontalMax)
+                // 두 경계값을 함께 보여 주어 잘못된 방향 범위를 찾기 쉽게 한다.
+                AddIssue(record, "recoilHorizontalRange", $"{row.recoilHorizontalMin}, {row.recoilHorizontalMax}", "수평 반동 범위는 유한하며 하한이 상한 이하여야 한다.", report);
 
             ValidateNonNegativeFloat(
                 row.baseSpreadAngle,

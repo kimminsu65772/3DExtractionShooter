@@ -107,4 +107,5 @@ public enum LootContainerSize
     Small = 4,
     Medium = 8,
     Large = 16,
+    Storage = 64,
 }

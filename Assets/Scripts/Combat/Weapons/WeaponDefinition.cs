@@ -11,6 +11,8 @@ public class WeaponDefinition
     [Header("총기 기본 설정")]
     public int weaponId;
     public string displayName;
+    // 원본 quality에 대응하는 레어도다. 무기 성능이나 개별 내구도를 뜻하지 않는다.
+    [CsvColumn(Optional = true)] public int rarity;
     public WeaponType weaponType;
     public WeaponAnimationStyle animationStyle;
     // 같은 이름의 총도 각각 독립된 물건이므로 최대 중첩 수량은 1로 유지한다.
@@ -32,11 +34,28 @@ public class WeaponDefinition
     public float fireRate;
 
     [Header("반동")]
+    // 1440px 높이 화면을 기준으로 한 수직 반동 강도다. 원본 RecoilScaleV에 대응한다.
     public float verticalRecoilPerShot;
+    // 수평 방향 배율에 곱하는 강도다. 원본 RecoilScaleH에 대응한다.
     public float horizontalRecoilPerShot;
+    // 이전 CSV와의 호환용 열이다. 현재 반동에는 누적 상한을 적용하지 않는다.
     public float maxRecoilOffset;
+    // 기준 화면에서 초당 회복할 픽셀 수다. 원본 RecoilRecover에 대응한다.
     public float recoilRecoverySpeed;
+    // 기존 프로젝트의 ADS 반동 보정은 원본 강도와 별개로 유지한다.
     public float aimRecoilMultiplier;
+    // 매 발 수직 반동의 무작위 배율 하한이다.
+    [CsvColumn(Optional = true)] public float recoilVerticalMin = 1f;
+    // 매 발 수직 반동의 무작위 배율 상한이다.
+    [CsvColumn(Optional = true)] public float recoilVerticalMax = 1f;
+    // 음수는 왼쪽, 양수는 오른쪽이므로 좌우 치우침도 표현할 수 있다.
+    [CsvColumn(Optional = true)] public float recoilHorizontalMin = -1f;
+    // 수평 반동 배율의 상한이다. 반드시 대칭일 필요는 없다.
+    [CsvColumn(Optional = true)] public float recoilHorizontalMax = 1f;
+    // 한 발의 반동을 나누어 적용할 시간이다. 실제 적용 시 발사 간격 이하로 제한한다.
+    [CsvColumn(Optional = true)] public float recoilDuration = 0.04f;
+    // 마지막 실제 발사 시점부터 회복을 시작하기까지의 시간이다.
+    [CsvColumn(Optional = true)] public float recoilRecoveryDelay = 0.1f;
 
     [Header("탄퍼짐")]
     public float baseSpreadAngle;

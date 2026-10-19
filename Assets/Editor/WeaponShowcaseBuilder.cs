@@ -143,13 +143,14 @@ public static class WeaponShowcaseBuilder
         }
     }
 
-    private static void Assemble(GameObject source, string path, string name)
+    public static void Assemble(GameObject source, string path, string name)
     {
         var root = new GameObject(name);
         try
         {
             var visual = UnityEngine.Object.Instantiate(source, root.transform, false);
             visual.name = "Original Visual";
+            RemoveEmptyMeshHolders(source, visual);
             foreach (var t in visual.GetComponentsInChildren<Transform>(true))
             {
                 GameObjectUtility.RemoveMonoBehavioursWithMissingScript(t.gameObject);
@@ -175,6 +176,25 @@ public static class WeaponShowcaseBuilder
             PrefabUtility.SaveAsPrefabAsset(root, path);
         }
         finally { UnityEngine.Object.DestroyImmediate(root); }
+    }
+
+    // 원본에 처음부터 메시가 없는 장착물 표시용 자리만 정리한다. 끊어진 메시 참조는 숨기지 않는다.
+    public static void RemoveEmptyMeshHolders(GameObject source, GameObject instance)
+    {
+        string text = File.ReadAllText(AssetDatabase.GetAssetPath(source));
+        foreach (var original in source.GetComponentsInChildren<MeshFilter>(true))
+        {
+            if (original.sharedMesh != null) continue;
+            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(original, out string guid, out long id);
+            var document = System.Text.RegularExpressions.Regex.Match(text, @"--- !u!33 &" + id + @"\r?\n[\s\S]*?(?=--- !u!|$)").Value;
+            if (!System.Text.RegularExpressions.Regex.IsMatch(document, @"m_Mesh: \{fileID: 0\}"))
+                throw new InvalidOperationException("원본 메시 참조가 끊겼다: " + original.name);
+            string path = AnimationUtility.CalculateTransformPath(original.transform, source.transform);
+            var holder = string.IsNullOrEmpty(path) ? instance.transform : instance.transform.Find(path);
+            var renderer = holder.GetComponent<MeshRenderer>();
+            if (renderer != null) UnityEngine.Object.DestroyImmediate(renderer);
+            UnityEngine.Object.DestroyImmediate(holder.GetComponent<MeshFilter>());
+        }
     }
 
     private static Material ConvertMaterial(Material source)

@@ -5,6 +5,8 @@ public class AimPointProvider : MonoBehaviour
     [SerializeField] private Transform headAimPoint;
     [SerializeField] private Transform bodyAimPoint;
 
+    public Transform BodyAimPoint => bodyAimPoint;
+
     public Vector3 GetAimPosition(HitPart hitPart)
     {
         return hitPart switch

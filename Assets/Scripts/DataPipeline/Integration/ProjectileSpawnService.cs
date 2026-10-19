@@ -64,7 +64,7 @@ namespace ExtractionShooter.DataPipeline
                             $"{nameof(Projectile)}이 필요합니다.");
                     }
 
-                    Vector3 normalizedDirection = WeaponSpreadUtility.ApplyConeSpread(direction, pelletAngle);
+                    Vector3 normalizedDirection = WeaponSpreadUtility.ApplyFanSpread(direction, pelletAngle, i, count);
 
                     // OnRent 이후, 아직 비활성인 동안 이번 발사 상태를 모두 설정한다.
                     instance.transform.SetPositionAndRotation(

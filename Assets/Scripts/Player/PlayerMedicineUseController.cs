@@ -12,8 +12,14 @@ public class PlayerMedicineUseController : MonoBehaviour, IItemUseHandler
     private DefinitionInventoryItem usingItem;
     private WeaponInstance weaponAtStart;
     private float completeTime;
+    private float startTime;
     private PlayerItemQuickslots itemQuickslots;
     public bool IsUsing => usingItem != null;
+    public float UseRemainingTime => IsUsing ? Mathf.Max(0f, completeTime - Time.time) : 0f;
+    public float UseProgress => !IsUsing ? 0f : completeTime <= startTime ? 1f :
+        Mathf.Clamp01((Time.time - startTime) / (completeTime - startTime));
+    public event System.Action<bool> OnUseStateChanged;
+    public event System.Action<float> OnUseProgressChanged;
 
     private void Awake()
     {
@@ -47,7 +53,10 @@ public class PlayerMedicineUseController : MonoBehaviour, IItemUseHandler
         if (FindOwnedSlot(item) == null || medicine.useDuration <= 0f || medicine.healAmount <= 0f) return false;
         usingItem = item;
         weaponAtStart = weaponHolder != null ? weaponHolder.CurrentWeaponInstance : null;
-        completeTime = Time.time + medicine.useDuration;
+        startTime = Time.time;
+        completeTime = startTime + medicine.useDuration;
+        OnUseStateChanged?.Invoke(true);
+        OnUseProgressChanged?.Invoke(0f);
         return true;
     }
 
@@ -62,6 +71,8 @@ public class PlayerMedicineUseController : MonoBehaviour, IItemUseHandler
             CancelUse();
             return;
         }
+        // UI는 별도 타이머 없이 실제 사용 완료 시각을 기준으로 표시한다.
+        OnUseProgressChanged?.Invoke(UseProgress);
         if (Time.time < completeTime) return;
         var medicine = (MedicineDefinition)usingItem.Definition;
         // 대기 중 다른 효과로 체력이 가득 찼다면 회복 아이템을 낭비하지 않는다.
@@ -83,7 +94,12 @@ public class PlayerMedicineUseController : MonoBehaviour, IItemUseHandler
             }
             // 실제 소비가 끝난 순간에만 소진된 아이템의 퀵슬롯 등록을 정리한다.
             itemQuickslots?.RemoveInvalidRegistrations();
-            if (restored > 0f) health.Restore(restored);
+            if (restored > 0f)
+            {
+                health.Restore(restored);
+                // [DATA-01 변경] 부분 사용한 키트의 잔여량도 로비 저장에 반영한다.
+                inventory.RefreshOwnedItemReferences();
+            }
         }
         CancelUse();
     }
@@ -97,6 +113,16 @@ public class PlayerMedicineUseController : MonoBehaviour, IItemUseHandler
         return null;
     }
 
-    public void CancelUse() { usingItem = null; weaponAtStart = null; completeTime = 0f; }
+    public void CancelUse()
+    {
+        bool wasUsing = IsUsing;
+        usingItem = null;
+        weaponAtStart = null;
+        completeTime = 0f;
+        startTime = 0f;
+        if (!wasUsing) return;
+        OnUseStateChanged?.Invoke(false);
+        OnUseProgressChanged?.Invoke(0f);
+    }
     private void OnDisable() { CancelUse(); }
 }

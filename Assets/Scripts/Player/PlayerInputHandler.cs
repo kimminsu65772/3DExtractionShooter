@@ -29,6 +29,8 @@ public class PlayerInputHandler : MonoBehaviour
     public bool IsAimHeld { get; private set; }
     public bool IsAttackHeld { get; private set; }
     public bool IsUIInputBlocked { get; private set; }
+    public bool IsGameplayInputBlocked { get; private set; }
+
     private bool waitForAttackRelease;
 
     // UI에 마우스 사용권을 넘긴다. 이동과 회피 입력은 그대로 유지한다.
@@ -90,21 +92,29 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnInteractInput(InputAction.CallbackContext context)
     {
+        if (IsGameplayInputBlocked) return;
+
         if (context.performed) _interactRequested = true;
     }
 
     private void OnMoveInput(InputAction.CallbackContext context)
     {
+        if (IsGameplayInputBlocked) return;
+
         MoveInput = context.ReadValue<Vector2>();
     }
 
     private void OnAimPositionInput(InputAction.CallbackContext context)
     {
+        if (IsGameplayInputBlocked) return;
+
         AimScreenPosition = context.ReadValue<Vector2>();
     }
 
     private void OnSprintInput(InputAction.CallbackContext context)
     {
+        if (IsGameplayInputBlocked) return;
+
         IsSprintHeld = context.ReadValueAsButton();
 
 #if UNITY_EDITOR
@@ -114,6 +124,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnAimInput(InputAction.CallbackContext context)
     {
+        if (IsGameplayInputBlocked) return;
+
         IsAimHeld = !IsUIInputBlocked && context.ReadValueAsButton();
 
 #if UNITY_EDITOR
@@ -123,6 +135,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnDodgeInput(InputAction.CallbackContext context)
     {
+        if (IsGameplayInputBlocked) return;
+
         _dodgeRequested = true;
 
 #if UNITY_EDITOR
@@ -134,6 +148,13 @@ public class PlayerInputHandler : MonoBehaviour
     {
         bool pressed = context.ReadValueAsButton();
         if (!pressed) waitForAttackRelease = false;
+        // 차단 중의 공격은 실행하지 않고, 버튼을 놓았는지만 추적한다.
+        if (IsGameplayInputBlocked)
+        {
+            waitForAttackRelease = pressed;
+            return;
+        }
+
         IsAttackHeld = !IsUIInputBlocked && !waitForAttackRelease && pressed;
 
         if (context.performed && IsAttackHeld)
@@ -146,6 +167,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnReloadInput(InputAction.CallbackContext context)
     {
+        if (IsGameplayInputBlocked) return;
+
         if (context.performed)
             _reloadRequested = true;
 #if UNITY_EDITOR
@@ -218,16 +241,28 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void SyncCurrentInputState()
     {
+        ResetInputState();
+        if (IsGameplayInputBlocked) return;
+
         MoveInput = _moveAction.action.ReadValue<Vector2>();
         AimScreenPosition = _aimPositionAction.action.ReadValue<Vector2>();
         IsSprintHeld = _sprintAction.action.IsPressed();
-        IsAimHeld = _aimAction.action.IsPressed();
-        IsAttackHeld = _attackAction.action.IsPressed();
+        IsAimHeld = !IsUIInputBlocked && _aimAction.action.IsPressed();
+        IsAttackHeld = !IsUIInputBlocked && !waitForAttackRelease && _attackAction.action.IsPressed();
+    }
 
-        _dodgeRequested = false;
-        _attackRequested = false;
-        _reloadRequested = false;
-        _interactRequested = false;
+    public void SetGameplayInputBlocked(bool blocked)
+    {
+        if (IsGameplayInputBlocked == blocked) return;
+
+        IsGameplayInputBlocked = blocked;
+        waitForAttackRelease = _attackAction != null && _attackAction.action.IsPressed();
+
+        // 차단 전의 입력은 지우고, 해제 시 현재 입력만 읽되 공격은 버튼을 놓을 때까지 막는다.
+        if (blocked)
+            ResetInputState();
+        else
+            SyncCurrentInputState();
     }
 
 #if UNITY_EDITOR

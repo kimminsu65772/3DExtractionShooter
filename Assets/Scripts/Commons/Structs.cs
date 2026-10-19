@@ -16,8 +16,8 @@ public struct DamageInfo
     // 피격자의 방어구까지 계산한 뒤 실제 체력에서 차감한 데미지
     public float appliedDamage;
 
-    // 피격자가 사용한 방어구 레벨과 그 결과로 적용된 데미지 배율
-    public int armorLevel;
+    // 피격자가 사용한 소수 방어 수치와 그 결과로 적용된 데미지 배율
+    public float armorLevel;
     public float armorMultiplier;
 
     // 발사 위치와 마우스 커서 위치 사이의 거리

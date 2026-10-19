@@ -29,16 +29,11 @@ public static class WeaponSpreadUtility
         if (spreadAngle <= 0f)
             return normalizedDirection;
 
-        Vector2 randomPoint = Random.insideUnitCircle * spreadAngle;
-        Vector3 rightAxis = Vector3.Cross(Vector3.up, normalizedDirection).normalized;
+        float yawAngle = Random.Range(-spreadAngle, spreadAngle);
 
-        if (rightAxis.sqrMagnitude <= 0.0001f)
-            rightAxis = Vector3.right;
+        Quaternion yawRotation = Quaternion.AngleAxis(yawAngle, Vector3.up);
 
-        Quaternion yawRotation = Quaternion.AngleAxis(randomPoint.x, Vector3.up);
-        Quaternion pitchRotation = Quaternion.AngleAxis(randomPoint.y, rightAxis);
-
-        return (yawRotation * pitchRotation * normalizedDirection).normalized;
+        return (yawRotation * normalizedDirection).normalized;
     }
 
     // 한 발을 발사한 뒤 무기의 증가량만큼 누적 탄퍼짐을 올린다.
@@ -66,18 +61,19 @@ public static class WeaponSpreadUtility
         return Mathf.MoveTowards(currentSpreadAngle, 0f, Mathf.Max(0f, recovery) * deltaTime);
     }
 
-    // 산탄은 발사 방향을 중심으로 한 원뿔 안에 배치한다. 각도는 중심에서 한쪽까지의 범위다.
-    public static Vector3 ApplyConeSpread(Vector3 direction, float halfAngleDegrees)
+    // 산탄은 발사 방향을 중심으로 한 부채각 범위 안에서 무작위로 발사 방향을 만든다.
+    public static Vector3 ApplyFanSpread(Vector3 direction, float halfAngleDegrees, int pelletIndex, int pelletCount)
     {
         if (direction.sqrMagnitude < 0.0001f) return Vector3.zero;
         Vector3 forward = direction.normalized;
-        if (halfAngleDegrees <= 0f) return forward;
-        Vector3 right = Vector3.Cross(Mathf.Abs(forward.y) > 0.99f ? Vector3.right : Vector3.up, forward).normalized;
-        Vector3 up = Vector3.Cross(forward, right);
-        // 면적이 넓은 바깥쪽도 고르게 뽑기 위해 각도 대신 각도의 코사인을 추첨한다.
-        float cosine = Random.Range(Mathf.Cos(Mathf.Clamp(halfAngleDegrees, 0f, 89f) * Mathf.Deg2Rad), 1f);
-        float sine = Mathf.Sqrt(Mathf.Max(0f, 1f - cosine * cosine));
-        float rotation = Random.Range(0f, Mathf.PI * 2f);
-        return (forward * cosine + (right * Mathf.Cos(rotation) + up * Mathf.Sin(rotation)) * sine).normalized;
+
+        if (pelletCount <= 1 || halfAngleDegrees <= 0f) return forward;
+
+        float t = (float)pelletIndex / (pelletCount - 1);
+
+        // 왼쪽 끝에서 오른쪽 끝까지 균등하게 분포시키기 위해 Lerp를 사용
+        float angle = Mathf.Lerp(-halfAngleDegrees, halfAngleDegrees, t);
+
+        return (Quaternion.AngleAxis(angle, Vector3.up) * forward).normalized;
     }
 }

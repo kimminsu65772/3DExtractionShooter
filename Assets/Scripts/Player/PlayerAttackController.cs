@@ -27,6 +27,18 @@ public class PlayerAttackController : MonoBehaviour
 
     private bool isFirePending;
     private PlayerItemUseController itemUse;
+    // [ACT-03·DATA-01 변경] 기본은 정상 소비다. 로비 부트스트랩만 사격 시 차감을 비활성화한다.
+    private bool consumeAmmoOnFire = true;
+
+    public void SetConsumeAmmoOnFire(bool enabled)
+    {
+        consumeAmmoOnFire = enabled;
+    }
+
+    public void SetDataRoot(CombatDataCompositionRoot dataRoot)
+    {
+        this.dataRoot = dataRoot;
+    }
 
     private void Awake()
     {
@@ -44,7 +56,8 @@ public class PlayerAttackController : MonoBehaviour
 
         if (recoilController != null && inputHandler != null)
         {
-            recoilController.SetRecoveryBlocked(inputHandler.IsAttackHeld && canAttack);
+            // 입력 유지 여부는 탄퍼짐에만 전달한다. 반동 회복 지연은 실제 발사에서 시작한다.
+            recoilController.SetSpreadRecoveryBlocked(inputHandler.IsAttackHeld && canAttack);
         }
 
         // 발사 애니메이션을 요청한 직후 회피가 시작될 수도 있다.
@@ -136,6 +149,9 @@ public class PlayerAttackController : MonoBehaviour
 
         Vector3 fireVector = aimController.AimWorldPosition - muzzle.position;
 
+        if (!aimController.HasAimTarget)
+            fireVector.y = 0f;
+
         if (fireVector.sqrMagnitude < 0.0001f)
         {
             LogWarning("발사 방향이 너무 짧습니다.");
@@ -171,11 +187,17 @@ public class PlayerAttackController : MonoBehaviour
             return;
         }
 
-        // 공격 입력이나 애니메이션 요청 시점이 아니라 실제 투사체 생성 성공 뒤에만 한 발을 소비한다.
-        if (!ammoState.TryConsumeRound(out int consumedAmmoId))
+        // [ACT-03·DATA-01 변경] 로비도 위의 장탄 수 검사를 통과해야 하지만, 발사로 차감하지 않는다.
+        // 탐험에서는 실제 투사체 생성 성공 뒤 한 발을 소비하고 소유 상태 변경을 통지한다.
+        if (consumeAmmoOnFire)
         {
-            Debug.LogError("투사체 생성 후 탄약 소비에 실패했습니다. 탄창 상태를 확인해야 합니다.", this);
-            return;
+            if (!ammoState.TryConsumeRound(out _))
+            {
+                Debug.LogError("투사체 생성 후 탄약 소비에 실패했습니다. 탄창 상태를 확인해야 합니다.", this);
+                return;
+            }
+
+            GetComponent<PlayerInventory>()?.NotifyOwnedItemsChanged();
         }
 
         SoundStimulusHub.Emit(
@@ -192,7 +214,7 @@ public class PlayerAttackController : MonoBehaviour
         );
 
         if (showDebugLog)
-            Debug.Log($"AmmoId {consumedAmmoId} 발사. 남은 장탄: {ammoState.LoadedAmmoCount}/{ammoState.Capacity}", this);
+            Debug.Log($"AmmoId {ammoDefinition.ammoId} 발사. 남은 장탄: {ammoState.LoadedAmmoCount}/{ammoState.Capacity}", this);
 
         if (recoilController != null)
         {
