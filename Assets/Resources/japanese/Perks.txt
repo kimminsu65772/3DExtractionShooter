@@ -1,0 +1,52 @@
+﻿key,jp,value
+PerkTree_PhysicalTraining,肉体強化,肉体强化
+PerkTree_Blueprint,設計図開発,蓝图研究
+PerkTree_StorageExpand,倉庫拡張,仓库扩容
+Perk_Storage_1,倉庫拡張Lv.1,仓库扩展Lv.1
+Perk_Storage_2,倉庫拡張Lv.2,仓库扩展Lv.2
+Perk_Storage_3,倉庫拡張Lv.3,仓库扩展Lv.3
+Perk_Storage_4,倉庫拡張Lv.4,仓库扩展Lv.4
+Perk_Storage_5,倉庫拡張Lv.5,仓库扩展Lv.5
+Perk_Storage_6,倉庫拡張Lv.6,仓库扩展Lv.6
+PerkBehaviour_AddPlayerStorage,倉庫容量が{addCapacity}上昇,使仓库容量增加{addCapacity}
+PerkBehaviour_UnlockStockShopItem,習得後、{ItemDisplayName}をショップで購入できる,解锁后可在商店中购买{ItemDisplayName}
+PerkBehaviour_ModifyCharacterStatsBase,{statDisplayName} {value},{statDisplayName} {value}
+Perk_Main_0,起動,启动
+Perk_Main_1,強壮1,强壮1
+Perk_Main_2,体力,耐力
+Perk_Main_3,ガンマンの本能,枪手本能
+Perk_Main_4,加重トレーニング1,负重训练1
+Perk_Main_5,循環システム,循环系统
+Perk_Main_6,加重トレーニング2,负重训练2
+Perk_Main_7,強壮2,强壮2
+Perk_Main_8,敏捷1,灵巧1
+Perk_Main_9,肺機能,肺功能
+Perk_Main_10,戦闘ホルモン,战斗激素
+Perk_Main_11,潜力爆発,潜能激活
+Perk_Main_12,パッグ整理法,空间管理
+Perk_Main_13,ミトコンドリア効率,线粒体效率
+Perk_Main_14,パッグ整理達人,空间管理大师
+Perk_Main_15,代謝機能,代谢功能
+Perk_Main_16,強壮3,强壮3
+Perk_Main_17,皮膚硬化,皮肤硬化
+Perk_Main_18,ガンマンの本能 II,枪手本能 II
+Perk_Main_19,中量,负重
+Perk_Main_20,照準,瞄准
+PerkTree_Skills,スキル強化,技能强化
+Perk_Main_1_Desc,肉体強度を強化。,强化肉体强度。
+Perk_Physical_Health1,筋トレ1,健体1
+Perk_Physical_Health1_Desc,少しの学費で強靭な体ができる。,交点学费就能强身健体。
+Perk_Physical_Weight1,加重トレーニング1,负重训练1
+Perk_Physical_Health2,筋トレ2,健体2
+Perk_Physical_Health3,筋トレ3,健体3
+Perk_Physical_Weight2,加重トレーニング2,负重训练2
+Perk_Main_21,ベテラン,老兵,2025/1/15 16:11:19
+Perk_Main_22,武道学者,武术学者,2025/1/15 16:15:21
+Perk_Main_23,武道学者 II,武术学者 II,2025/1/15 16:16:55
+Perk_Main_24,近遠兼修,远近兼修,2025/1/15 16:19:07
+Perk_Main_25,体力 II,耐力 II,2025/1/15 16:22:40
+Perk_Physical_Health4,筋トレ 4,健体4,2025/1/17 16:45:30
+Perk_Storage_t1,追加容量拡張-1,额外扩容-1,2025/1/21 10:35:34
+Perk_Storage_t2,追加容量拡張-2,额外扩容-2,2025/1/21 10:37:56
+Perk_Storage_t3,追加容量拡張-3,额外扩容-3,2025/1/21 10:38:55
+Perk_Storage_t_VIP,VIP容量拡張,VIP扩容,2025/1/21 10:39:45

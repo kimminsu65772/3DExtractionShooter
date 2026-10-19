@@ -1,0 +1,20 @@
+﻿key,value,value
+Task_Evacuate,Evacuate from {TargetDisplayName},从{TargetDisplayName}撤离
+Task_ReachLocation,Arrive {TargetLocationDisplayName},到达指定地点{TargetLocationDisplayName}
+Task_UnlockPerk,Unlock {PerkDisplayName},解锁：{PerkDisplayName}
+Task_UnlockPerk_AtPrototyper,Unlock {PerkDisplayName} at the Prototype Machine,在原型机解锁：{PerkDisplayName}
+Task_UseItem,Use item {ItemDisplayName} ({amount}/{requireAmount}),使用物品{ItemDisplayName}({amount}/{requireAmount})次
+Task_SubmitItems,Submit Item(s): {ItemDisplayName} x {requiredAmount},提交物品：{ItemDisplayName} x {requiredAmount}
+Task_SubmitItems_HavingAmount,Possessing {amount},持有: {amount}
+Task_SubmitItems_Interact,Submit,提交
+Task_ConstructBuilding,Build {BuildingName},建造{BuildingName}
+Reward_Exp,Experience +{amount},经验 +{amount}
+Reward_Money,Money +{amount},金钱 +{amount}
+Reward_UnlockStockItem,Unlock Merchandise {ItemDisplayName},解锁商品 {ItemDisplayName}
+Condition_CharacterLevel_LessThan,Level is less than {level},等级低于 {level}
+Condition_CharacterLevel_Equals,Level is {level},等级为 {level}
+Condition_CharacterLevel_GreaterThan,Level is higher than {level},等级高于 {level}
+Task_KillCount,Kill {enemyName} with {weaponName} ({amount}/{requireAmount}),在 {requireSceneName} 使用 {weaponName} 击杀 {enemyName}  ({amount}/{requireAmount}),2024/12/10 17:03:04
+Task_Desc_AnyEnemy,Any Enemy,任意敌人,2024/12/10 17:06:20
+Task_Desc_AnyWeapon,Any Weapon,任意武器,2024/12/10 17:06:26
+Task_Desc_AnyScene,Any Place,任意地点,2025/1/14 18:28:31

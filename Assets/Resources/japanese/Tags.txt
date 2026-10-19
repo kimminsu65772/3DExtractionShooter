@@ -1,0 +1,60 @@
+﻿key,jp,value
+Tag_Accessory,アタッチメント,配件
+Tag_Armor,体,身体
+Tag_Backpack,バックパック,背包
+Tag_Blueprint,設計図,蓝图
+Tag_Bullet,武器,武器
+Tag_Character,キャラ,角色
+Tag_Continer,器,容器
+Tag_Daily,日用品,日常用品
+Tag_DecorateEquipment,装飾装備,装饰性装备
+Tag_DestroyOnLootBox,プレイヤー不可視,玩家不可见
+Tag_DontDropOnDead,バインドアイテム,绑定物品
+Tag_Drink,飲み物,饮品
+Tag_DuckStone,ダックストーン,鸭石
+Tag_Electric,電子製品,电子产品
+Tag_Equipment,装備,装备
+Tag_Explosive,爆発物,爆炸物
+Tag_Food,食べ物,食物
+Tag_Gem,宝石,宝石
+Tag_Grip,フォアグリップ,握把
+Tag_Gun,銃器,枪械
+Tag_GunType_Rifle,ライフル,步枪
+Tag_GunType_Shot,ショットガン,霰弹枪
+Tag_GunType_SMG,サブマシンガン,冲锋枪
+Tag_GunType_Sniper,スナイパーライフル,狙击枪
+Tag_Helmat,頭部,头部
+Tag_Information,情報アイテム,情报物品
+Tag_Key,キー,钥匙
+Tag_Luxury,贅沢品,奢侈品
+Tag_Magazine,マガジン,弹夹
+Tag_Material,素材,材料
+Tag_Medic,医療品,医疗用品
+Tag_Misc,雑品,杂物
+Tag_Muzzle,マズル,枪口
+Tag_Quest,クエストアイテム,任务物品
+Tag_Scope,照準器,瞄具
+Tag_Special,特殊,特殊
+Tag_Stock,銃床,枪托
+Tag_TecEquip,戦術,战术
+Tag_Tool,道具,工具
+Tag_Weapon,武器,武器
+Tag_Weapon_LV1,低級武器,低级武器
+Tag_Totem,トーテム,图腾
+Tag_DestroyInBase,持ち出せません,无法带出
+Tag_DestroyInBase_Desc,バンカーに戻るとこのアイテムは消えます。,回到地堡时，此物品会消失。
+Tag_MeleeWeapon,近接武器,近战武器
+Tag_Formula,レシピ,配方
+Tag_Formula_Desc,製造に使用するレシピまたは設計図,用于制造的配方或图纸
+Tag_Formula_Blueprint,上級作業台の設計図,高级工作台蓝图
+Tag_Formula_Blueprint_Desc,上級作業台でアイテム製作に使用する設計図。,在高级工作台制造物品的蓝图。
+Tag_Formula_Normal,作業台レシピ,工作台配方
+Tag_Formula_Normal_Desc,作業台でアイテム作成に使用するレシピ。,在工作台制作物品的配方。
+Tag_DontDropOnDead_Desc,バインドアイテムはキャラが死亡してもドロップしません。,绑定物品在角色死亡时不会掉落。
+Tag_Accessory_Desc,アタッチメント付けられる。,可安装配件。
+Tag_Formula_Medic,医療ステーションレシピ,医疗站配方,2024/12/25 17:55:56
+Tag_Formula_Medic_Desc,医療ステーションで薬剤製作に使用するレシピ。,在医疗站生产药剂的配方。,2024/12/23 18:02:00
+Tag_ComputerParts_GPU,グラフィックカード,显卡,2024/12/24 15:06:23
+Tag_ComputerParts_GPU_Desc,グラフィックカード！,显卡！,2024/12/24 15:06:37
+Tag_Repairable,修理可能,可维修,2025/1/9 10:19:05
+Tag_Repairable_Desc,上級作業台で修理できます。,可以在高级工作台进行维修。,2025/1/9 10:19:17

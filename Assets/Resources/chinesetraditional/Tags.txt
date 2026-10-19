@@ -1,0 +1,60 @@
+﻿key,value,value
+Tag_Accessory,配件,配件
+Tag_Armor,身體,身体
+Tag_Backpack,背包,背包
+Tag_Blueprint,藍圖,蓝图
+Tag_Bullet,武器,武器
+Tag_Character,角色,角色
+Tag_Continer,容器,容器
+Tag_Daily,日常用品,日常用品
+Tag_DecorateEquipment,裝飾性裝備,装饰性装备
+Tag_DestroyOnLootBox,玩家不可見,玩家不可见
+Tag_DontDropOnDead,綁定物品,绑定物品
+Tag_Drink,飲品,饮品
+Tag_DuckStone,鴨石,鸭石
+Tag_Electric,電子産品,电子产品
+Tag_Equipment,裝備,装备
+Tag_Explosive,爆炸物,爆炸物
+Tag_Food,食物,食物
+Tag_Gem,寶石,宝石
+Tag_Grip,握把,握把
+Tag_Gun,槍械,枪械
+Tag_GunType_Rifle,步槍,步枪
+Tag_GunType_Shot,霰彈槍,霰弹枪
+Tag_GunType_SMG,沖鋒槍,冲锋枪
+Tag_GunType_Sniper,狙擊槍,狙击枪
+Tag_Helmat,頭部,头部
+Tag_Information,情報物品,情报物品
+Tag_Key,鑰匙,钥匙
+Tag_Luxury,奢侈品,奢侈品
+Tag_Magazine,彈夾,弹夹
+Tag_Material,材料,材料
+Tag_Medic,醫療用品,医疗用品
+Tag_Misc,雜物,杂物
+Tag_Muzzle,槍口,枪口
+Tag_Quest,任務物品,任务物品
+Tag_Scope,瞄具,瞄具
+Tag_Special,特殊,特殊
+Tag_Stock,槍托,枪托
+Tag_TecEquip,戰術,战术
+Tag_Tool,工具,工具
+Tag_Weapon,武器,武器
+Tag_Weapon_LV1,低級武器,低级武器
+Tag_Totem,圖騰,图腾
+Tag_DestroyInBase,無法帶出,无法带出
+Tag_DestroyInBase_Desc,回到地堡時，此物品會消失。,回到地堡时，此物品会消失。
+Tag_MeleeWeapon,近戰武器,近战武器
+Tag_Formula,配方,配方
+Tag_Formula_Desc,用於製造的配方或圖紙,用于制造的配方或图纸
+Tag_Formula_Blueprint,高級工作臺藍圖,高级工作台蓝图
+Tag_Formula_Blueprint_Desc,在高級工作臺製造物品的藍圖。,在高级工作台制造物品的蓝图。
+Tag_Formula_Normal,工作臺配方,工作台配方
+Tag_Formula_Normal_Desc,在工作臺製作物品的配方。,在工作台制作物品的配方。
+Tag_DontDropOnDead_Desc,綁定物品在角色死亡時不會掉落。,绑定物品在角色死亡时不会掉落。
+Tag_Accessory_Desc,可安裝配件。,可安装配件。
+Tag_Formula_Medic,醫療站配方,医疗站配方,2024/12/25 17:55:56
+Tag_Formula_Medic_Desc,在醫療站生産藥劑的配方。,在医疗站生产药剂的配方。,2024/12/23 18:02:00
+Tag_ComputerParts_GPU,顯卡,显卡,2024/12/24 15:06:23
+Tag_ComputerParts_GPU_Desc,顯卡！,显卡！,2024/12/24 15:06:37
+Tag_Repairable,可維修,可维修,2025/1/9 10:19:05
+Tag_Repairable_Desc,可以在高級工作臺進行維修。,可以在高级工作台进行维修。,2025/1/9 10:19:17

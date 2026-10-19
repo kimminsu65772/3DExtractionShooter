@@ -1,0 +1,52 @@
+﻿key,value,value
+PerkTree_PhysicalTraining,肉體強化,肉体强化
+PerkTree_Blueprint,藍圖研究,蓝图研究
+PerkTree_StorageExpand,倉庫擴容,仓库扩容
+Perk_Storage_1,倉庫擴展Lv.1,仓库扩展Lv.1
+Perk_Storage_2,倉庫擴展Lv.2,仓库扩展Lv.2
+Perk_Storage_3,倉庫擴展Lv.3,仓库扩展Lv.3
+Perk_Storage_4,倉庫擴展Lv.4,仓库扩展Lv.4
+Perk_Storage_5,倉庫擴展Lv.5,仓库扩展Lv.5
+Perk_Storage_6,倉庫擴展Lv.6,仓库扩展Lv.6
+PerkBehaviour_AddPlayerStorage,使倉庫容量增加{addCapacity},使仓库容量增加{addCapacity}
+PerkBehaviour_UnlockStockShopItem,解鎖後可在商店中購買{ItemDisplayName},解锁后可在商店中购买{ItemDisplayName}
+PerkBehaviour_ModifyCharacterStatsBase,{statDisplayName} {value},{statDisplayName} {value}
+Perk_Main_0,啓動,启动
+Perk_Main_1,強壯1,强壮1
+Perk_Main_2,耐力,耐力
+Perk_Main_3,槍手本能,枪手本能
+Perk_Main_4,負重訓練1,负重训练1
+Perk_Main_5,循環係統,循环系统
+Perk_Main_6,負重訓練2,负重训练2
+Perk_Main_7,強壯2,强壮2
+Perk_Main_8,靈巧1,灵巧1
+Perk_Main_9,肺功能,肺功能
+Perk_Main_10,戰鬥激素,战斗激素
+Perk_Main_11,潛能激活,潜能激活
+Perk_Main_12,空間管理,空间管理
+Perk_Main_13,線粒體效率,线粒体效率
+Perk_Main_14,空間管理大師,空间管理大师
+Perk_Main_15,代謝功能,代谢功能
+Perk_Main_16,強壯3,强壮3
+Perk_Main_17,皮膚硬化,皮肤硬化
+Perk_Main_18,槍手本能 II,枪手本能 II
+Perk_Main_19,負重,负重
+Perk_Main_20,瞄準,瞄准
+PerkTree_Skills,技能強化,技能强化
+Perk_Main_1_Desc,強化肉體強度。,强化肉体强度。
+Perk_Physical_Health1,健體1,健体1
+Perk_Physical_Health1_Desc,交點學費就能強身健體。,交点学费就能强身健体。
+Perk_Physical_Weight1,負重訓練1,负重训练1
+Perk_Physical_Health2,健體2,健体2
+Perk_Physical_Health3,健體3,健体3
+Perk_Physical_Weight2,負重訓練2,负重训练2
+Perk_Main_21,老兵,老兵,2025/1/15 16:11:19
+Perk_Main_22,武術學者,武术学者,2025/1/15 16:15:21
+Perk_Main_23,武術學者 II,武术学者 II,2025/1/15 16:16:55
+Perk_Main_24,遠近兼修,远近兼修,2025/1/15 16:19:07
+Perk_Main_25,耐力 II,耐力 II,2025/1/15 16:22:40
+Perk_Physical_Health4,健體4,健体4,2025/1/17 16:45:30
+Perk_Storage_t1,額外擴容-1,额外扩容-1,2025/1/21 10:35:34
+Perk_Storage_t2,額外擴容-2,额外扩容-2,2025/1/21 10:37:56
+Perk_Storage_t3,額外擴容-3,额外扩容-3,2025/1/21 10:38:55
+Perk_Storage_t_VIP,VIP擴容,VIP扩容,2025/1/21 10:39:45

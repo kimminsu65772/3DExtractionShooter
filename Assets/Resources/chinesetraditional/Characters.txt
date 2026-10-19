@@ -1,0 +1,19 @@
+﻿key,value,value
+Character_Jeff,傑夫,杰夫
+Character_Orange,橘子,橘子
+Character_Xavier,老吳,老吴
+Character_Bob,鮑勃,鲍勃
+Character_Mud,泥巴,泥巴
+Character_Heart7,紅7,红7
+Character_DemoTrophy,DEMO獎杯,DEMO奖杯
+Cname_Wolf,狼,狼,2024/12/10 16:53:07
+Cname_ShortEagle,矮鴨,矮鸭,2024/12/10 17:14:49
+Cname_UltraMan,光之男,光之男,2024/12/10 17:15:40
+Cname_CrazyRob,失控機械蜘蛛,失控机械蜘蛛,2024/12/10 17:17:35
+Cname_Scav,拾荒者,拾荒者,2024/12/10 17:18:17
+Cname_Usec,雇傭兵,雇佣兵,2024/12/10 17:20:49
+Cname_RobSpider,機械蜘蛛,机械蜘蛛,2024/12/10 17:21:22
+Cname_ScavRage,暴走拾荒者,暴走拾荒者,2024/12/10 17:25:46
+Cname_Boss_Sniper,勞登,劳登,2025/1/10 9:57:04
+Cname_SpeedyChild,急速團成員,急速团成员,2025/1/10 18:52:49
+Cname_Speedy,急速團長,急速团长,2025/1/10 18:53:10

@@ -1,0 +1,247 @@
+﻿key,value,value
+_GAME_TITLE_,逃離鴨科夫,逃离鸭科夫
+Title_PressToContinue,點擊屏幕繼續,点击屏幕继续
+MainMenu_NewGame,新遊戲,新游戏
+MainMenu_Continue,繼續遊戲,继续游戏
+MainMenu_SaveSlot,存檔槽位,存档槽位
+MainMenu_ClearSaveData,清除存檔數據,清除存档数据
+MainMenu_SaveDeleted,存檔數據已刪除,存档数据已删除
+MainMenu_Settings,設置,设置
+MainMenu_SaveSelection,存檔選擇,存档选择
+MainMenu_SaveSelection_Slot,存檔,存档
+UI_PlayerStatsView,角色狀態,角色状态
+UI_PlayerStats_HP,生命,生命
+UI_PlayerStats_Energy,體力,体力
+UI_PlayerStats_Hunger,飽腹,饱腹
+UI_PlayerStats_Thurst,水分,水分
+UI_Loot_Equipment,裝備,装备
+UI_Loot_Items,物品,物品
+UI_Loot_QuickMenu,快捷欄,快捷栏
+UI_Loot_PickAll,全部拾取,全部拾取
+UI_WorkbenchRequired,需要在工作臺進行改裝,需要在工作台进行改装
+UI_Trade,交易,交易
+UI_Purchase,購買,购买
+UI_Sell,出售,出售
+UI_SoldOut,已售罄,已售罄
+UI_Unlock,解鎖,解锁
+UI_Locked,已鎖定,已锁定
+UI_Stock,庫存,库存
+UI_NextRefresh,下次刷新,下次刷新
+UI_Item_Equip,裝備,装备
+UI_Item_Split,拆分,拆分
+UI_Item_Use,使用,使用
+UI_Item_Modify,改裝,改装
+UI_Item_Dump,丟棄,丢弃
+UI_Item_Inspect,檢視,检视
+UI_Quest_Reward,任務獎勵,任务奖励
+UI_Skip,跳過,跳过
+UI_Quest_Avliable,可承接,可承接
+UI_Quest_Active,進行中,进行中
+UI_Quest_Completed,已完成,已完成
+UI_PlaceHolder_Empty,空空如也...,空空如也...
+UI_Quest,任務,任务
+UI_Quest_TaskList,目標,目标
+UI_Quest_RewardList,獎勵,奖励
+UI_Quest_Btn_Accept,接受任務,接受任务
+UI_Quest_Btn_Complete,完成任務,完成任务
+UI_YourStuff,你的東西,你的东西
+UI_Workbench_Uncustomizable,不可改裝,不可改装
+UI_Workbench_Begin,開始改裝,开始改装
+UI_Workbench_NotifySelect,選擇要改裝的物體,选择要改装的物体
+UI_Workbench_Unequip,拆卸,拆卸
+UI_Workbench_Equip,安裝,安装
+UI_ItemRepair_Repair,維修,维修
+UI_ItemRepair_DurabilityMax,耐久已滿,耐久已满
+UI_MaxDurability,耐久上限,耐久上限
+UI_Perk_RequireLevel,需要等級<color={color}>Lv.{level}</color>,需要等级<color={color}>Lv.{level}</color>
+UI_Perk_RequireMoney,需要金錢 <color={color}>{money}</color>,需要金钱 <color={color}>{money}</color>
+UI_Perk_Activate,激活,激活
+UI_Perk_Researching,研發中,研发中
+UI_Perk_BeginResearching,開始研發,开始研发
+UI_Perk_Avaliable,可研發,可研发
+UI_Perk_Pending,研發中,研发中
+UI_Perk_Complete,待確認,待确认
+UI_Closure_Escaped,已撤離,已撤离
+UI_Closure_Dead,YOU DIED,YOU DIED
+UI_Continue,繼續,继续
+UI_MasterKey,萬能鑰匙,万能钥匙
+UI_MasterKey_Register,錄入鑰匙,录入钥匙
+UI_MasterKey_RegisterBtn,錄入,录入
+UI_MasterKey_RegisterSuccess,錄入成功！,录入成功！
+UI_MasterKey_KeyExist,記錄已存在,记录已存在
+UI_SplitItem,分割物品,分割物品
+UI_SplitItem_Btn,分割,分割
+UI_SplitItem_Succeed,完成！,完成！
+UI_MapSelection,選擇目的地,选择目的地
+UI_MapSelection_SettingOffTo,即將前往,即将前往,2024/12/31 16:00:29
+UI_ItemUnlockNotification,{itemDisplayName} 已解鎖,{itemDisplayName} 已解锁
+UI_ItemUnlockNotification_Sub,可在對應商店中查看,可在对应商店中查看
+UI_Item_NotUsable,當前物品不可用,当前物品不可用
+UI_Quest_TaskFinishedNotification,任務 {questDisplayName} 目標完成 ({finishedTasks}/{totalTasks}),任务 {questDisplayName} 目标完成 ({finishedTasks}/{totalTasks})
+UI_StockShop_PurchasedNotification,已購買 {itemDisplayName},已购买 {itemDisplayName}
+UI_LevelChangeNotification,升級了！當前等級: {level},升级了！当前等级: {level}
+UI_Evacuating,正在撤離,正在撤离
+UI_Bullet_NotAssigned,未指定彈藥,未指定弹药
+UI_Inventory_TargetOccupiedCannotSplit,目標位置已被佔用,目标位置已被占用
+UI_InventoryDefault,物品,物品
+UI_Inventory_Backpack,背包,背包
+UI_LootBox_Bullet,彈藥箱,弹药箱
+UI_LootBox_Daily,雜物箱,杂物箱
+UI_LootBox_Food,食物箱,食物箱
+UI_LootBox_Locker,櫃子,柜子
+UI_LootBox_Lux,保險箱,保险箱
+UI_LootBox_Medic,藥品箱,药品箱
+UI_LootBox_Normal,箱子,箱子
+UI_LootBox_Starter,愛心箱,爱心箱
+UI_LootBox_Starter_Notification,初始物資已領取,初始物资已领取
+UI_LootBox_Tools,工具箱,工具箱
+UI_LootBox_WeaponEquip,戰術箱,战术箱
+UI_LootBox_WeaponEquip_2,武器箱,武器箱
+UI_LootBox_Loot,戰利品,战利品
+UI_LootBox_Console,機箱,机箱
+UI_LootBox_TrashBin,垃圾箱,垃圾箱
+UI_LootBox_TrashCan,垃圾桶,垃圾桶
+UI_LootBox_Hidden,藏匿點,藏匿点
+UI_Item_Unload,卸載子彈,卸载子弹
+UI_Build,建造,建造
+UI_Inventory_Storage,倉庫,仓库
+UI_LootBox_Safe,寵物背包,宠物背包
+UI_Confirm,確認,确认
+UI_InventoryWeight,負重,负重
+UI_ItemRepair_Broken,完全損壞,完全损坏
+UI_ItemRepair_CannotRepair,無法修複,无法修复
+UI_Menu_Resume,回到遊戲,回到游戏
+UI_Menu_Options,設置,设置
+UI_Menu_Quit,退出,退出
+UI_Drink,喝水,喝水
+UI_Eat,吃,吃
+UI_Cancel,取消,取消
+UI_Quit,退出,退出
+Fishing_Succeed,釣上來了！,钓上来了！
+Fishing_Failed,啥也冇釣上來...,啥也没钓上来...
+Fishing_PleaseSelectBait,請選擇魚餌,请选择鱼饵
+UI_Recycle,回收,回收
+UI_Navigate,移動,移动
+UI_RotateBuilding,旋轉建築,旋转建筑
+UI_Enter,進入,进入
+UI_Leave,離開,离开
+UI_Crafting,製作,制作
+UI_Operate,操作,操作
+ReachedLimit,數量已達上限,数量已达上限
+ItemCraftedNotification,製造了{itemDisplayName},制造了{itemDisplayName}
+UI_LootBox_Cash,收銀機,收银机
+UI_Salemachine,售貨機,售货机
+UI_Volume_Master,總音量,总音量
+UI_Volume_SFX,音效音量,音效音量
+UI_Volume_Music,音樂音量,音乐音量
+UI_SelectDestination,傳送目的地,传送目的地
+UI_Formula_Register,錄入配方,录入配方
+UI_Formulas,配方,配方
+Free,免費,免费
+DeathLottery,死亡抽獎,死亡抽奖
+DeathLottery_Remaining,剩餘 {amount} 次,剩余 {amount} 次
+DeathLottery_NoRemainingChances,抽獎機會已用盡,抽奖机会已用尽
+DeathLottery_SelectNotification,恭喜你抽到了 {itemName},恭喜你抽到了 {itemName}
+UI_Formulas_Index,配方圖鑒,配方图鉴
+UI_Formulas_RegisterSucceedFormat,配方 {itemDisplayName} 已解鎖,配方 {itemDisplayName} 已解锁
+UI_Menu_QuitGame,退出遊戲,退出游戏
+UI_QuitGame_ProgressNote,未保存的進度將會丟失,未保存的进度将会丢失
+UI_Menu_LoadMainMenu,回到主菜單,回到主菜单
+UI_Quest_Tasks,目標,目标
+UI_Quest_Rewards,獎勵,奖励
+Loading,載入中...,载入中...
+UI_Item_Move,移動,移动,2024/12/10 12:04:22
+UI_Item_Menu,菜單,菜单,2024/12/10 14:16:54
+UI_DurabilityToolTips,損耗: {lossPercentage},损耗: {lossPercentage},2024/12/11 15:37:27
+Loading_Dead,噶了,噶了,2024/12/13 11:24:06
+Loading_Dead_SmallText,小問題,小问题,2024/12/13 11:24:53
+Loading_GoOut,出發！,出发！,2024/12/13 11:30:46
+Loading_Go_SmallText,嘎嘎搜刮,嘎嘎搜刮,2024/12/13 11:31:30
+UI_DemoInfo,本遊戲為DEMO版本，包含一些未完善功能、各種BUG，如果給您帶來的不好的體驗，敬請諒解。,本游戏为DEMO版本，包含一些未完善功能、各种BUG，如果给您带来的不好的体验，敬请谅解。,2025/1/17 18:39:37
+UI_Saves_FileComment,存檔路徑: %Appdata%/../LocalLow/TeamSoda/Duckov,存档路径: %Appdata%/../LocalLow/TeamSoda/Duckov,2024/12/23 14:04:06
+UI_BitcoinMiner_TimeEachCoin,預計單位用時,预计单位用时,2024/12/24 15:51:21
+UI_BitcoinMiner_Performance,算力,算力,2024/12/24 16:02:56
+UI_BitcoinMiner_Active,挖掘中,挖掘中,2024/12/24 16:07:01
+UI_BitcoinMiner_Stopped,已停止,已停止,2024/12/24 16:07:41
+UI_CustomFace_YellowDuck,我是小黃鴨,我是小黄鸭,2024/12/27 12:22:48
+UI_CustomFace_Abandon,放棄,放弃,2024/12/27 12:23:58
+UI_CustomFace_Copy,複製捏臉數據到剪貼闆,复制捏脸数据到剪贴板,2024/12/27 12:25:45
+UI_CustomFace_PasteTo,應用剪貼闆中的數據,应用剪贴板中的数据,2024/12/27 12:30:22
+UI_CustomFace_OnCopy,數據已複製到剪貼闆。,数据已复制到剪贴板。,2024/12/27 12:48:36
+UI_CustomFace_OnPasteSuccess,成功應用剪貼闆數據。,成功应用剪贴板数据。,2024/12/27 12:48:54
+UI_CustomFace_OnPasteFailed,剪貼闆中的捏臉數據格式錯誤。,剪贴板中的捏脸数据格式错误。,2024/12/27 12:49:17
+UI_DeathReason,我被這玩意整死了→,我被这玩意整死了→,2024/12/27 14:52:00
+DeathReason_Self,我自己,我自己,2024/12/27 15:11:57
+DeathReason_Explosion,爆炸,爆炸,2024/12/27 15:12:58
+DeathReason_Critical,頭部、眼部,头部、眼部,2024/12/27 15:33:36
+UI_Menu_Controls,操作說明,操作说明,2024/12/27 17:16:16
+Notification_ItemDropped,將 {itemName} 扔到了地上,将 {itemName} 扔到了地上,2024/12/30 11:45:46
+UI_StorageDock_SendToInventory,發送至倉庫,发送至仓库,2024/12/30 17:27:10
+UI_StorageDock_InventoryFull,倉庫已滿,仓库已满,2024/12/30 18:13:11
+StorageDock_Title,馬蜂自提點,马蜂自提点,2024/12/31 14:27:58
+BuilderView_TokenAmountFormat,待放置: {tokenAmount},待放置: {tokenAmount},2024/12/31 10:52:08
+StorageDock_PlaceHolder,冇有您的貨物,没有您的货物,2024/12/31 14:39:56
+UsageUtilities_Title,效果,效果,2024/12/31 14:58:40
+UI_TakeAll,全部領取,全部领取,2024/12/31 15:24:43
+UI_MapSelection_Confirm,出發！,出发！,2024/12/31 16:02:30
+UI_MapSelection_Cancel,取消,取消,2024/12/31 16:04:26
+Notification_StockShoopItemUnlockFormat,解鎖了商品: {displayName},解锁了商品: {displayName},2024/12/31 17:07:36
+Indicator_Map,地圖,地图,2024/12/31 17:19:39
+Indicator_Inventory,背包,背包,2024/12/31 17:20:03
+Indicator_Aim,瞄準,瞄准,2024/12/31 17:41:31
+Indicator_Dodge,翻滾,翻滚,2024/12/31 17:40:36
+Indicator_Attack,射擊/攻擊,射击/攻击,2024/12/31 17:42:45
+Indicator_Reload,換彈,换弹,2024/12/31 17:52:41
+Indicator_ToggleIndicatorHUD,操作說明,操作说明,2024/12/31 17:51:12
+Indicator_Run,奔跑,奔跑,2024/12/31 17:53:11
+UI_Input_CancleAction,取消動作,取消动作,2025/1/1 10:36:17
+AddToWishList,加入願望單,加入愿望单,2025/1/6 11:14:57
+PlayerStorage_Notification_ItemAddedToBuffer,{displayName} 已存入自提櫃,{displayName} 已存入自提柜,2025/1/6 15:12:39
+Map_Marker,地圖標記,地图标记,2025/1/7 14:30:46
+Difficulty_Selection,選擇難度,选择难度,2025/1/8 10:28:56
+Recommended,推薦,推荐,2025/1/8 11:49:00
+Rule_Standard,標準難,标准难,2025/1/8 14:27:18
+Rule_Standard_Desc,標準的遊戲體驗。需要你謹慎應對各種敵人。,标准的游戏体验。需要你谨慎应对各种敌人。,2025/1/9 13:20:41
+Rule_Hard,超難,超难,2025/1/8 14:41:55
+Rule_Easy,微難,微难,2025/1/8 15:51:15
+Rule_Easy_Desc,有一點難，但不太難，小幅降低敵人傷害，並提高你的傷害。你依然要時刻小心。,有一点难，但不太难，小幅降低敌人伤害，并提高你的伤害。你依然要时刻小心。,2025/1/9 13:20:15
+Rule_Custom,自定義,自定义,2025/1/8 15:22:25
+Rule_Custom_Desc,自己設計難度,自己设计难度,2025/1/8 15:22:43
+Loading_Evacuate,撤離,撤离,2025/1/9 12:05:24
+Loading_Evacuate_SmallText,回來了,回来了,2025/1/9 12:06:39
+BlackMarket_Remaining,剩餘,剩余,2025/1/9 19:07:08
+BlackMarket_Demand_Title_Normal,求購 {itemName},求购 {itemName},2025/1/13 15:49:56
+BlackMarket_Demand_Title_High,高價收購 {itemName},高价收购 {itemName},2025/1/13 15:50:10
+BlackMarket_Supply_Title_Normal,出售 {itemName},出售 {itemName},2025/1/13 15:50:24
+BlackMarket_DemandBlackMarket_Supply_Title_High,低價出售 {itemName},低价出售 {itemName},2025/1/10 18:12:14
+BlackMarket_Supply_Title_Low,低價出售 {itemName},低价出售 {itemName},2025/1/13 15:50:36
+BlackMarkest_Demand,需求,需求,2025/1/13 11:09:28
+BlackMarkest_Supply,供給,供给,2025/1/13 11:09:41
+BlackMarket,黑市,黑市,2025/1/13 15:12:21
+BlackMarket_RefreshETA,下次刷新,下次刷新,2025/1/13 16:11:50
+Rule_Current,當前難度,当前难度,2025/1/13 17:37:12
+StorageDockCount,待取件,待取件,2025/1/14 12:09:07
+Endowment_Selection,選擇天賦,选择天赋,2025/1/16 12:02:30
+SleepView,睡覺,睡觉,2025/1/17 11:37:01
+SleepView_WillWakeUpAt,睡到,睡到,2025/1/17 12:16:44
+SleepView_Sleep,睡覺,睡觉,2025/1/17 13:36:18
+DEMO,試玩版,试玩版,2025/1/17 18:34:02
+UI_Menu_Options_Common,常規設置,常规设置,2025/1/20 11:51:52
+UI_Menu_Options_Audio,音頻設置,音频设置,2025/1/20 11:52:29
+UI_Menu_Options_graphics,圖像設置,图像设置,2025/1/20 14:50:07
+DEMO_Endowment_Locked,完成任務以解鎖,完成任务以解锁,2025/1/20 16:12:34
+Indicator_CameraMode,拍照模式,拍照模式,2025/1/20 16:19:40
+Indicator_ToggleIndicatorHUD_CameraMode,拍照說明,拍照说明,2025/1/20 17:21:41
+Indicator_CameraMode_Up,上升,上升,2025/1/20 17:05:26
+Indicator_CameraMode_Down,下降,下降,2025/1/20 17:06:59
+Indicator_CameraMode_FOV,縮放,缩放,2025/1/20 17:07:45
+Indicator_CameraMode_Focus,聚焦,聚焦,2025/1/20 17:26:43
+Indicator_CameraMode_Faster,加速移動,加速移动,2025/1/20 17:26:57
+Indicator_CameraMode_Move,移動,移动,2025/1/20 17:27:47
+Indicator_CameraMode_Capture,拍照,拍照,2025/1/20 17:29:20
+Indicator_CameraMode_OpenFolder,查看截圖,查看截图,2025/1/20 17:44:21
+Pause,暫停,暂停,2025/1/20 16:27:48
+UI_Building_Recycle,長按以回收,长按以回收,2025/1/20 17:09:43
+UI_Quest_NotifyClaimAtNPC,請在任務發佈處領取,请在任务发布处领取,2025/1/21 11:32:11
+LevelInitializing,工作人員正在佈置場景...,工作人员正在布置场景...,2025/1/23 11:43:43
+Rule_Hard_Desc,冇有遺落物，噶了就冇。,2025/1/9 14:37:34

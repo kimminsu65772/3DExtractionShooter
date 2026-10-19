@@ -1,0 +1,43 @@
+﻿key,jp,value
+UI_Interact,操作,交互
+UI_Interact_Modify,改造,改装
+UI_Interact_Repair,修理,维修
+UI_Interact_OpenStorage,倉庫を開く,打开仓库
+UI_Interact_Expansion,拡張,扩容
+UI_Interact_Quest,クエスト,任务
+UI_Interact_Develope,技術開発,科技研发
+UI_Interact_BPDevelope,設計図開発,蓝图研发
+UI_Interact_Download,データをダウンロード,下载资料
+UI_Interact_CheckPower,電源をチェック,检查电源
+UI_Interact_Go,出発,出发
+UI_Interact_ExitBunker,バンカーを出る,离开地堡
+UI_Interact_EnterBunker,バンカーに入る,进入地堡
+UI_Interact_Build,建築,建造
+UI_Interact_Fix,修理,修理
+UI_WeakUp,目を覚ます,醒过来
+UI_Interact_RememberFace,私はどんな顔をしてる？,我长啥样？
+UI_GoToBed,こんな顔してしまって、ほんとに後悔してる。,真后悔长成这样
+UI_Interact_Remove,削除,移除
+UI_Interact_Handover,配達,交付
+UI_Interact_Cloth,服装,衣服
+UI_Interact_Sacrifice,捧げる,献上
+UI_Interact_TeleportMachine,伝送装置,传送台
+UI_Interact_FixTeleportMachine,伝送装置を修理,修理传送装置
+UI_Interact_Open,開く,打开
+UI_Interact_Skill,強化,强化
+UI_Interact_DeathLottery,落とし物,失物招抽
+UI_Interact_UnlockFormula,レシピ開発,配方研究,2024/12/12 14:40:09
+UI_Interact_PhysicalTraining,筋トレ,锻炼身体
+UI_Interact_Read,読書,阅读
+UI_LootBox_Open,開く,打开,2024/12/10 15:06:25
+UI_LootBox_CarDoor,車のドア,车门,2024/12/10 15:07:53
+UI_Interact_GoDown,下る,下去,2024/12/11 12:05:56
+UI_Interact_GoUp,上る,上去,2024/12/11 12:06:41
+UI_Interact_UnlockBlueprint,設計図開発,蓝图研究,2024/12/12 14:40:34
+UI_Interact_MiningMachine,マイナー,矿机,2024/12/24 17:03:34
+UI_Interact_BlackMarketDemands,注文を表示,浏览订单,2025/1/14 17:43:58
+UI_Interact_BlackMarketSupply,闇市商品を購入する,购买黑货,2025/1/14 16:17:07
+UI_Interact_Sample,サンプルを収集する,采集样本,2025/1/15 11:02:18
+UI_Interact_Hide,置く,放置,2025/1/15 12:30:25
+UI_Interact_WishList,ウィッシュリスト,添加愿望单,2025/1/15 14:43:16
+UI_Interact_Move,移動,移动,2025/1/15 18:36:02

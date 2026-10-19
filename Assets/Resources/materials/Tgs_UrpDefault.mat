@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Tgs_UrpDefault
+  m_Shader: {fileID: 4800000, guid: 836a00da403f1d44db86b3d9b52f3e0e, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - TGS_ALPHA_CLIPPING
+  - _WindSwaying
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties:
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+      _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints:
+      _Tgs_UseAlphaToCoverage: 1
+    m_Floats:
+      _Alpha: 0.12
+      _AlphaLodPercentage: 1
+      _AlphaPow: 0.77
+      _AlphaSharpingScale: 1
+      _ArcDown: 1
+      _ArcUp: 0
+      _BaryArc: 0.45
+      _BaryX: 0.63
+      _BaryY: 1.97
+      _BaryZ: 2.07
+      _Beta: 1.29
+      _DebugDisableBezier: 0
+      _DebugDisableTessellation: 0
+      _DebugDisableWind: 0
+      _DebugShowBarycentric: 0
+      _DoAlphaClipping: 1
+      _DoAlphaToCoverage: 0
+      _EdgeLength: 128
+      _Gamma: 0
+      _Roundness: 0
+      _ShadingNormalLerp: 0
+      _ShadowDitheringStrength: 1
+      _ShowBezierDistance: 0
+      _Smoothness: 0.092
+      _Tgs_UseAlphaToCoverage: 0
+      _Theta: 0.0061
+      _TipOffset: 1
+      _TipRounding: 0
+      _ViewDistance: 19.6
+      _WindDirection: 5.3
+      _WindPatchSize: 0.062
+      _WindSpeed: 18.7
+      _WindStrength: 2.02
+      _WindSwaying: 0
+    m_Colors:
+      _BaryWeights: {r: -0.2, g: -0.29, b: 0.41, a: 61.27}
+      _BaseColor: {r: 0.19624422, g: 0.8490566, b: 0.29165533, a: 1}
+      _Color: {r: 1, g: 1, b: 1, a: 1}
+      _DebugBarycentricIso: {r: 0, g: 1, b: 1, a: 1}
+      _PositionBoundMax: {r: 0, g: 0, b: 0, a: 0}
+      _PositionBoundMin: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []

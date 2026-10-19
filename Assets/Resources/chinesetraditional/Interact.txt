@@ -1,0 +1,43 @@
+﻿key,value,value
+UI_Interact,交互,交互
+UI_Interact_Modify,改裝,改装
+UI_Interact_Repair,維修,维修
+UI_Interact_OpenStorage,打開倉庫,打开仓库
+UI_Interact_Expansion,擴容,扩容
+UI_Interact_Quest,任務,任务
+UI_Interact_Develope,科技研發,科技研发
+UI_Interact_BPDevelope,藍圖研發,蓝图研发
+UI_Interact_Download,下載資料,下载资料
+UI_Interact_CheckPower,檢查電源,检查电源
+UI_Interact_Go,出發,出发
+UI_Interact_ExitBunker,離開地堡,离开地堡
+UI_Interact_EnterBunker,進入地堡,进入地堡
+UI_Interact_Build,建造,建造
+UI_Interact_Fix,修理,修理
+UI_WeakUp,醒過來,醒过来
+UI_Interact_RememberFace,我長啥樣？,我长啥样？
+UI_GoToBed,真後悔長成這樣,真后悔长成这样
+UI_Interact_Remove,移除,移除
+UI_Interact_Handover,交付,交付
+UI_Interact_Cloth,衣服,衣服
+UI_Interact_Sacrifice,獻上,献上
+UI_Interact_TeleportMachine,傳送臺,传送台
+UI_Interact_FixTeleportMachine,修理傳送裝置,修理传送装置
+UI_Interact_Open,打開,打开
+UI_Interact_Skill,強化,强化
+UI_Interact_DeathLottery,失物招抽,失物招抽
+UI_Interact_UnlockFormula,配方研究,配方研究,2024/12/12 14:40:09
+UI_Interact_PhysicalTraining,鍛煉身體,锻炼身体
+UI_Interact_Read,閱讀,阅读
+UI_LootBox_Open,打開,打开,2024/12/10 15:06:25
+UI_LootBox_CarDoor,車門,车门,2024/12/10 15:07:53
+UI_Interact_GoDown,下去,下去,2024/12/11 12:05:56
+UI_Interact_GoUp,上去,上去,2024/12/11 12:06:41
+UI_Interact_UnlockBlueprint,藍圖研究,蓝图研究,2024/12/12 14:40:34
+UI_Interact_MiningMachine,礦機,矿机,2024/12/24 17:03:34
+UI_Interact_BlackMarketDemands,瀏覽訂單,浏览订单,2025/1/14 17:43:58
+UI_Interact_BlackMarketSupply,購買黑貨,购买黑货,2025/1/14 16:17:07
+UI_Interact_Sample,採集樣本,采集样本,2025/1/15 11:02:18
+UI_Interact_Hide,放置,放置,2025/1/15 12:30:25
+UI_Interact_WishList,添加願望單,添加愿望单,2025/1/15 14:43:16
+UI_Interact_Move,移動,移动,2025/1/15 18:36:02

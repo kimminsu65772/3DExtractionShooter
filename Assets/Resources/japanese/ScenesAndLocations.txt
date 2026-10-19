@@ -1,0 +1,17 @@
+﻿key,jp,value
+Scene_Any,任意の地図,任意地图
+Scene_Base,基地,基地
+Scene_Custom,税関,海关
+Scene_Custom_01,税関1,海关1
+Scene_Custom_02,税関2,海关2
+Scene_Custom_03,税関3,海关3
+Scene_Custom_04,税関4,海关4
+Scene_Custom_05,税関5,海关5
+Scene_Factory,工場,工厂
+Scene_Factory_01,工場1,工厂1
+Scene_Factory_02,工場2,工厂2
+Scene_Factory_03,工場3,工厂3
+Scene_Factory_04,工場4,工厂4
+Scene_Village,村,村庄
+Scene_Village_01,村1,村庄1
+QuestLocations/Explor_Dormitory,工場社員寮,工厂员工宿舍楼

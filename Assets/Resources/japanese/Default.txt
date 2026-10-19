@@ -1,0 +1,113 @@
+﻿key,jp,value
+language_name,簡体字中国語,简体中文
+QuestGiver_Jeff,ジェフ,杰夫
+Mirror,夢,梦
+UI_CustomFace_Main_Title,頭,首
+UI_CustomFace_Eyes_Title,目,眼
+UI_CustomFace_Hair_Title,トサカ,冠
+UI_CustomFace_Mouth_Title,くちばし,喙
+UI_CustomFace_Tail_Title,尾,尾
+UI_CustomFace_EyesBrown_Title,眉,眉
+UI_CustomFace_SkinColor,肌色,肤色
+UI_CustomFace_HeadSize,頭の大きさ,头大小
+UI_CustomFace_HeadHeight,頭の高さ,头高低
+UI_CustomFace_HeadRoundness,丸い頭,圆脑袋
+UI_CustomFace_HairType,髪のタイプ,发类型
+UI_CustomFace_HairColor,髪のタイプ,发类型
+UI_CustomFace_EyeType,目のタイプ,眼类型
+UI_CustomFace_EyeColor,目の色,眼色
+UI_CustomFace_EyeSpace,目の間隔,眼间距
+UI_CustomFace_EyeHeight,目の高さ,眼高低
+UI_CustomFace_EyeSize,目のサイズ,眼大小
+UI_CustomFace_EyeRotate,目の角度,眼睛旋转
+UI_CustomFace_EyebrowType,眉のタイプ,眉类型
+UI_CustomFace_EyebrowColor,眉の色,眉颜色
+UI_CustomFace_EyebrowSpace,眉の間隔,眉间距
+UI_CustomFace_EyebrowHeight,眉の高さ,眉高低
+UI_CustomFace_EyebrowSize,眉のサイズ,眉大小
+UI_CustomFace_EyebrowRotate,眉の角度,眉旋转
+UI_CustomFace_MouthType,くちばしのタイプ,喙类型
+UI_CustomFace_MouthColor,くちばしの色,喙颜色
+UI_CustomFace_MouthSize,くちばしのサイズ,喙大小
+UI_CustomFace_MouthHeight,くちばしの高さ,喙高低
+UI_CustomFace_MouthOffset,くちばしは歪んでいます,喙歪了
+UI_CustomFace_MouthRotate,くちばしの角度,喙旋转
+UI_CustomFace_TailType,尾のタイプ,尾类型
+UI_CustomFace_TailColor,尾の色,尾颜色
+UI_CustomFace_TailSize,尾のサイズ,尾大小
+Notify_Stucked,こちらから開かない。,从这一侧无法打开。
+Notify_Removed,障害物が除去されました,障碍物被移除了
+Building_MedicStation_Desc,医療品を作ることができます,可以制作一些医疗用品。
+Building_MedicStation,医療ステーション,医疗站
+UI_LootBox_Totem,恵みを受け取る,获得馈赠
+Location_GroundZero_CaveEntry,洞窟の入り口,山洞入口
+Level_Unfinished,まだ開放されていません,尚未开放
+Building_Gem,トレーニングルーム,健身房
+Building_Gem_Desc,肉体と頭脳を鍛える場所...え？,锻炼肉体和头脑的地方...啊？
+UI_LootBox_Explor,ファイルボックス,资料箱
+UI_Sort,整理,整理
+Building_TeleportMachine,伝送装置,传送装置
+Building_TeleportMachine_Desc,より多くの場所から出発できるように。,可以让你从更多地方出发。
+Location_NorthMountain,北山,北山,2024/12/10 16:11:02
+Location_GroundZero_RoadCap,ハイウェイキャンプ,公路营地,2024/12/10 16:12:43
+Notification_ManHoleBlocked,下水道のフタが押されているようです,下水井盖似乎被压住了。,2024/12/11 11:58:51
+UI_Interact_Tomb,遺失物,遗失物,2024/12/18 20:18:35
+MapElement_Exit,撤退地点,撤离点,2024/12/19 15:25:55
+Notify_SpiderSpawn,すぐに暗くなり、蜘蛛が食べ物を探しに出る。,快天黑了，蜘蛛出来觅食了。,2024/12/19 17:49:02
+Building_MiningMachine,ビットコインマイナー,比特币矿机,2024/12/24 10:07:55
+Building_MiningMachine_Desc,採掘、分かってるよね。,挖矿，懂得都懂。,2024/12/24 10:08:10
+Buff_InjectorMaxWeight,携行重量増加,负重提升,2024/12/24 16:54:53
+Buff_InjectorMaxWeight_Desc,携行重量が50％増加。,增强耐力和耐力回复，但消耗更多水分，持续180秒。,2025/1/17 10:04:57
+BitcoinMiner_Inventory,抽出枠（ここにはアイテムを置かないでください）,提取位（不要在此处存放物品）,2024/12/24 17:13:12
+Usage_HealValue,HPを回復,治疗生命值,2024/12/27 16:01:18
+Usage_Durability,消耗,消耗,2024/12/27 16:01:25
+Usage_Energy,エネルギー,能量,2024/12/27 16:02:29
+Usage_Water,水分,水分,2024/12/27 16:02:33
+Location_GroundZero_MiddleMountain,ちいさな山,矮山,2024/12/30 16:28:23
+Usage_SpawnEgg_Jinitaimei,???,？？？,2024/12/31 14:49:38
+Usage_DeadByChance,確率で「ぐわ」と死ぬ,有一定概率直接嘎,2024/12/31 14:50:20
+Usage_DeadByChance_PopText,えっ？,嗯？,2025/1/2 12:17:47
+Rule_ExtraHard,めちゃくちゃ難しい,变态难,2025/1/8 15:51:36
+Rule_ExtraEasy,非困難,不难,2025/1/8 15:50:43
+Rule_ExtraEasy_Desc,完全に難しくないとは言えませんが、プレイヤーが受けるダメージは大幅に軽減され、与えるダメージは上昇します。それでも油断は禁物です。,不能说完全没有难度，敌人的威胁大幅降低，并提高你的输出。但你依然要保持谨慎。,2025/1/9 13:19:58
+Rule_ExtraHard_Desc,お楽しみに。,敌人造成1.5倍伤害！不会生成遗失物。,2025/1/21 10:12:51
+DifficultySelection_Desc_PlaceHolder,難易度を選択してください,请选择难度,2025/1/8 16:35:49
+Tips_0,出血している場合は、止血バンドを使用、止血することが可能。,出血了的话，可以使用止血绷带止血。,2025/1/9 11:33:54
+Tips_1,よくある物資、売った方がいい。,经常能遇到的物资，不如把它卖了。,2025/1/9 11:14:24
+Tips_2,銃器の耐久度が80％未満になると、ダメージと命中精度に影響が出ます。,枪械耐久低于80%，伤害和散布都会受到影响。,2025/1/9 11:34:54
+Tips_3,被命中時に痛みが発生、スタミナを消耗し一時的に減速。鎮痛薬でこの影響を抑えられる。,被命中时会产生疼痛效果，消耗耐力并短暂减速。止痛药可以抵消这个影响。,2025/1/9 11:36:18
+Tips_4,銃を持っている時、「T」で弾薬の種類を変更できます。,持枪时，按T键，可以更换子弹类型。,2025/1/9 11:37:05
+Tips_5,バックパック画面でアタッチメントを武器にドラッグ＆ドロップすることで、素早く取り付けることができます。その際、適合しているかどうか注意してください。,在背包界面，将配件拖到武器上即可快速安装，不过要注意是否匹配。,2025/1/9 11:38:06
+Tips_6,近くの敵が赤く光ったら、ローリングのタイミングです。,近战敌人闪红光时，就是你翻滚的时机。,2025/1/9 11:38:47
+Tips_7,武器を持っている時、移動速度に影響があります。,手持武器时，你的移动速度会受到影响。,2025/1/9 11:39:19
+Location_HiddenWarehouse_Warehouse,工場地帯,西厂区,2025/1/13 17:39:52
+Location_HiddenWarehouse_RoadEntry,イーストロードキャンプ,东路口营地,2025/1/13 17:41:54
+Cellar,地下室,地窖,2025/1/14 11:35:04
+Location_HiddenWarehouse_Center,農家,农舍,2025/1/15 10:08:29
+Building_BlackMarket,闇市の連絡先,黑市联络点,2025/1/14 16:15:53
+Building_BlackMarket_Desc,闇市場ネットワークに接続し、変動価格で取引を実行します。,连接黑市网络，进行一些有价格浮动的交易。,2025/1/14 16:16:29
+Location_HiddenWarehouse_Valley,溝,沟壑,2025/1/14 19:38:44
+Building_DemoTrophy,DEMO トロフィー,DEMO纪念奖杯,2025/1/15 12:08:10
+Building_DemoTrophy_Desc,体験版を完了するとトロフィーを獲得できます。,DEMO通关纪念,2025/1/15 12:08:38
+Endowmment_None,働くアヒル,打工鸭,2025/1/17 17:52:59
+Endowmment_None_Desc,特徴がないのが特徴。非常にバランスが良い。,特点是没有特点，非常均衡。,2025/1/17 17:53:09
+Endowmment_Surviver,生存者,生存者,2025/1/17 17:53:23
+Endowmment_Surviver_Desc,体は強く、多くのダメージに耐えることができます。しかし、脳と同じく、脚は良くありません。,身体强健，抗揍，但腿跟脑子一样不太好使。,2025/1/17 17:54:13
+Endowmment_Porter,ポーター,搬运者,2025/1/17 17:55:46
+Endowmment_Porter_Desc,ポーターは痩せているように見えますが、物を運ぶ能力は非常に優れています。,看似瘦弱，但扛起东西来毫不逊色。,2025/1/17 17:56:10
+Endowmment_Berserker,バーサーカー,狂战士,2025/1/17 17:57:15
+Endowmment_Berserker_Desc,俺は近接武器を使わなければならない。銃？私はそのことについてよく知らない。（バーサーカーによると）,那肯定得用近战武器，枪是什么？不太会用。,2025/1/17 17:57:36
+Endowmment_Marksman,神射手,枪手,2025/1/17 18:02:23
+Endowmment_Marksman_Desc,神射手は遠くから銃を撃つのが大好きです。,爱打枪，打枪就远远的打。,2025/1/17 18:02:57
+HBAOSettings_Off,オフ,关闭,2025/1/20 11:59:02
+HBAOSettings_Low,低,低,2025/1/20 11:59:07
+HBAOSettings_Normal,中,中,2025/1/20 11:59:12
+HBAOSettings_High,高,高,2025/1/20 11:59:16
+GrassOptions_Off,オフ,关闭,2025/1/20 12:40:56
+GrassOptions_Low,低,低,2025/1/20 12:40:59
+GrassOptions_Normal,中,中,2025/1/20 12:41:04
+GrassOptions_High,高,高,2025/1/20 12:41:08
+GrassOptions_On,オン,打开,2025/1/20 14:26:23
+Notification_RedBag,得たもの:,得到了：,2025/1/22 16:57:26
+RunInputMode_Hold,押し続ける,按住,2025/1/23 20:15:37
+RunInputMode_Switch,切り替える,切换,2025/1/23 20:15:42

@@ -1,0 +1,10 @@
+﻿key,jp,value
+Option_ScreenMode_FullScreen,全画面表示専用,全屏专用
+Option_ScreenMode_Borderless,全画面表示・ボーダーレス,全屏无边框
+Option_ScreenMode_Window,ウィンドウモード,窗口化
+Options_Resolution,解像度,分辨率
+Options_ScreenMode,画面モード,屏幕模式
+Options_Language,言語,语言<sub>Language</sub>
+Options_HBAOSettings,アンビエントオクルージョンの品質,环境光遮蔽质量,2025/1/20 11:56:52
+Options_GrassSettings,草ディスプレイ,草地显示,2025/1/20 14:26:31
+Options_RunInputModeSettings,走る入力スタイル,奔跑按键模式,2025/1/23 20:14:48

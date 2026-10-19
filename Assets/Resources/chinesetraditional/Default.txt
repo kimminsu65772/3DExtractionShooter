@@ -1,0 +1,113 @@
+﻿key,value,value
+language_name,簡體中文,简体中文
+QuestGiver_Jeff,傑夫,杰夫
+Mirror,夢,梦
+UI_CustomFace_Main_Title,首,首
+UI_CustomFace_Eyes_Title,眼,眼
+UI_CustomFace_Hair_Title,冠,冠
+UI_CustomFace_Mouth_Title,喙,喙
+UI_CustomFace_Tail_Title,尾,尾
+UI_CustomFace_EyesBrown_Title,眉,眉
+UI_CustomFace_SkinColor,膚色,肤色
+UI_CustomFace_HeadSize,頭大小,头大小
+UI_CustomFace_HeadHeight,頭高低,头高低
+UI_CustomFace_HeadRoundness,圓腦袋,圆脑袋
+UI_CustomFace_HairType,發類型,发类型
+UI_CustomFace_HairColor,發類型,发类型
+UI_CustomFace_EyeType,眼類型,眼类型
+UI_CustomFace_EyeColor,眼色,眼色
+UI_CustomFace_EyeSpace,眼間距,眼间距
+UI_CustomFace_EyeHeight,眼高低,眼高低
+UI_CustomFace_EyeSize,眼大小,眼大小
+UI_CustomFace_EyeRotate,眼睛旋轉,眼睛旋转
+UI_CustomFace_EyebrowType,眉類型,眉类型
+UI_CustomFace_EyebrowColor,眉顔色,眉颜色
+UI_CustomFace_EyebrowSpace,眉間距,眉间距
+UI_CustomFace_EyebrowHeight,眉高低,眉高低
+UI_CustomFace_EyebrowSize,眉大小,眉大小
+UI_CustomFace_EyebrowRotate,眉旋轉,眉旋转
+UI_CustomFace_MouthType,喙類型,喙类型
+UI_CustomFace_MouthColor,喙顔色,喙颜色
+UI_CustomFace_MouthSize,喙大小,喙大小
+UI_CustomFace_MouthHeight,喙高低,喙高低
+UI_CustomFace_MouthOffset,喙歪了,喙歪了
+UI_CustomFace_MouthRotate,喙旋轉,喙旋转
+UI_CustomFace_TailType,尾類型,尾类型
+UI_CustomFace_TailColor,尾顔色,尾颜色
+UI_CustomFace_TailSize,尾大小,尾大小
+Notify_Stucked,從這一側無法打開。,从这一侧无法打开。
+Notify_Removed,障礙物被移除了,障碍物被移除了
+Building_MedicStation_Desc,可以製作一些醫療用品。,可以制作一些医疗用品。
+Building_MedicStation,醫療站,医疗站
+UI_LootBox_Totem,獲得饋贈,获得馈赠
+Location_GroundZero_CaveEntry,山洞入口,山洞入口
+Level_Unfinished,尚未開放,尚未开放
+Building_Gem,健身房,健身房
+Building_Gem_Desc,鍛煉肉體和頭腦的地方...啊？,锻炼肉体和头脑的地方...啊？
+UI_LootBox_Explor,資料箱,资料箱
+UI_Sort,整理,整理
+Building_TeleportMachine,傳送裝置,传送装置
+Building_TeleportMachine_Desc,可以讓你從更多地方出發。,可以让你从更多地方出发。
+Location_NorthMountain,北山,北山,2024/12/10 16:11:02
+Location_GroundZero_RoadCap,公路營地,公路营地,2024/12/10 16:12:43
+Notification_ManHoleBlocked,下水井蓋似乎被壓住了。,下水井盖似乎被压住了。,2024/12/11 11:58:51
+UI_Interact_Tomb,遺失物,遗失物,2024/12/18 20:18:35
+MapElement_Exit,撤離點,撤离点,2024/12/19 15:25:55
+Notify_SpiderSpawn,快天黑了，蜘蛛出來覓食了。,快天黑了，蜘蛛出来觅食了。,2024/12/19 17:49:02
+Building_MiningMachine,比特幣礦機,比特币矿机,2024/12/24 10:07:55
+Building_MiningMachine_Desc,挖礦，懂得都懂。,挖矿，懂得都懂。,2024/12/24 10:08:10
+Buff_InjectorMaxWeight,負重提升,负重提升,2024/12/24 16:54:53
+Buff_InjectorMaxWeight_Desc,增強耐力和耐力回複，但消耗更多水分，持續180秒。,增强耐力和耐力回复，但消耗更多水分，持续180秒。,2025/1/17 10:04:57
+BitcoinMiner_Inventory,提取位（不要在此處存放物品）,提取位（不要在此处存放物品）,2024/12/24 17:13:12
+Usage_HealValue,治療生命值,治疗生命值,2024/12/27 16:01:18
+Usage_Durability,消耗,消耗,2024/12/27 16:01:25
+Usage_Energy,能量,能量,2024/12/27 16:02:29
+Usage_Water,水分,水分,2024/12/27 16:02:33
+Location_GroundZero_MiddleMountain,矮山,矮山,2024/12/30 16:28:23
+Usage_SpawnEgg_Jinitaimei,？？？,？？？,2024/12/31 14:49:38
+Usage_DeadByChance,有一定概率直接嘎,有一定概率直接嘎,2024/12/31 14:50:20
+Usage_DeadByChance_PopText,嗯？,嗯？,2025/1/2 12:17:47
+Rule_ExtraHard,變態難,变态难,2025/1/8 15:51:36
+Rule_ExtraEasy,不難,不难,2025/1/8 15:50:43
+Rule_ExtraEasy_Desc,不能說完全冇有難度，敵人的威脅大幅降低，並提高你的輸出。但你依然要保持謹慎。,不能说完全没有难度，敌人的威胁大幅降低，并提高你的输出。但你依然要保持谨慎。,2025/1/9 13:19:58
+Rule_ExtraHard_Desc,敵人造成1.5倍傷害！不會生成遺失物。,敌人造成1.5倍伤害！不会生成遗失物。,2025/1/21 10:12:51
+DifficultySelection_Desc_PlaceHolder,請選擇難度,请选择难度,2025/1/8 16:35:49
+Tips_0,出血了的話，可以使用止血繃帶止血。,出血了的话，可以使用止血绷带止血。,2025/1/9 11:33:54
+Tips_1,經常能遇到的物資，不如把它賣了。,经常能遇到的物资，不如把它卖了。,2025/1/9 11:14:24
+Tips_2,槍械耐久低於80%，傷害和散佈都會受到影響。,枪械耐久低于80%，伤害和散布都会受到影响。,2025/1/9 11:34:54
+Tips_3,被命中時會産生疼痛效果，消耗耐力並短暫減速。止痛藥可以抵消這個影響。,被命中时会产生疼痛效果，消耗耐力并短暂减速。止痛药可以抵消这个影响。,2025/1/9 11:36:18
+Tips_4,持槍時，按T鍵，可以更換子彈類型。,持枪时，按T键，可以更换子弹类型。,2025/1/9 11:37:05
+Tips_5,在背包界麵，將配件拖到武器上即可快速安裝，不過要註意是否匹配。,在背包界面，将配件拖到武器上即可快速安装，不过要注意是否匹配。,2025/1/9 11:38:06
+Tips_6,近戰敵人閃紅光時，就是你翻滾的時機。,近战敌人闪红光时，就是你翻滚的时机。,2025/1/9 11:38:47
+Tips_7,手持武器時，你的移動速度會受到影響。,手持武器时，你的移动速度会受到影响。,2025/1/9 11:39:19
+Location_HiddenWarehouse_Warehouse,西廠區,西厂区,2025/1/13 17:39:52
+Location_HiddenWarehouse_Center,農捨,农舍,2025/1/15 10:08:29
+Location_HiddenWarehouse_RoadEntry,東路口營地,东路口营地,2025/1/13 17:41:54
+Cellar,地窖,地窖,2025/1/14 11:35:04
+Building_BlackMarket,黑市聯絡點,黑市联络点,2025/1/14 16:15:53
+Building_BlackMarket_Desc,連接黑市網絡，進行一些有價格浮動的交易。,连接黑市网络，进行一些有价格浮动的交易。,2025/1/14 16:16:29
+Location_HiddenWarehouse_Valley,溝壑,沟壑,2025/1/14 19:38:44
+Building_DemoTrophy,DEMO紀念獎杯,DEMO纪念奖杯,2025/1/15 12:08:10
+Building_DemoTrophy_Desc,DEMO通關紀念,DEMO通关纪念,2025/1/15 12:08:38
+Endowmment_None,打工鴨,打工鸭,2025/1/17 17:52:59
+Endowmment_None_Desc,特點是冇有特點，非常均衡。,特点是没有特点，非常均衡。,2025/1/17 17:53:09
+Endowmment_Surviver,生存者,生存者,2025/1/17 17:53:23
+Endowmment_Surviver_Desc,身體強健，抗揍，但腿跟腦子一樣不太好使。,身体强健，抗揍，但腿跟脑子一样不太好使。,2025/1/17 17:54:13
+Endowmment_Porter,搬運者,搬运者,2025/1/17 17:55:46
+Endowmment_Porter_Desc,看似瘦弱，但扛起東西來毫不遜色。,看似瘦弱，但扛起东西来毫不逊色。,2025/1/17 17:56:10
+Endowmment_Berserker,狂戰士,狂战士,2025/1/17 17:57:15
+Endowmment_Berserker_Desc,那肯定得用近戰武器，槍是什麼？不太會用。,那肯定得用近战武器，枪是什么？不太会用。,2025/1/17 17:57:36
+Endowmment_Marksman,槍手,枪手,2025/1/17 18:02:23
+Endowmment_Marksman_Desc,愛打槍，打槍就遠遠的打。,爱打枪，打枪就远远的打。,2025/1/17 18:02:57
+HBAOSettings_Off,關閉,关闭,2025/1/20 11:59:02
+HBAOSettings_Low,低,低,2025/1/20 11:59:07
+HBAOSettings_Normal,中,中,2025/1/20 11:59:12
+HBAOSettings_High,高,高,2025/1/20 11:59:16
+GrassOptions_Off,關閉,关闭,2025/1/20 12:40:56
+GrassOptions_Low,低,低,2025/1/20 12:40:59
+GrassOptions_Normal,中,中,2025/1/20 12:41:04
+GrassOptions_High,高,高,2025/1/20 12:41:08
+GrassOptions_On,打開,打开,2025/1/20 14:26:23
+Notification_RedBag,得到了：,得到了：,2025/1/22 16:57:26
+RunInputMode_Hold,按住,按住,2025/1/23 20:15:37
+RunInputMode_Switch,切換,切换,2025/1/23 20:15:42
