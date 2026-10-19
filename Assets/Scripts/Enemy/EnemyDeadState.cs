@@ -9,6 +9,14 @@ public class EnemyDeadState : EnemyState
 
     public override void Enter()
     {
+        // 사망 FX가 연결된 실제 적은 FSM과 BT가 공유하는 제거 경로를 사용한다.
+        EnemyDeathController deathController = Brain.GetComponent<EnemyDeathController>();
+        if (deathController != null)
+        {
+            deathController.CompleteDeath();
+            return;
+        }
+
         Brain.Motor.Stop();
         Brain.AttackController.CancelReload();
         

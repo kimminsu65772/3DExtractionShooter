@@ -1,5 +1,7 @@
 using UnityEngine;
 using ExtractionShooter.DataPipeline;
+using System;
+using Random = UnityEngine.Random;
 
 [DisallowMultipleComponent]
 public class EnemyAttackController : MonoBehaviour
@@ -37,8 +39,8 @@ public class EnemyAttackController : MonoBehaviour
     public bool IsReloading { get; private set; }
 
     // 애니메이션은 성공한 행동의 알림만 받고 실제 발사나 장전 시점을 결정하지 않는다.
-    public event System.Action OnFired;
-    public event System.Action<float> OnReloadStepStarted;
+    public event Action OnFired;
+    public event Action<float> OnReloadStepStarted;
 
     public bool IsReady =>
         weaponLoadout != null &&
@@ -49,6 +51,12 @@ public class EnemyAttackController : MonoBehaviour
         dataRoot.Pools.IsReady;
 
     public bool IsBurstActive => remainingBurstShots > 0;
+
+    // 부트스트랩이나 스포너가 최초 활성화 전에 데이터 루트를 전달한다.
+    public void SetDataRoot(CombatDataCompositionRoot root)
+    {
+        dataRoot = root;
+    }
 
     private void Awake()
     {

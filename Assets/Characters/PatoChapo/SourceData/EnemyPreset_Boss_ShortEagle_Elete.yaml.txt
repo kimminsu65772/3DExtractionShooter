@@ -1,0 +1,398 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 70297966, guid: d551df320acceeb317a9e97502ade12f, type: 3}
+  m_Name: EnemyPreset_Boss_ShortEagle_Elete
+  m_EditorClassIdentifier:
+  nameKey: Cname_Usec
+  isBoss: 1
+  voiceType: 4
+  footstepMaterialType: 0
+  dropBoxOnDead: 1
+  lootBoxPrefab: {fileID: 114099118695303065, guid: b69cf477d965c29489949f2ce95dc65c, type: 2}
+  specialAttachmentBases: []
+  spawnFx: {fileID: 0}
+  team: 3
+  canDieIfNotRaidMap: 0
+  showName: 0
+  characterIconType: 2
+  health: 60
+  hasSoul: 1
+  isZombie: 0
+  showHealthBar: 1
+  exp: 250
+  characterModel: {fileID: 114581786255902400, guid: 380c18aba4c1b104eb38a97a385d9856, type: 2}
+  usePlayerPreset: 0
+  facePreset: {fileID: 11400000, guid: 2dda15b988647ea42b5fdd2bc328c9d8, type: 2}
+  canBeControlVia: 1
+  aiController: {fileID: 114724804207875695, guid: 5394f8322ac6bfb4ab47fcda9eda2ff6, type: 2}
+  pushCharacter: 0
+  setActiveByPlayerDistance: 1
+  forceTracePlayerDistance: 0
+  shootCanMove: 0
+  sightDistance: 16
+  sightAngle: 100
+  reactionTime: 0.55
+  nightReactionTimeFactor: 1.5
+  shootDelay: 0.25
+  shootTimeRange: {x: 0.4, y: 0.8}
+  shootTimeSpaceRange: {x: 0.8, y: 2.2}
+  combatMoveTimeRange: {x: 1, y: 3}
+  hearingAbility: 1
+  patrolRange: 8
+  combatMoveRange: 8
+  canDash: 0
+  dashCoolTimeRange: {x: 2, y: 4}
+  minTraceTargetChance: 0.1
+  maxTraceTargetChance: 0.8
+  forgetTime: 8
+  defaultWeaponOut: 1
+  canTalk: 1
+  patrolTurnSpeed: 600
+  combatTurnSpeed: 1200
+  wantItem: -1
+  damageMultiplier: 1
+  moveSpeedFactor: 1
+  bulletSpeedMultiplier: 1
+  gunDistanceMultiplier: 1
+  nightVisionAbility: 0.5
+  gunScatterMultiplier: 0.5
+  scatterMultiIfTargetRunning: 3
+  scatterMultiIfOffScreen: 4
+  setMeleeDamageMultiplier: 0
+  meleeDamageMultiplier: 1
+  gunCritRateGain: 0
+  aiCombatFactor: 1.5
+  hasSkill: 0
+  skillPfb: {fileID: 0}
+  hasSkillChance: 1
+  skillCoolTimeRange: {x: 1, y: 1}
+  skillSuccessChance: 1
+  itemSkillChance: 0.3
+  itemSkillCoolTime: 6
+  buffs: []
+  buffResist:
+  elementFactor_Physics: 1
+  elementFactor_Fire: 1
+  elementFactor_Ice: 1
+  elementFactor_Poison: 1
+  elementFactor_Electricity: 1
+  elementFactor_Space: 1
+  elementFactor_Ghost: 1
+  setStats: []
+  isVehicle: 0
+  protectVehicleDriver: 0
+  vehicleAnimationType: 1
+  onlyMoveForward: 0
+  onlyAimForward: 0
+  hasCashChance: 1
+  cashRange: {x: 100, y: 100}
+  itemsToGenerate:
+  - comment: 枪
+    chance: 1
+    randomCount: {x: 1, y: 1}
+    controlDurability: 1
+    durability: {x: 0.4, y: 0.6}
+    durabilityIntegrity: {x: 0.5, y: 0.95}
+    randomFromPool: 1
+    itemPool:
+      entries:
+      - value:
+          itemTypeID: 242
+        weight: 10
+        percent:
+      - value:
+          itemTypeID: 258
+        weight: 8
+        percent:
+      - value:
+          itemTypeID: 260
+        weight: 8
+        percent:
+      - value:
+          itemTypeID: 250
+        weight: 8
+        percent:
+      - value:
+          itemTypeID: 655
+        weight: 10
+        percent:
+      - value:
+          itemTypeID: 737
+        weight: 8
+        percent:
+    tags:
+      entries:
+      - value: {fileID: 11400000, guid: b8ee9ee0860c17e489593702d404c32e, type: 2}
+        weight: 1
+        percent:
+    addtionalRequireTags:
+    - {fileID: 11400000, guid: 02571c9dddbe4ad4dbc8cbe627cb9563, type: 2}
+    excludeTags: []
+    qualities:
+      entries:
+      - value: 3
+        weight: 150
+        percent:
+      - value: 4
+        weight: 50
+        percent:
+      - value: 5
+        weight: 1
+        percent:
+  - comment: 头盔
+    chance: 0.3
+    randomCount: {x: 1, y: 1}
+    controlDurability: 1
+    durability: {x: 0.8, y: 0.9}
+    durabilityIntegrity: {x: 0.9, y: 1}
+    randomFromPool: 0
+    itemPool:
+      entries: []
+    tags:
+      entries:
+      - value: {fileID: 11400000, guid: 7d755e5be50422e4f85d3bc2fc96cebc, type: 2}
+        weight: 1
+        percent:
+    addtionalRequireTags:
+    - {fileID: 11400000, guid: 02571c9dddbe4ad4dbc8cbe627cb9563, type: 2}
+    excludeTags:
+    - {fileID: 11400000, guid: e015df9974d035f4eb5140d98511e606, type: 2}
+    qualities:
+      entries:
+      - value: 2
+        weight: 200
+        percent:
+      - value: 3
+        weight: 50
+        percent:
+      - value: 4
+        weight: 4
+        percent:
+  - comment: 背包
+    chance: 0.8
+    randomCount: {x: 1, y: 1}
+    controlDurability: 0
+    durability: {x: 0, y: 0}
+    durabilityIntegrity: {x: 0, y: 0}
+    randomFromPool: 0
+    itemPool:
+      entries: []
+    tags:
+      entries:
+      - value: {fileID: 11400000, guid: dbc0d28558d00d144a017e6a0da69066, type: 2}
+        weight: 1
+        percent:
+    addtionalRequireTags:
+    - {fileID: 11400000, guid: 02571c9dddbe4ad4dbc8cbe627cb9563, type: 2}
+    excludeTags:
+    - {fileID: 11400000, guid: e015df9974d035f4eb5140d98511e606, type: 2}
+    qualities:
+      entries:
+      - value: 1
+        weight: 100
+        percent:
+      - value: 2
+        weight: 40
+        percent:
+      - value: 3
+        weight: 20
+        percent:
+      - value: 4
+        weight: 3
+        percent:
+  - comment: 护甲
+    chance: 1
+    randomCount: {x: 1, y: 1}
+    controlDurability: 1
+    durability: {x: 0.8, y: 0.9}
+    durabilityIntegrity: {x: 0.9, y: 1}
+    randomFromPool: 0
+    itemPool:
+      entries: []
+    tags:
+      entries:
+      - value: {fileID: 11400000, guid: 0fc868cc257ccee429c3575eed9b2978, type: 2}
+        weight: 1
+        percent:
+    addtionalRequireTags:
+    - {fileID: 11400000, guid: 02571c9dddbe4ad4dbc8cbe627cb9563, type: 2}
+    excludeTags:
+    - {fileID: 11400000, guid: e015df9974d035f4eb5140d98511e606, type: 2}
+    qualities:
+      entries:
+      - value: 1
+        weight: 10
+        percent:
+      - value: 2
+        weight: 300
+        percent:
+      - value: 3
+        weight: 50
+        percent:
+      - value: 4
+        weight: 4
+        percent:
+  - comment: 杂物
+    chance: 0.3
+    randomCount: {x: 1, y: 2}
+    controlDurability: 0
+    durability: {x: 0, y: 0}
+    durabilityIntegrity: {x: 0, y: 0}
+    randomFromPool: 0
+    itemPool:
+      entries: []
+    tags:
+      entries:
+      - value: {fileID: 11400000, guid: 4b97ae8ce9ab07c4e8046d26eb1ee455, type: 2}
+        weight: 25
+        percent:
+      - value: {fileID: 11400000, guid: c24bb972aa4b3e948a5dba906a9e40f6, type: 2}
+        weight: 20
+        percent:
+      - value: {fileID: 11400000, guid: e1d6ab1fc49f48348b962575e3b22a52, type: 2}
+        weight: 20
+        percent:
+      - value: {fileID: 11400000, guid: d05690e88afbc734fba976687b555eae, type: 2}
+        weight: 15
+        percent:
+      - value: {fileID: 11400000, guid: a4837558a72398647aa46301980f07f8, type: 2}
+        weight: 10
+        percent:
+    addtionalRequireTags: []
+    excludeTags:
+    - {fileID: 11400000, guid: e015df9974d035f4eb5140d98511e606, type: 2}
+    qualities:
+      entries:
+      - value: 1
+        weight: 400
+        percent:
+      - value: 2
+        weight: 800
+        percent:
+      - value: 3
+        weight: 250
+        percent:
+      - value: 4
+        weight: 100
+        percent:
+      - value: 5
+        weight: 40
+        percent:
+      - value: 6
+        weight: 2
+        percent:
+  - comment: 药品
+    chance: 0.5
+    randomCount: {x: 1, y: 2}
+    controlDurability: 0
+    durability: {x: 0, y: 0}
+    durabilityIntegrity: {x: 0, y: 0}
+    randomFromPool: 0
+    itemPool:
+      entries: []
+    tags:
+      entries:
+      - value: {fileID: 11400000, guid: f8d2cb9257f18454c8149aa38cff453d, type: 2}
+        weight: 10
+        percent:
+    addtionalRequireTags: []
+    excludeTags:
+    - {fileID: 11400000, guid: e015df9974d035f4eb5140d98511e606, type: 2}
+    qualities:
+      entries:
+      - value: 1
+        weight: 400
+        percent:
+      - value: 2
+        weight: 400
+        percent:
+      - value: 3
+        weight: 60
+        percent:
+      - value: 4
+        weight: 25
+        percent:
+      - value: 5
+        weight: 6
+        percent:
+      - value: 6
+        weight: 1
+        percent:
+  - comment: 羽毛
+    chance: 0.5
+    randomCount: {x: 1, y: 3}
+    controlDurability: 0
+    durability: {x: 0, y: 0}
+    durabilityIntegrity: {x: 0, y: 0}
+    randomFromPool: 1
+    itemPool:
+      entries:
+      - value:
+          itemTypeID: 368
+        weight: 1
+        percent:
+    tags:
+      entries: []
+    addtionalRequireTags: []
+    excludeTags: []
+    qualities:
+      entries: []
+  - comment: 赤核
+    chance: 0.3
+    randomCount: {x: 1, y: 1}
+    controlDurability: 0
+    durability: {x: 0, y: 0}
+    durabilityIntegrity: {x: 0, y: 0}
+    randomFromPool: 1
+    itemPool:
+      entries:
+      - value:
+          itemTypeID: 309
+        weight: 1
+        percent:
+    tags:
+      entries: []
+    addtionalRequireTags: []
+    excludeTags: []
+    qualities:
+      entries: []
+  bulletQualityDistribution:
+    entries:
+    - value: 1
+      weight: 150
+      percent:
+    - value: 2
+      weight: 80
+      percent:
+    - value: 3
+      weight: 25
+      percent:
+    - value: 4
+      weight: 5
+      percent:
+    - value: 5
+      weight: 2
+      percent:
+    - value: 6
+      weight: 1
+      percent:
+  bulletExclusiveTags:
+  - {fileID: 11400000, guid: f85b1b4d58b8e4247ae68519a9b69a54, type: 2}
+  bulletFilter:
+    requireTags:
+    - {fileID: 11400000, guid: d7ad05f68ff2a86479819ddd1a4771b7, type: 2}
+    excludeTags:
+    - {fileID: 11400000, guid: f85b1b4d58b8e4247ae68519a9b69a54, type: 2}
+    minQuality: 1
+    maxQuality: 1
+    caliber: SHT
+  bulletCountRange: {x: 0.5, y: 1}

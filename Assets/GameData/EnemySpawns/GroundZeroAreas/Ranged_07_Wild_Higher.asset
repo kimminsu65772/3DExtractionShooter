@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d262916e2af2d9e4380fd0a2981caf61, type: 3}
+  m_Name: Ranged_07_Wild_Higher
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnTable
+  entries:
+  - definition: {fileID: 11400000, guid: 0685642fc61252c44b1d25da9c3b328a, type: 2}
+    equipmentTable: {fileID: 11400000, guid: d8bc48e28d26cba4ebc2a20016e54874, type: 2}
+    spawnChance: 1
+    minimumCount: 2
+    maximumCount: 3

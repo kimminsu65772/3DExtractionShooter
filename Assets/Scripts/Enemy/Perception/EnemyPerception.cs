@@ -7,6 +7,7 @@ public class EnemyPerception : MonoBehaviour
     [SerializeField] private Transform playerRoot;
     [SerializeField] private Transform targetViewPoint; // 조준용 위치
     [SerializeField] private AimPointProvider targetAimPointProvider;
+    [SerializeField] private LayerMask audibleLayer;
 
     [Header("시야의 기준점")]
     [SerializeField] private Transform viewOrigin;
@@ -38,6 +39,21 @@ public class EnemyPerception : MonoBehaviour
     public Vector3 ViewForward => viewOrigin != null ? viewOrigin.forward : transform.forward;
 
     public event Action<SoundStimulus> OnSoundHeard;
+    public event Action<Vector3, float> OnStimulusDetected;
+
+    // 비활성 상태에서 주입해 Brain.Awake가 조준 대상을 바로 확보할 수 있게 한다.
+    public void SetTarget(Transform target, Transform viewPoint, AimPointProvider aimPointProvider)
+    {
+        playerRoot = target;
+        targetViewPoint = viewPoint;
+        targetAimPointProvider = aimPointProvider;
+        if (target == null)
+        {
+            // 감지 주기를 기다리지 않고 파괴된 대상을 향한 공격 조건을 해제한다.
+            CurrentLevel = EnemyPerceptionLevel.None;
+            HasLastKnownPosition = false;
+        }
+    }
 
     private void Awake()
     {
@@ -151,6 +167,7 @@ public class EnemyPerception : MonoBehaviour
     {
         LastKnownPosition = position;
         HasLastKnownPosition = true;
+        OnStimulusDetected?.Invoke(LastKnownPosition, Time.time);
     }
 
 
@@ -168,6 +185,10 @@ public class EnemyPerception : MonoBehaviour
 
         // 사운드 소스가 자신이 속한 계층 구조에 있다면 무시한다.
         if (stimulus.Source != null && stimulus.Source.transform.IsChildOf(transform))
+            return;
+
+        // 사운드 소스가 자신이 감지할 수 있는 계층 구조에 속하지 않았다면 무시한다.
+        if ((audibleLayer.value & (1 << stimulus.SourceLayer)) == 0)
             return;
 
         Vector3 listenerPosition = viewOrigin != null ? viewOrigin.position : transform.position;

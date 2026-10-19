@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd2b18ad266c87f4490f350f1270cb3b, type: 3}
+  m_Name: Squad_PatoChapo
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnDefinition
+  prefab: {fileID: 5406172696430872762, guid: c36b8387f2f4ebf479c53c0f920b1a98, type: 3}

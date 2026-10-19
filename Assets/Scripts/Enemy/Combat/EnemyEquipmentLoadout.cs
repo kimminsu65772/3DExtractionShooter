@@ -7,6 +7,30 @@ public class EnemyEquipmentLoadout : MonoBehaviour
 {
     [SerializeField] private EnemyWeaponLoadout weaponLoadout;
     [SerializeField] private EnemyProtectionLoadout protectionLoadout;
+    [SerializeField] private EnemyEquipmentTable spawnEquipmentTable;
+    private bool spawnSelectionPrepared;
+
+    public EnemyEquipmentTable SpawnEquipmentTable => spawnEquipmentTable;
+
+    // 활성화 전에 추첨 결과의 ID만 전달한다. OnEnable에서 기존 경로로 실제 장비를 만든다.
+    public bool PrepareSpawn(ExtractionShooter.DataPipeline.CombatDataCompositionRoot root,
+        EnemyEquipmentTable tableOverride, System.Random random)
+    {
+        if (spawnSelectionPrepared) return true;
+        EnemyEquipmentTable table = tableOverride != null ? tableOverride : spawnEquipmentTable;
+        if (table == null) return true; // 기존 고정 장비 적·테스트 프리팹도 지원한다.
+        if (gameObject.activeInHierarchy) return false;
+        if (weaponLoadout == null) weaponLoadout = GetComponent<EnemyWeaponLoadout>();
+        if (protectionLoadout == null) protectionLoadout = GetComponent<EnemyProtectionLoadout>();
+        if (weaponLoadout == null || protectionLoadout == null || weaponLoadout.IsReady || protectionLoadout.IsReady) return false;
+        if (!table.Validate(root, out string error))
+        { Debug.LogError($"{table.name}: {error}", this); return false; }
+        if (!table.TryRoll(root, random, out var selected)) return false;
+        weaponLoadout.ConfigureSpawn(selected.WeaponId, selected.AmmoId);
+        protectionLoadout.ConfigureSpawn(selected.ArmorId, selected.HelmetId);
+        spawnSelectionPrepared = true;
+        return true;
+    }
 
     private void Awake()
     {

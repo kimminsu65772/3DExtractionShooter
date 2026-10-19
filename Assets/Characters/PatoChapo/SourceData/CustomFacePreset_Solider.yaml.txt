@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1833293247, guid: d551df320acceeb317a9e97502ade12f, type: 3}
+  m_Name: CustomFacePreset_Solider
+  m_EditorClassIdentifier:
+  settings:
+    savedSetting: 0
+    headSetting:
+      mainColor: {r: 0.349, g: 0.349, b: 0.349, a: 1}
+      headScaleOffset: 0
+      foreheadHeight: 0.175
+      foreheadRound: 1
+    hairID: 2
+    hairInfo:
+      radius: 0
+      color: {r: 1, g: 0.975, b: 0.92, a: 1}
+      height: 0
+      heightOffset: 0
+      scale: 1
+      twist: 0
+      distanceAngle: 0
+      leftRightAngle: 0
+    eyeID: 1
+    eyeInfo:
+      radius: 0.23
+      color: {r: 0.991, g: 0.229, b: 0.258, a: 1}
+      height: 0.233
+      heightOffset: 0
+      scale: 0.845
+      twist: 0
+      distanceAngle: 36.755
+      leftRightAngle: 0
+    eyebrowID: 1
+    eyebrowInfo:
+      radius: 0.23
+      color: {r: 1, g: 0.975, b: 0.92, a: 1}
+      height: 0.052
+      heightOffset: 0.233
+      scale: 2.188
+      twist: -15.784
+      distanceAngle: 30.048
+      leftRightAngle: 0
+    mouthID: 1
+    mouthInfo:
+      radius: 0.23
+      color: {r: 0.991, g: 0.229, b: 0.258, a: 1}
+      height: 0.163
+      heightOffset: 0
+      scale: 0.987
+      twist: 0
+      distanceAngle: 0
+      leftRightAngle: 0
+    tailID: 0
+    tailInfo:
+      radius: 0
+      color: {r: 1, g: 0.735, b: 0.231, a: 0}
+      height: 0
+      heightOffset: 0
+      scale: 1
+      twist: 0
+      distanceAngle: 0
+      leftRightAngle: 0
+    footID: 0
+    footInfo:
+      radius: 0
+      color: {r: 1, g: 0.403, b: 0.203, a: 1}
+      height: 0
+      heightOffset: 0
+      scale: 1
+      twist: 0
+      distanceAngle: 0
+      leftRightAngle: 0
+    wingID: 0
+    wingInfo:
+      radius: 0
+      color: {r: 0.349, g: 0.349, b: 0.349, a: 1}
+      height: 0
+      heightOffset: 0
+      scale: 1
+      twist: 0
+      distanceAngle: 0
+      leftRightAngle: 0

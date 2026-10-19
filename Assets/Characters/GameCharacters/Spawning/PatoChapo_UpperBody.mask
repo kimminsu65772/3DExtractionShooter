@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PatoChapo_UpperBody
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 0
+  - m_Path: Duck_Armature
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Leg.Upper.L
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Leg.Upper.L/Leg.Lower.L
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Leg.Upper.L/Leg.Lower.L/Foot.L.001
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Leg.Upper.L/Leg.Lower.L/Foot.L.001/Foot.L.002
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Leg.Upper.R
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Leg.Upper.R/Leg.Lower.R
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Leg.Upper.R/Leg.Lower.R/Foot.R.001
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Leg.Upper.R/Leg.Lower.R/Foot.R.001/Foot.R.002
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Spine.001
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.L
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.L/Arm.Upper.L
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.L/Arm.Upper.L/Arm.Fore.L
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.L/Arm.Upper.L/Arm.Fore.L/Hand.L
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.L/Arm.Upper.L/Arm.Fore.L/Hand.L/Finger.Index.L.001
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.L/Arm.Upper.L/Arm.Fore.L/Hand.L/Finger.Index.L.001/Finger.Index.L.002
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.L/Arm.Upper.L/Arm.Fore.L/Hand.L/Finger.Middle.L.001
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.L/Arm.Upper.L/Arm.Fore.L/Hand.L/Finger.Middle.L.001/Finger.Middle.L.002
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.L/Arm.Upper.L/Arm.Fore.L/Hand.L/Finger.Pinky.L.001
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.L/Arm.Upper.L/Arm.Fore.L/Hand.L/Finger.Pinky.L.001/Finger.Pinky.L.002
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R/Arm.Fore.R
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R/Arm.Fore.R/Hand.R
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R/Arm.Fore.R/Hand.R/Finger.Index.R.001
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R/Arm.Fore.R/Hand.R/Finger.Index.R.001/Finger.Index.R.002
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R/Arm.Fore.R/Hand.R/Finger.Middle.R.001
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R/Arm.Fore.R/Hand.R/Finger.Middle.R.001/Finger.Middle.R.002
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R/Arm.Fore.R/Hand.R/Finger.Pinky.R.001
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R/Arm.Fore.R/Hand.R/Finger.Pinky.R.001/Finger.Pinky.R.002
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R/Arm.Fore.R/Hand.R/RightHandSocket
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R/Arm.Fore.R/Hand.R/MeleeWeaponSocket
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R/Arm.Fore.R/Hand.R/MeleeWeaponSocket/MeleeWeaponSocket
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Arm.Root.R/Arm.Upper.R/Arm.Fore.R/Hand.R/WeaponMount
+    m_Weight: 1
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Head
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Head/HairTip
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Head/HelmatSocket
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Head/Pfb_Axe
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/Head/DuckHeadHitBox
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/ArmorSocket
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/Spine.003/BackpackSocket
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Spine.001/Spine.002/DuckBodyHitBox
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Tail.001
+    m_Weight: 0
+  - m_Path: Duck_Armature/Root/Hip/Tail.001/Tail.002
+    m_Weight: 0
+  - m_Path: Player_Duck_Head
+    m_Weight: 0

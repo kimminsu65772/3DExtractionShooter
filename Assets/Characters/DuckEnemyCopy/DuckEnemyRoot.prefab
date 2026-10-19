@@ -1776,7 +1776,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4950338359966476766}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.16486746, y: 0.5521702, z: -0.8172359, w: 0.007239377}
+  m_LocalRotation: {x: -0.81351703, y: 0.007876813, z: 0.17233962, w: 0.55536205}
   m_LocalPosition: {x: -0.05, y: 0.34, z: -0.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3712,6 +3712,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMotor
   _agent: {fileID: 6987884819880822501}
+  combatMovementMultiplier: 0.5
   _repathInterval: 0.2
   destinationChangeThreshold: 0.25
   arrivalVelocityThreshold: 0.05
@@ -3733,7 +3734,7 @@ MonoBehaviour:
   dataRoot: {fileID: 0}
   projectileHitMask:
     serializedVersion: 2
-    m_Bits: 704
+    m_Bits: 2752
   spreadMultiplier: 1.5
   showDebugLog: 1
   minBurstShotCount: 3
@@ -3828,6 +3829,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimationController
   brain: {fileID: 7617180006565327942}
+  aimStateSource: {fileID: 0}
   motor: {fileID: 8499292881208637135}
   attackController: {fileID: 938189691868090790}
   animator: {fileID: 104458474873159001}

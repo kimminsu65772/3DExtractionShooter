@@ -8,6 +8,11 @@ public class EnemyMotor : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent _agent;
 
+    [Header("이동 사격")]
+    [SerializeField, Range(0f, 1f)] private float combatMovementMultiplier = 0.5f;
+    private float baseMovementSpeed;
+    private bool hasBaseMovementSpeed;
+
     [Header("경로 갱신")]
     [SerializeField, Min(0.02f)] private float _repathInterval = 0.2f;
     [SerializeField, Min(0.01f)] private float destinationChangeThreshold = 0.25f;
@@ -51,6 +56,38 @@ public class EnemyMotor : MonoBehaviour
     {
         if (_agent == null)
             _agent = GetComponent<NavMeshAgent>();
+        CacheBaseMovementSpeed();
+    }
+
+    private void OnDisable()
+    {
+        // 재활성화할 때 감속된 값을 기본 속도로 잘못 기억하지 않도록 복원한다.
+        SetCombatMovement(false);
+    }
+
+    private void CacheBaseMovementSpeed()
+    {
+        if (hasBaseMovementSpeed)
+            return;
+
+        if (_agent == null)
+            _agent = GetComponent<NavMeshAgent>();
+        if (_agent == null)
+            return;
+
+        baseMovementSpeed = _agent.speed;
+        hasBaseMovementSpeed = true;
+    }
+
+    public void SetCombatMovement(bool isAiming) // [USEC 리뷰] 기존 공용 감속 기능을 USEC 공격 상태에서도 사용한다. 위치 이동 명령과 속도 설정은 별개다.
+    {
+        // 다른 컴포넌트가 먼저 호출해도 원래 속도는 한 번만 보관한다.
+        CacheBaseMovementSpeed(); // [USEC 리뷰] 감속 전 기준 속도를 한 번만 확보한다.
+        if (_agent == null || !hasBaseMovementSpeed) // [USEC 리뷰] 기준값이 없으면 현재 속도를 잘못 덮어쓰지 않는다.
+            return; // [USEC 리뷰] Agent가 준비되지 않은 경우 이 속도 변경만 건너뛴다.
+
+        // 현재 속도에 반복 곱하지 않고 항상 같은 기준에서 최종 속도를 계산한다.
+        _agent.speed = baseMovementSpeed * (isAiming ? Mathf.Clamp01(combatMovementMultiplier) : 1f); // [USEC 리뷰] true면 기본 속도×전투 배율, false면 기본 속도다. 현재 속도에 반복 곱해 계속 느려지지 않는다.
     }
 
     public bool TryMoveTo(Vector3 destination, float stoppingDistance, bool forceRepath = false)
@@ -125,5 +162,21 @@ public class EnemyMotor : MonoBehaviour
 
         // 현재 방향과 목표 방행의 차이가 허용 범위 안인지 반환한다.
         return Quaternion.Angle(transform.rotation, targetRotation) <= facingTolerance;
+    }
+
+    public void SetAutomaticRotation(bool enable)
+    {
+        if (_agent == null)
+            return;
+
+        _agent.updateRotation = enable;
+    }
+
+    // 회피 후 현재 위치에서 기존 목적지까지 다시 계산한다. 목적지 기억은 지우지 않는다.
+    public void RefreshPath() // [USEC 리뷰] 회피 후 도착 목표는 유지하면서 현재 위치에서 경로만 갱신한다.
+    {
+        if (!IsReady || !hasRequestedDestination) return; // [USEC 리뷰] 이동 불가이거나 기억한 목적지가 없으면 다시 계산할 대상도 없다.
+        nextRepathTime = 0f; // [USEC 리뷰] 뒤이어 새 목적지를 요청할 때 일반 갱신 간격에 막히지 않도록 한다.
+        _agent.SetDestination(requestedDestination); // [USEC 리뷰] 같은 목적지라도 회피 후 바뀐 Agent 위치에서 경로를 새로 요청한다.
     }
 }

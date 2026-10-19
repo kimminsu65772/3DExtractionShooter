@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f80a7138422bd94489930b6f7479d2a, type: 3}
+  m_Name: Scav
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyEquipmentTable
+  weapon:
+    equipChance: 1
+    entries:
+    - itemId: 1005
+      ammoId: 2022
+      weight: 0.20833333
+    - itemId: 1003
+      ammoId: 2022
+      weight: 0.20833333
+    - itemId: 1002
+      ammoId: 2012
+      weight: 0.20833333
+    - itemId: 1001
+      ammoId: 2001
+      weight: 0.104166664
+    - itemId: 1006
+      ammoId: 2001
+      weight: 0.020833334
+    - itemId: 1007
+      ammoId: 2001
+      weight: 0.16666667
+    - itemId: 1008
+      ammoId: 2001
+      weight: 0.083333336
+  armor:
+    equipChance: 0.5
+    entries:
+    - itemId: 4001
+      ammoId: 0
+      weight: 0.98039216
+    - itemId: 4006
+      ammoId: 0
+      weight: 0.019607844
+  helmet:
+    equipChance: 0.3
+    entries:
+    - itemId: 5001
+      ammoId: 0
+      weight: 0.36585367
+    - itemId: 5012
+      ammoId: 0
+      weight: 0.36585367
+    - itemId: 5002
+      ammoId: 0
+      weight: 0.027874565
+    - itemId: 5006
+      ammoId: 0
+      weight: 0.027874565
+    - itemId: 5007
+      ammoId: 0
+      weight: 0.027874565
+    - itemId: 5008
+      ammoId: 0
+      weight: 0.027874565
+    - itemId: 5011
+      ammoId: 0
+      weight: 0.027874565
+    - itemId: 5013
+      ammoId: 0
+      weight: 0.027874565
+    - itemId: 5018
+      ammoId: 0
+      weight: 0.027874565
+    - itemId: 5009
+      ammoId: 0
+      weight: 0.024390243
+    - itemId: 5010
+      ammoId: 0
+      weight: 0.024390243
+    - itemId: 5014
+      ammoId: 0
+      weight: 0.024390243
+  sourceNote: 'https://escapefromduckov.net/ko/wiki/creatures/scav
+
+    MonoBehaviour/EnemyPreset_Scav.asset
+    (GUID 0e24ccea33e924f449091d1e9f470ffe)
+
+    Bow removed; duplicate source item
+    IDs retain FIRST weight only; conditional slot weights normalized. No missing
+    candidate is silently removed.
+
+    Protection: rarity weight / eligible source
+    items in rarity, normalized over nonempty eligible rarities. CSV rarity is not
+    armor level.'

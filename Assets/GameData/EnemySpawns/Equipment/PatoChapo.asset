@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f80a7138422bd94489930b6f7479d2a, type: 3}
+  m_Name: PatoChapo
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyEquipmentTable
+  weapon:
+    equipChance: 1
+    entries:
+    - itemId: 1001
+      ammoId: 2001
+      weight: 1
+  armor:
+    equipChance: 1
+    entries:
+    - itemId: 4003
+      ammoId: 0
+      weight: 1
+  helmet:
+    equipChance: 0
+    entries: []
+  sourceNote: 'https://escapefromduckov.net/ko/wiki/creatures/boss-shorteagle
+
+    MonoBehaviour/EnemyPreset_Boss_ShortEagle.asset
+    (GUID 94241e3344515a84aa320f5f83032700)
+
+    Bow removed; duplicate source item
+    IDs retain FIRST weight only; conditional slot weights normalized. No missing
+    candidate is silently removed.
+
+    Protection: rarity weight / eligible source
+    items in rarity, normalized over nonempty eligible rarities. CSV rarity is not
+    armor level.'

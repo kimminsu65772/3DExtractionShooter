@@ -3034,6 +3034,7 @@ GameObject:
   - component: {fileID: 3640161848283946435}
   - component: {fileID: 8554287872244477206}
   - component: {fileID: 6492603714649819368}
+  - component: {fileID: 1513912977481467124}
   m_Layer: 8
   m_Name: Enemy_Default
   m_TagString: Untagged
@@ -3197,6 +3198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMotor
   _agent: {fileID: 189173096214778913}
+  combatMovementMultiplier: 0.5
   _repathInterval: 0.2
   destinationChangeThreshold: 0.25
   arrivalVelocityThreshold: 0.05
@@ -3218,7 +3220,7 @@ MonoBehaviour:
   dataRoot: {fileID: 0}
   projectileHitMask:
     serializedVersion: 2
-    m_Bits: 704
+    m_Bits: 2752
   spreadMultiplier: 1.5
   showDebugLog: 1
   minBurstShotCount: 3
@@ -3293,13 +3295,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyLootDropper
   equipmentLoadout: {fileID: 6492603714649819368}
-  lootPrefab: {fileID: 4445853694405313791, guid: 2ef6bc644b7086942a920af468c50ee4, type: 3}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
-  groundProbeHeight: 2
-  groundProbeDistance: 10
-  groundClearance: 0.01
+  lootPrefab: {fileID: 8024875903558092883, guid: 247ef8f1ddd44ef4ab16b87ee2fa1ce9, type: 3}
+  dropOrigin: {fileID: 6633400574562713898}
 --- !u!114 &3640161848283946435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3313,6 +3310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimationController
   brain: {fileID: 7087779533813032156}
+  aimStateSource: {fileID: 0}
   motor: {fileID: 1750376955364585645}
   attackController: {fileID: 2680891695090788369}
   animator: {fileID: 6069712724287816472}
@@ -3349,6 +3347,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyEquipmentLoadout
   weaponLoadout: {fileID: 2566090246663886333}
   protectionLoadout: {fileID: 8554287872244477206}
+  spawnEquipmentTable: {fileID: 0}
+--- !u!114 &1513912977481467124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2192038255954619585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3c97466e4de774ea07e090b93d72e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDeathController
+  deathEffectPrefab: {fileID: 7737498509175833346, guid: 1c417f840309a1c41b3c072f3cf97440, type: 3}
 --- !u!1 &2265148874438491435
 GameObject:
   m_ObjectHideFlags: 0
@@ -4489,7 +4501,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4909489760602465377}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.16486746, y: 0.5521702, z: -0.8172359, w: 0.007239377}
+  m_LocalRotation: {x: -0.81351703, y: 0.007876813, z: 0.17233962, w: 0.55536205}
   m_LocalPosition: {x: -0.05, y: 0.34, z: -0.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

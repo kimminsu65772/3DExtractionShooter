@@ -29,7 +29,11 @@ namespace ExtractionShooter.AI
                 // 조건만 검사하고 선택된 행동만 실행한다.
                 if (!children[i].IsEligible)
                     continue;
-                if (active != i && active >= 0) { children[active].Abort(); active = -1; }
+                if (active != i && active >= 0) 
+                { 
+                    children[active].Abort(); 
+                    active = -1; 
+                }
                 NodeStatus status = children[i].Tick();
                 if (status == NodeStatus.Failure) continue;
                 active = status == NodeStatus.Running ? i : -1;
@@ -75,6 +79,46 @@ namespace ExtractionShooter.AI
             if (!running) return;
             running = false;
             stop?.Invoke();
+        }
+    }
+
+    // 행동 중에서도 순차적으로 실행해야 하는 행동을 묶어 관리한다.
+    public class Sequence : BehaviourNode
+    {
+        private readonly BehaviourNode[] children;
+        private int childIndex = 0;
+
+        public Sequence(params BehaviourNode[] children)
+        {
+            this.children = children ?? throw new ArgumentNullException(nameof(children));
+        }
+
+        // 수행해야할 행동들을 결과에 따라 순서대로 실행한다.
+        public override NodeStatus Tick()
+        {
+            for (; childIndex < children.Length; childIndex++)
+            {
+                NodeStatus status = children[childIndex].Tick();
+                if (status == NodeStatus.Running)
+                    return NodeStatus.Running;
+                if (status == NodeStatus.Failure)
+                {
+                    childIndex = 0;
+                    return NodeStatus.Failure;
+                }
+            }
+
+            // 모든 행동이 성공하면 Sequence를 성공 처리하고 다음 행동을 위해 인덱스를 초기화한다.
+            childIndex = 0;
+            return NodeStatus.Success;
+        }
+
+        // 실행중인 시퀀스를 중단하고 진행 위치를 초기화한다.
+        public override void Abort()
+        {
+            if (childIndex < children.Length)
+                children[childIndex].Abort();
+            childIndex = 0;
         }
     }
 }

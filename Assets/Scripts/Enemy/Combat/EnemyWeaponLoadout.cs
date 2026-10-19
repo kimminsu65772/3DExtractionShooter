@@ -24,6 +24,7 @@ public class EnemyWeaponLoadout : MonoBehaviour
     private PoolLease currentWeaponViewLease;
     private bool hasWeaponViewLease;
     private readonly List<Collider> deathDisabledWeaponColliders = new();
+    private VisibilityTarget visibilityTarget;
 
     public WeaponInstance CurrentWeaponInstance => currentWeaponInstance;
     public CombatDataCompositionRoot DataRoot => dataRoot;
@@ -38,6 +39,24 @@ public class EnemyWeaponLoadout : MonoBehaviour
         currentAmmo != null &&
         currentWeaponView != null &&
         currentWeaponView.HasMuzzle;
+
+    // 부트스트랩이나 스포너가 최초 활성화 전에 데이터 루트를 전달한다.
+    public void SetDataRoot(CombatDataCompositionRoot root)
+    {
+        dataRoot = root;
+    }
+
+    // 비활성 신규 스폰에만 사용한다. 실제 장착은 기존 OnEnable 초기화가 담당한다.
+    internal void ConfigureSpawn(int weaponId, int ammoId)
+    {
+        initialWeaponId = weaponId;
+        initialAmmoId = ammoId;
+    }
+
+    private void Awake()
+    {
+        visibilityTarget = GetComponent<VisibilityTarget>();
+    }
 
     private void OnEnable()
     {
@@ -122,6 +141,10 @@ public class EnemyWeaponLoadout : MonoBehaviour
         currentWeaponViewLease = newWeaponViewLease;
         hasWeaponViewLease = true;
 
+        // Awake 이후 추가된 무기도 현재 FOV 표시 상태를 즉시 적용받도록 등록한다.
+        if (visibilityTarget != null)
+            visibilityTarget.RefreshRenderers();
+
         return true;
     }
 
@@ -187,13 +210,23 @@ public class EnemyWeaponLoadout : MonoBehaviour
         deathDisabledWeaponColliders.Clear();
 
         if (hasWeaponViewLease && dataRoot?.Pools != null)
+        {
+            // 적의 숨김 상태를 풀에 넘기지 않는다. 다음 소유자의 표시 정책은 장착 후 적용된다.
+            if (currentWeaponViewLease.Instance != null)
+                foreach (Renderer renderer in currentWeaponViewLease.Instance.GetComponentsInChildren<Renderer>(true))
+                    renderer.forceRenderingOff = false;
             dataRoot.Pools.TryReturn(currentWeaponViewLease);
+        }
 
         currentWeaponInstance = null;
         currentAmmo = null;
         currentWeaponView = null;
         currentWeaponViewLease = default;
         hasWeaponViewLease = false;
+
+        // 반환된 총을 계속 제어하면 다른 적이나 플레이어의 총까지 숨길 수 있다.
+        if (visibilityTarget != null)
+            visibilityTarget.RefreshRenderers();
     }
 
     public bool TryConsumeRound(out int consumedAmmoId)

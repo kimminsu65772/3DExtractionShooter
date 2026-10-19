@@ -15,6 +15,19 @@ public class EnemyProtectionLoadout : MonoBehaviour, IProtectionProvider
     public ArmorInventoryItem Armor => equipment.Armor;
     public ArmorInventoryItem Helmet => equipment.Helmet;
     public bool IsReady { get; private set; }
+    public event System.Action OnProtectionChanged;
+
+    // 스포너가 최초 활성화 전에 데이터 공급자를 연결한다.
+    public void SetDataRoot(CombatDataCompositionRoot root)
+    {
+        dataRoot = root;
+    }
+
+    internal void ConfigureSpawn(int armorId, int helmetId)
+    {
+        initialArmorId = armorId;
+        initialHelmetId = helmetId;
+    }
 
     private void OnEnable()
     {
@@ -64,6 +77,8 @@ public class EnemyProtectionLoadout : MonoBehaviour, IProtectionProvider
         equipment.SetItem(ItemType.Armor, armorItem);
         equipment.SetItem(ItemType.Helmet, helmetItem);
         IsReady = true;
+        // 두 장비와 준비 상태를 모두 확정한 뒤 외형 담당자에게 알린다.
+        OnProtectionChanged?.Invoke();
         return true;
     }
 

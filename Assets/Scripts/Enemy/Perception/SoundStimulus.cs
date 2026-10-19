@@ -12,10 +12,13 @@ public readonly struct SoundStimulus
     // 소리를 발생시킨 오브젝트
     public GameObject Source { get; }
 
+    // 소리를 발생시킨 오브젝트의 진영
+    public int SourceLayer => Source.layer;
+
     public SoundStimulus(Vector3 position, float radius, GameObject source)
     {
         Position = position;
         Radius = Mathf.Max(0f, radius);
-        Source = source;
+        Source = source;  
     }
 }

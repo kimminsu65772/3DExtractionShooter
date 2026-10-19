@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f80a7138422bd94489930b6f7479d2a, type: 3}
+  m_Name: USECZero
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyEquipmentTable
+  weapon:
+    equipChance: 1
+    entries:
+    - itemId: 1004
+      ammoId: 2001
+      weight: 0.1923077
+    - itemId: 1011
+      ammoId: 2012
+      weight: 0.15384616
+    - itemId: 1012
+      ammoId: 2012
+      weight: 0.15384616
+    - itemId: 1003
+      ammoId: 2022
+      weight: 0.15384616
+    - itemId: 1017
+      ammoId: 2012
+      weight: 0.1923077
+    - itemId: 1013
+      ammoId: 2012
+      weight: 0.15384616
+  armor:
+    equipChance: 1
+    entries:
+    - itemId: 4002
+      ammoId: 0
+      weight: 0.84745765
+    - itemId: 4003
+      ammoId: 0
+      weight: 0.07062147
+    - itemId: 4009
+      ammoId: 0
+      weight: 0.07062147
+    - itemId: 4004
+      ammoId: 0
+      weight: 0.0056497175
+    - itemId: 4007
+      ammoId: 0
+      weight: 0.0056497175
+  helmet:
+    equipChance: 0.3
+    entries:
+    - itemId: 5003
+      ammoId: 0
+      weight: 0.46296296
+    - itemId: 5015
+      ammoId: 0
+      weight: 0.46296296
+    - itemId: 5004
+      ammoId: 0
+      weight: 0.037037037
+    - itemId: 5016
+      ammoId: 0
+      weight: 0.037037037
+  sourceNote: 'https://escapefromduckov.net/ko/wiki/creatures/boss-shorteagle-elete
+
+    MonoBehaviour/EnemyPreset_Boss_ShortEagle_Elete.asset
+    (GUID 64d5a3041e15c3545bdd1f258a754482)
+
+    Bow removed; duplicate source item
+    IDs retain FIRST weight only; conditional slot weights normalized. No missing
+    candidate is silently removed.
+
+    Protection: rarity weight / eligible source
+    items in rarity, normalized over nonempty eligible rarities. CSV rarity is not
+    armor level.'
