@@ -10,6 +10,8 @@ namespace ExtractionShooter.DataPipeline
     [DisallowMultipleComponent]
     public class CombatDataCompositionRoot : MonoBehaviour
     {
+        public static CombatDataCompositionRoot Instance { get; private set; }
+
         [Header("데이터 주소")]
         [SerializeField] private string weaponCsvAddress = "data/weapons";
         [SerializeField] private string ammoCsvAddress = "data/ammo";
@@ -57,6 +59,7 @@ namespace ExtractionShooter.DataPipeline
         private CancellationTokenSource lifetimeCancellation;
         private CombatDataBootstrap bootstrap;
         private CombatFeedbackService feedbackService;
+        private Task initializationTask;
 
         public CombatDataBootstrap Bootstrap => bootstrap;
         public CombatFeedbackService FeedbackService => feedbackService;
@@ -74,8 +77,25 @@ namespace ExtractionShooter.DataPipeline
         // 데이터 준비를 기다리는 객체가 파이프라인 준비 완료 시점을 알 수 있도록 이벤트를 제공한다.
         public event Action OnInitialized;
 
+        public Task InitializeAsync()
+        {
+            return initializationTask ??= InitializeCoreAsync();
+        }
+
         private void Awake()
         {
+            // 다음 씬에 같은 루트가 있어도 기존 데이터와 풀을 유지한다.
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
+            // 씬의 부모 전체가 아니라 데이터 루트와 그 자식만 보존한다.
+            transform.SetParent(null);
+            DontDestroyOnLoad(gameObject);
+
             lifetimeCancellation = new CancellationTokenSource();
 
             EnsureInactivePoolRoot();
@@ -127,32 +147,19 @@ namespace ExtractionShooter.DataPipeline
             feedbackService = new CombatFeedbackService(bootstrap);
         }
 
-        private async void Start()
+        private async Task InitializeCoreAsync()
         {
             try
             {
                 await bootstrap.InitializeAsync(weaponCsvAddress, ammoCsvAddress, medicineCsvAddress, armorCsvAddress, helmetCsvAddress, lifetimeCancellation.Token);
-
-                OnInitialized?.Invoke();
-
-                Debug.Log(
-                    $"전투 데이터 파이프라인 준비 완료. " +
-                    $"등록된 무기: {bootstrap.WeaponCatalog.Count}, 등록된 탄약: {bootstrap.AmmoCatalog.Count}",
-                    this
-                );
             }
-            catch (OperationCanceledException)
+            catch
             {
-                // 오브젝트가 파괴되거나 게임이 종료되어 발생한
-                // 정상적인 초기화 취소는 오류로 기록하지 않는다.
-                if (!lifetimeCancellation.IsCancellationRequested)
-                    throw;
-            }
-            catch (Exception exception)
-            {
-                Debug.LogException(exception, this);
                 LogDataIssues();
+                throw;
             }
+
+            OnInitialized?.Invoke();
         }
 
         private void EnsureInactivePoolRoot()
@@ -246,6 +253,11 @@ namespace ExtractionShooter.DataPipeline
 
         private async void OnDestroy()
         {
+            // 중복 루트의 제거가 실제 공용 루트의 종료로 이어지지 않게 한다.
+            if (Instance != this)
+                return;
+
+            Instance = null;
             lifetimeCancellation?.Cancel();
 
             if (bootstrap != null)

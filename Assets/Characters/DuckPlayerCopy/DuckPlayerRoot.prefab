@@ -2101,7 +2101,7 @@ MonoBehaviour:
   aimDeadZone: 0.3
   aimLayer:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 2816
 --- !u!114 &507659850186251911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2171,7 +2171,7 @@ MonoBehaviour:
   dataRoot: {fileID: 0}
   projectileHitMask:
     serializedVersion: 2
-    m_Bits: 832
+    m_Bits: 2880
   showDebugLog: 1
 --- !u!114 &412345555002518107
 MonoBehaviour:
@@ -2208,9 +2208,52 @@ MonoBehaviour:
   fallMultiplier: 2
   sprintStaminaCostPerSecond: 10
   dodgeStaminaCost: 20
-  dodgeDistance: 3
-  dodgeDuration: 0.55
-  dodgeCooldown: 0.2
+  dodgeSpeed: 10
+  dodgeDuration: 0.5
+  dodgeCooldown: 0.5
+  dodgeSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0012207031
+      value: 0.6135613
+      inSlope: 4.2667236
+      outSlope: 4.2667236
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.19268288
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.7638108
+      value: 0.7851256
+      inSlope: -0.91723293
+      outSlope: -0.91723293
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.5459905
+      inSlope: -0.8117536
+      outSlope: -0.8117536
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  dodgeExitAcceleration: 50
   rotationSpeed: 12
   currentMoveSpeed: 0
   _verticalVelocity: 0
@@ -2415,7 +2458,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   obstructionMask:
     serializedVersion: 2
-    m_Bits: 576
+    m_Bits: 2624
 --- !u!114 &5274916944153277620
 MonoBehaviour:
   m_ObjectHideFlags: 0

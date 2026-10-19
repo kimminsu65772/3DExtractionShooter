@@ -15,8 +15,33 @@ MonoBehaviour:
   m_GroupName: Combat Addressable
   m_GUID: c39968413e8aa3848b7a2deed8cad2dd
   m_SerializeEntries:
+  - m_GUID: 021ecc7c8c824fe4599bc91fbc895aae
+    m_Address: duckov/helmets/5008
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 022ba92740483124ea1976ae40f8ee13
+    m_Address: icons/mp7
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 050c30267345a794d87aa30fba0a4a89
+    m_Address: icons/helmet_5011
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 06ed2fd9d91bd9b4e9b7227e407bed5b
     m_Address: feedback/audio-emitter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0868242fd86c24d4fb5acdd7f3a5ea0b
+    m_Address: duckov/helmets/5016
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0a297c238235ebd49a78b561adc134e9
+    m_Address: duckov/armor/4004
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -25,13 +50,48 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2042971d28e1fd3469cd9c3e50e35a43
-    m_Address: weapons/ak47
+  - m_GUID: 0d931c316ae7ec346af4758d7d4d8e82
+    m_Address: icons/helmet_5010
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 10beb733610edb949b2f213ead797ae9
+    m_Address: icons/helmet_5001
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d513df9e082c2547af5690b169fb33b
+    m_Address: duckov/helmets/5005
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f3c13eb29b6da741be8f75ed03d03b1
+    m_Address: icons/adar
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 213276bf12736714489e808f13280519
+    m_Address: icons/helmet_5008
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 27455309ba73bf242907b15b0c420299
     m_Address: icons/meds_aid_kit02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a98178591dda474b81b1f579307f964
+    m_Address: icons/armor_4003
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b3abab09ae802248b61fb1e004dc6f8
+    m_Address: icons/armor_4006
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e61fa536f7b09642b3a7d8cb75f42a9
+    m_Address: duckov/weapons/1007
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -42,6 +102,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 313791c78c4380345a5991be2e71dc55
     m_Address: icons/ammo_pistol_ap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32ce74a4d5eeb1c4d81d1aa513f5f745
+    m_Address: duckov/helmets/5006
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -60,8 +125,53 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 397e45a9b294d3b4188a3e439b052150
+    m_Address: duckov/armor/4008
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3cc5de2b0583ae94fa0e8ad65ae0f50f
+    m_Address: icons/helmet_5003
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40ec9de57029c8243ac0f178118e7fcd
+    m_Address: duckov/armor/4007
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44ab810f0569d784394c4091acb98c80
+    m_Address: duckov/helmets/5003
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46f473e73adfb9143bd70d0d1e254b96
+    m_Address: duckov/helmets/5009
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 499319aa2d3d33740b9a71c7ec1fa5a8
     m_Address: data/medicine
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b585939d0f15c042b06e1bc4c2a0fb0
+    m_Address: icons/vector9
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c3750cdf48f1604fa43b4b02ea656ab
+    m_Address: icons/helmet_5018
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4dfaaeb33f39dc843bc4a832ff9f56ac
+    m_Address: icons/ak103
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4eb89a6359c06c94b9ee625f306c184d
+    m_Address: icons/helmet_5014
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -70,8 +180,38 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f64309d5da0eb246a137d53bc61c304
+    m_Address: duckov/armor/4002
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 52d9eedaac78fae4082d9e0bcf2f73b0
     m_Address: projectiles/bullet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 548bff55fa227654abb623693830fec3
+    m_Address: icons/helmet_5013
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 565dc5be2e9c65f489e648f009acfc85
+    m_Address: icons/armor_4008
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 572dae4df79a43042a0c3cc3e3872f77
+    m_Address: icons/hand
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a7f7392248c2ff428a9ae6661b5e1cc
+    m_Address: duckov/weapons/1008
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5acb4d836e1a5f64f8a4669da6525239
+    m_Address: icons/armor_4007
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -80,8 +220,48 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 600b66f8a6b631f42af4537228795ecf
+    m_Address: icons/helmet_5004
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 63474dcf933a83c48868a2e8088815d3
+    m_Address: icons/glock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 667bc3ba843b8b3498784b7e3c848ad0
+    m_Address: duckov/weapons/1005
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d1899352f4ec3f44b44e8da0fab12c7
+    m_Address: duckov/helmets/5014
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f9b383d416c2694c833bc4b37237a40
+    m_Address: icons/helmet_5015
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 707b47c892603e04da8375087fba32be
+    m_Address: icons/ak74u
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 718facb114e3eb840811f591767dfb54
+    m_Address: duckov/helmets/5017
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 720cea86776378944877627ef5ee611e
     m_Address: weapons/muzzleVfx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7752a39fbbc04e34083a4f321ab8486f
+    m_Address: duckov/helmets/5010
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -90,8 +270,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b020a116908ef1439754a664e814146
+    m_Address: icons/armor_4009
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7b7426693f79f8846adad3a6bb553d30
     m_Address: icons/mp-155
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d9775db62c11574197a322860c99751
+    m_Address: icons/armor_4004
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -105,8 +295,53 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a3be319e3a09f24da1f09c191f4f01e
+    m_Address: icons/helmet_5012
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a874580a50117843915da111f309854
+    m_Address: icons/armor_4001
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b031b766221fb94cbeeb9dd2ee0d4c1
+    m_Address: icons/helmet_5002
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8cea9429eb9cde74f9d8683c8bd7c7a9
+    m_Address: duckov/helmets/5001
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d34eb26bbe28ad4e93f0bb3fb3991f0
+    m_Address: duckov/weapons/1013
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e4bdcbd742797246a11361c0ba5fbe8
+    m_Address: duckov/weapons/1009
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e9e9c36da93e9842b90f41358e1d8a7
+    m_Address: duckov/weapons/1014
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8ec0b050a86a00a4c9832d3501e483c3
     m_Address: icons/ammo_ar_ap_rust
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 900240681c231ec4ab89090d4256dceb
+    m_Address: icons/tt33
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9140b8f8f1aefdc49bc91990b3ae2089
+    m_Address: icons/armor_4005
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -120,8 +355,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99a31b2f43506b94c87af5cf0a26faad
+    m_Address: icons/helmet_5016
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99e49955c2ee4494380c7e3d2122e831
+    m_Address: icons/auga1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99f686a8cd952c842beecd1fff36ad3f
+    m_Address: duckov/helmets/5007
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9a319e0a4358a434182fd87fd366862f
     m_Address: data/helmet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9add449ffe2bfcc4c87323581b061277
+    m_Address: icons/helmet_5006
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -130,13 +385,58 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b0a0dbd0fc023d443b43a05149845d9a
-    m_Address: weapons/mp-155
+  - m_GUID: a32dba124d1e0394f8cfe376d984b4a5
+    m_Address: duckov/helmets/5018
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5d99908fd3f307468b309f1620b94b1
+    m_Address: icons/mp5
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a806786b777a9304391ea3f2b24b5b05
+    m_Address: duckov/weapons/1012
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9d018fd0d01f074cbf81bde359c0a25
+    m_Address: icons/dtdmr556
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af753db5608f9564d9be1df661aaa4d8
+    m_Address: duckov/helmets/5015
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af95ef911eec0ad428544553bce86334
+    m_Address: duckov/helmets/5012
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b48af323859481f4f8364397c2477797
+    m_Address: duckov/helmets/5013
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7b3acc429bb2794fab76ec12589422d
+    m_Address: icons/pm
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b908770fb2425c54988e8403e15f770a
     m_Address: icons/ammo_ar_standard
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba1c92939dd940840b5f3bc1c854e84e
+    m_Address: duckov/helmets/5011
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bde7e11049e4f9045981a2a0e26f6d7d
+    m_Address: duckov/armor/4005
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -150,8 +450,63 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb93e753c3eb8e84ebac52b89a43cdb4
+    m_Address: duckov/helmets/5004
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce496250db23204488a80906089efb95
+    m_Address: duckov/armor/4009
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0eb426787a3d2e4b96f350e5309c744
+    m_Address: icons/m4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d1b9dfacbffa564468a4962d18a1fad0
+    m_Address: icons/uak45
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3d95dc982fccc14f95f48d84764c156
+    m_Address: icons/helmet_5009
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dae1a7f6017401d49879d27848b106dd
+    m_Address: duckov/weapons/1011
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dc48442a6fcf1854c85588c415305490
     m_Address: icons/meds_aid_kit01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd82e2bed7e021c4587e6b62723fc944
+    m_Address: icons/helmet_5005
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4abbf45e913e2641aaef9600a0f3bec
+    m_Address: duckov/weapons/1017
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5c0d8503f5bbe34a84aaa2c67763dbb
+    m_Address: icons/armor_4002
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e87df18918560f14fa15ec25afc77603
+    m_Address: duckov/weapons/1016
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea3ea5d20407abe41b1c7178f0f45ed6
+    m_Address: duckov/helmets/5002
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -160,8 +515,53 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb9ac79b3a1772349982c0af70d044f3
+    m_Address: duckov/armor/4003
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec85c9f3a3cc50048aa90b1cf1954d50
+    m_Address: duckov/weapons/1006
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ed0fff3c2f9634b4d89c7eb0b0fadea0
+    m_Address: icons/helmet_5017
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3e3102a706574044ab7fd2527cc31db
+    m_Address: duckov/armor/4001
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5e99874fea062f479fba6c3670715be
+    m_Address: icons/toz66
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f61f4ce96b59f4742982ef51198aee67
     m_Address: icons/ammo_pistol_rust
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9f05c83a45535f43af25149a6e80912
+    m_Address: icons/helmet_5007
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa57abff5b433e648aa1313c21d0be12
+    m_Address: duckov/armor/4006
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fac742f352999424185695feca3eb3ec
+    m_Address: duckov/weapons/1010
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fcb9a6a372ff8b544bc36baa187d474f
+    m_Address: duckov/weapons/1015
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
