@@ -26,25 +26,27 @@ namespace ExtractionShooter.DataPipeline
             }
             if (row is ProtectionDefinition protection)
             {
-                Check(protection.armorLevel >= 0, "armorLevel", protection.armorLevel, record, report);
+                Check(protection.rarity >= 0, "rarity", protection.rarity, record, report);
+                Check(NonNegative(protection.armorLevel), "armorLevel", protection.armorLevel, record, report);
                 Check(Positive(protection.maxDurability), "maxDurability", protection.maxDurability, record, report);
                 Check(Positive(protection.durabilityDamageMultiplier), "durabilityDamageMultiplier", protection.durabilityDamageMultiplier, record, report);
                 Check(protection.maxStackCount == 1, "maxStackCount", protection.maxStackCount, record, report);
             }
             if (row is ArmorDefinition armor)
             {
-                Check(armor.armorLevel >= 0, "armorLevel", armor.armorLevel, record, report);
+                Check(NonNegative(armor.armorLevel), "armorLevel", armor.armorLevel, record, report);
                 Check(armor.backpackCapacityBonus >= 0, "backpackCapacityBonus", armor.backpackCapacityBonus, record, report);
                 Check(armor.maxStackCount == 1, "maxStackCount", armor.maxStackCount, record, report);
             }
             if (row is HelmetDefinition helmet)
             {
-                Check(helmet.armorLevel >= 0, "armorLevel", helmet.armorLevel, record, report);
+                Check(NonNegative(helmet.armorLevel), "armorLevel", helmet.armorLevel, record, report);
                 Check(helmet.maxStackCount == 1, "maxStackCount", helmet.maxStackCount, record, report);
             }
         }
 
         private static bool Positive(float value) => value > 0f && !float.IsNaN(value) && !float.IsInfinity(value);
+        private static bool NonNegative(float value) => value >= 0f && !float.IsNaN(value) && !float.IsInfinity(value);
         private static void Check(bool valid, string column, object raw, int record, DataReport report)
         {
             if (!valid) report.Add(new DataIssue { Record = record, Column = column, RawValue = Convert.ToString(raw, System.Globalization.CultureInfo.InvariantCulture), Message = "아이템 정의 값이 허용 범위를 벗어나거나 비어 있다." });

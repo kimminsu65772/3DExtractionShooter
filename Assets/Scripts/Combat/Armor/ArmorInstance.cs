@@ -28,5 +28,20 @@ public class ArmorInstance
         return removed;
     }
 
+    // 장비 객체와 정의를 교체하지 않고 내구도만 초기화한다.
+    public void ResetDurability()
+    {
+        CurrentDurability = Definition.maxDurability;
+    }
+
+    public bool TryRestoreDurability(float durability)
+    {
+        if (!IsNonNegativeFinite(durability)) return false;
+        if (durability > Definition.maxDurability) return false;
+        CurrentDurability = durability;
+        return true;
+    }
+
     private static bool IsPositiveFinite(float value) => value > 0f && !float.IsNaN(value) && !float.IsInfinity(value);
+    private static bool IsNonNegativeFinite(float value) => value >= 0f && !float.IsNaN(value) && !float.IsInfinity(value);
 }

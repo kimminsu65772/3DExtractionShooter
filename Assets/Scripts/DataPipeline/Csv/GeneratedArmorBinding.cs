@@ -17,6 +17,7 @@ namespace ExtractionShooter.DataPipeline
                 @"itemId",
                 @"maxDurability",
                 @"maxStackCount",
+                @"rarity",
                 @"unitWeight",
             };
 
@@ -77,7 +78,7 @@ namespace ExtractionShooter.DataPipeline
                         }
                         else
                         {
-                            if (!CsvValueConverter.TryInt(raw, out int armorLevelValue))
+                            if (!CsvValueConverter.TryFloat(raw, out float armorLevelValue))
                             {
                                 isValid = false;
                                 report.Add(new DataIssue
@@ -85,7 +86,7 @@ namespace ExtractionShooter.DataPipeline
                                     Record = row.Number,
                                     Column = @"armorLevel",
                                     RawValue = raw,
-                                    Message = "값을 int 타입으로 변환할 수 없습니다."
+                                    Message = "값을 float 타입으로 변환할 수 없습니다."
                                 });
                             }
                             else
@@ -441,6 +442,52 @@ namespace ExtractionShooter.DataPipeline
                             else
                             {
                                 candidate.maxStackCount = maxStackCountValue;
+                            }
+                        }
+                    }
+                }
+            }
+            // rarity 필드의 CSV 값을 읽고 변환한다.
+            {
+                bool hasColumn = header.TryGetValue(@"rarity", out int columnIndex);
+                if (!hasColumn)
+                {
+                }
+                else
+                {
+                    if (columnIndex < 0 || columnIndex >= row.Cells.Length)
+                    {
+                        isValid = false;
+                        report.Add(new DataIssue
+                        {
+                            Record = row.Number,
+                            Column = @"rarity",
+                            Message = "열에 대응하는 셀이 없습니다."
+                        });
+                    }
+                    else
+                    {
+                        string raw = row.Cells[columnIndex];
+                        if (string.IsNullOrWhiteSpace(raw))
+                        {
+                            // Optional 값이 비어 있으면 모델의 기본값을 유지한다.
+                        }
+                        else
+                        {
+                            if (!CsvValueConverter.TryInt(raw, out int rarityValue))
+                            {
+                                isValid = false;
+                                report.Add(new DataIssue
+                                {
+                                    Record = row.Number,
+                                    Column = @"rarity",
+                                    RawValue = raw,
+                                    Message = "값을 int 타입으로 변환할 수 없습니다."
+                                });
+                            }
+                            else
+                            {
+                                candidate.rarity = rarityValue;
                             }
                         }
                     }

@@ -1,4 +1,19 @@
-itemId,displayName,unitWeight,maxStackCount,iconAddress,armorLevel
-5001,Motorcycle Helmet,0.45,1,,1
-5002,Steel Helmet,0.9,1,,2
-5003,SWAT Helmet,1.2,1,,3
+itemId,displayName,unitWeight,maxStackCount,iconAddress,armorLevel,maxDurability,rarity
+5001,Motorcycle Helmet,0.45,1,icons/helmet_5001,1,35,1
+5002,Steel Helmet,0.9,1,icons/helmet_5002,2,45,2
+5003,SWAT Helmet,1.2,1,icons/helmet_5003,3,55,3
+5004,SightPRO 헬멧,1.44,1,icons/helmet_5004,4,65,4
+5005,SCIFI 마스크,2.4,1,icons/helmet_5005,5,75,5
+5006,냄비,1.12,1,icons/helmet_5006,2,22,2
+5007,젖소 마스크,0.38,1,icons/helmet_5007,0.5,30,2
+5008,카우보이 모자,0.12,1,icons/helmet_5008,0.5,30,2
+5009,호박,0.33,1,icons/helmet_5009,0.5,30,3
+5010,헤드랜턴,0.15,1,icons/helmet_5010,0.5,30,3
+5011,깨진 달걀 껍질,0.05,1,icons/helmet_5011,0,1,2
+5012,탱크 헬멧,0.4,1,icons/helmet_5012,1.5,35,1
+5013,Lv.2 경량 헬멧,1.13,1,icons/helmet_5013,2.2,56,2
+5014,Lv.3 경량 헬멧,1.5,1,icons/helmet_5014,3.2,69,3
+5015,평화의 헬멧,1.38,1,icons/helmet_5015,3.1,83,3
+5016,Lv.4 방탄 헬멧,1.66,1,icons/helmet_5016,4.3,81,4
+5017,Lv.5 작전 헬멧,2.76,1,icons/helmet_5017,5.3,94,5
+5018,포니머리 가면,0.38,1,icons/helmet_5018,0.5,30,2

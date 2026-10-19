@@ -1,4 +1,10 @@
-itemId,displayName,unitWeight,maxStackCount,iconAddress,armorLevel,backpackCapacityBonus
-4001,Lv.1 Body Armor,2,1,,1,2
-4002,Lv.2 Body Armor,2.47,1,,2,0
-4003,Lv.3 Body Armor,3.57,1,,3,3
+itemId,displayName,unitWeight,maxStackCount,iconAddress,armorLevel,backpackCapacityBonus,maxDurability,rarity
+4001,Lv.1 Body Armor,2,1,icons/armor_4001,1,2,45,1
+4002,Lv.2 Body Armor,2.47,1,icons/armor_4002,2,0,60,2
+4003,Lv.3 Body Armor,3.57,1,icons/armor_4003,3,3,80,3
+4004,Lv.4 방탄복,4.29,1,icons/armor_4004,4,3,100,4
+4005,Lv.5 방탄복,5.88,1,icons/armor_4005,5,2,120,5
+4006,Lv.3 중형 방탄복,6.33,1,icons/armor_4006,3.3,4,120,3
+4007,Lv.4 작전 방탄복,3.78,1,icons/armor_4007,3.9,7,85,4
+4008,Lv.5 작전 방탄복,7.9,1,icons/armor_4008,5.1,5,136,5
+4009,Lv.3 작전 방탄복,5.19,1,icons/armor_4009,3,4,104,3
