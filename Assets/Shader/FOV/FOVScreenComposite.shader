@@ -29,6 +29,7 @@ Shader "FOV/FOVScreenComposite"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+            #include "FOVEyeDepth.hlsl"
 
             TEXTURE2D(_FOVMaskTexture);
             SAMPLER(sampler_FOVMaskTexture);
@@ -144,6 +145,14 @@ Shader "FOV/FOVScreenComposite"
                     ).r;
 
                     maskValue *= isInsideMaskTexture;
+                    if (_FOVEyeEnabled > 0.5)
+                    {
+                        // 깊이 맵의 픽셀 오차 때문에 표면 자체가 차폐되는 현상을 줄인다.
+                        float3 normal = cross(ddy(worldPosition), ddx(worldPosition));
+                        normal *= rsqrt(max(dot(normal, normal), 0.000001));
+                        normal *= dot(normal, _FOVEyeOrigin - worldPosition) >= 0 ? 1 : -1;
+                        maskValue = EyeVisibility(worldPosition + normal * _FOVEyeNormalBias, maskValue);
+                    }
                 }
 
                 half softenedMask = smoothstep(

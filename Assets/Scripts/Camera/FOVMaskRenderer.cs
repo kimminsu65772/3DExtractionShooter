@@ -233,4 +233,9 @@ public class FOVMaskRenderer : MonoBehaviour
         // 현재 월드 좌표를 마스크 화면 좌표로 바꿀 행렬도 쉐이더에 전달한다.
         Shader.SetGlobalMatrix(WorldToMaskClipPropertyId, worldToMaskClipMatrix);
     }
+
+    public void SetSourceFOV(FOV fov)
+    {
+        sourceFOV = fov;
+    }
 }

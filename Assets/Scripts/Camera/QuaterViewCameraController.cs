@@ -28,6 +28,11 @@ public class QuaterViewCameraController : MonoBehaviour
     [SerializeField] private float aimOffsetDistance = 3f;
     [SerializeField] private float aimMaxWorldDistance = 7f;
 
+    [Header("FOV")]
+    [SerializeField] private bool useFieldOfViewSettings;
+    [SerializeField, Range(1f, 179f)] private float normalFieldOfView = 23.5f;
+    [SerializeField, Range(1f, 179f)] private float aimFieldOfView = 22.8f;
+
     [Header("Follow")]
     [SerializeField] private float smoothTime = 0.15f;
     [SerializeField] private float aimOffsetSmoothTime = 0.08f;
@@ -39,9 +44,19 @@ public class QuaterViewCameraController : MonoBehaviour
 
     private Vector3 currentAimOffset = Vector3.zero;
     private Vector3 aimOffsetVelocity = Vector3.zero;
+    private Camera renderCamera;
+
+    public void SetTarget(Transform target, PlayerInputHandler inputHandler, PlayerAimController aimController)
+    {
+        this.target = target;
+        _inputHandler = inputHandler;
+        this.aimController = aimController;
+    }
 
     private void Awake()
     {
+        renderCamera = GetComponent<Camera>();
+
         // 카메라 위치 설정 메서드
         CalculateCameraDirection();
 
@@ -96,6 +111,12 @@ public class QuaterViewCameraController : MonoBehaviour
 
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref followVelocity, smoothTime);
         transform.rotation = cameraRotation;
+
+        // 필요한 씬에서만 원본처럼 거리를 유지한 채 렌즈 화각으로 조준 확대를 표현한다.
+        if (useFieldOfViewSettings && renderCamera != null)
+        {
+            renderCamera.fieldOfView = state == CameraState.Aiming ? aimFieldOfView : normalFieldOfView;
+        }
     }
 
     private Vector3 GetAimOffset()
